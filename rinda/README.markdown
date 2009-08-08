@@ -1,0 +1,6 @@
+Rinda
+=====
+
+Run test_server.rb, then any combination of clients and agents.
+
+Make sure to pass druby://HOST.IP.ADDRESS:PORT as the first command line to each script.  druby://127.0.0.1:9999 is fine if you're only talking to the local host, but if you want to connect to 192.168.0.888 remotely, you *must* specify druby://192.168.0.888:9999 both on the client and 192.168.0.888 itself.  (dRuby seems to want the actual IP, not "localhost" or "127.0.0.1".)
