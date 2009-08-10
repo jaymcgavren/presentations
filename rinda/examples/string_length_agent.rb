@@ -9,6 +9,6 @@ def scale(value)
 end
 
 loop do
-  key, value = space.read([/Integer/, nil])
+  key, value = space.read([/Integer/, Integer])
   puts "#{key}: #{'|' * (scale(value) * 68.0)}"
 end
