@@ -1,6 +1,20 @@
 Rinda
 =====
 
+Rinda lets you set up a "distributed blackboard", a bucket that network clients can write objects to and take objects from.  That's it - the rest is up to your imagination.
+
+## Rinda Documentation
+
+http://www.ruby-doc.org/stdlib/libdoc/rinda/rdoc/index.html
+
+Or:
+
+  ri DRb.start_service
+  
+  ri Rinda::TupleSpaceProxy
+
+## Sample Scripts
+
 !http://github.com/jaymcgavren/presentations/raw/master/rinda/rinda_test.png!
 
 Run test_server.rb, then any combination of clients and agents.
