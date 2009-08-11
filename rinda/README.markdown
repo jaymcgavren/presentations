@@ -1,4 +1,4 @@
-!http://github.com/jaymcgavren/presentations/raw/master/rinda/rinda_test.jpg!
+!http://jay.mcgavren.com/blog/wp-content/uploads/2009/08/rinda_test.png!
 
 Rinda
 =====
