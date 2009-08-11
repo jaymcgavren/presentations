@@ -1,4 +1,4 @@
-!http://github.com/jaymcgavren/presentations/raw/master/rinda/rinda_test.png!
+!http://github.com/jaymcgavren/presentations/raw/master/rinda/rinda_test.jpg!
 
 Rinda
 =====
