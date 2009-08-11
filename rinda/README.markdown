@@ -9,18 +9,18 @@ http://www.ruby-doc.org/stdlib/libdoc/rinda/rdoc/index.html
 
 Or:
 
-  ri DRb.start_service
+    ri DRb.start_service
   
-  ri Rinda::TupleSpaceProxy
+    ri Rinda::TupleSpaceProxy
   
 ## Example
 
-  require 'rinda/rinda'
-  MY_URI = "druby://127.0.0.1:9999"
-  DRb.start_service 
-  space = Rinda::TupleSpaceProxy.new(DRbObject.new(nil, MY_URI))
-  space.write(["foo", "bar"])
-  key, value = space.take([/foo/, nil])
+    require 'rinda/rinda'
+    MY_URI = "druby://127.0.0.1:9999"
+    DRb.start_service 
+    space = Rinda::TupleSpaceProxy.new(DRbObject.new(nil, MY_URI))
+    space.write(["foo", "bar"])
+    key, value = space.take([/foo/, nil])
 
 ## Sample Scripts
 
