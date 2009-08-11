@@ -1,3 +1,5 @@
+!http://github.com/jaymcgavren/presentations/raw/master/rinda/rinda_test.png!
+
 Rinda
 =====
 
@@ -23,8 +25,6 @@ Or:
     key, value = space.take([/foo/, nil])
 
 ## Sample Scripts
-
-!http://github.com/jaymcgavren/presentations/raw/master/rinda/rinda_test.png!
 
 Run test_server.rb, then any combination of clients and agents.
 

@@ -23,8 +23,8 @@ class MouseClient < Wx::App
       drawing_area.paint do |dc|
         dc.pen = Wx::Pen.new(Wx::Colour.new(128, 128, 128), 1)
         dc.draw_circle(
-          space.read([/^Integer:x$/, Integer]).last,
-          space.read([/^Integer:y$/, Integer]).last,
+          space.take([/^Integer:x$/, nil]).last,
+          space.take([/^Integer:y$/, Integer]).last,
           50
         )
       end
