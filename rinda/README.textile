@@ -20,7 +20,7 @@ h2. Example
 
 <pre>
     require 'rinda/rinda'
-    MY_URI = "druby://127.0.0.1:9999"
+    MY_URI = "druby://127.0.0.1:7632"
     DRb.start_service 
     space = Rinda::TupleSpaceProxy.new(DRbObject.new(nil, MY_URI))
     space.write(["foo", "bar"])
@@ -31,7 +31,7 @@ h2. Sample Scripts
 
 Run test_server.rb, then any combination of clients and agents.
 
-Make sure to pass druby://HOST.IP.ADDRESS:PORT as the first command line to each script.  druby://127.0.0.1:9999 is fine if you're only talking to the local host, but if you want to connect to 192.168.0.888 remotely, you *must* specify druby://192.168.0.888:9999 both on the client and 192.168.0.888 itself.  (dRuby seems to want the actual IP, not "localhost" or "127.0.0.1".)
+Make sure to pass druby://HOST.IP.ADDRESS:PORT as the first command line to each script.  druby://127.0.0.1:7632 is fine if you're only talking to the local host, but if you want to connect to 192.168.0.888 remotely, you *must* specify druby://192.168.0.888:7632 both on the client and 192.168.0.888 itself.  (dRuby seems to want the actual IP, not "localhost" or "127.0.0.1".)
 
 You'll need some gems installed for certain scripts:
 

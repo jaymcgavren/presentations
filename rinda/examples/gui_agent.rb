@@ -2,7 +2,7 @@ require 'rubygems'
 require 'wx'
 require 'rinda/rinda'
 
-MY_URI = ARGV[0] || "druby://127.0.0.1:9999"
+MY_URI = ARGV[0] || "druby://127.0.0.1:7632"
 TIME_TO_LIVE = 10
 
 class MouseClient < Wx::App

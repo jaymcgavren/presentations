@@ -2,7 +2,7 @@ require 'rubygems'
 require 'wx'
 require 'rinda/rinda'
 
-MY_URI = ARGV[0] || "druby://127.0.0.1:9999"
+MY_URI = ARGV[0] || "druby://127.0.0.1:7632"
 TIME_TO_LIVE = 10
 
 class MouseClient < Wx::App
@@ -24,8 +24,8 @@ class MouseClient < Wx::App
     
   def on_mouse_motion(event)
     return unless event.dragging
-    space.write ["Integer:x", event.x], TIME_TO_LIVE
-    space.write ["Integer:y", event.y], TIME_TO_LIVE
+    space.write [:x, event.x], TIME_TO_LIVE
+    space.write [:y, event.y], TIME_TO_LIVE
   end
 
   def on_mouse_press(event); end
