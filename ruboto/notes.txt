@@ -1,0 +1,53 @@
+#IRB for live coding...
+#00a_irb.png
+#Script selector loads from /sdcard/jruby/
+#00b_load_script.png
+#Editor too. Here be Carpal Tunnel.
+#00c_editor.png
+#Shortcuts - Acts like a (slow-loading) first-class app!
+#00d_shortcut.png
+
+#No purchase necessary to play!
+#Grab the Android SDK (which includes an emulator).
+#Get a pre-made Ruboto APK off of GitHub downloads.
+#(Links at end).
+#01_create_avd.png
+#02_launch_avd.png
+
+#You need to install Ruboto-IRB to the AVD.
+#Use the SDK's "adb" debugger tool.
+jay@dandelion:~/Projects/rubyonacid
+$ adb install ~/Downloads/IRB-0.2-preview1.apk
+-bash: adb: command not found
+#Oh, and make sure the SDK toolset is on your PATH.
+jay@dandelion:~/Projects/rubyonacid
+$ export PATH=$PATH:$HOME/Applications/android-sdk-mac_86/tools/
+jay@dandelion:~/Projects/rubyonacid
+$ adb install ~/Downloads/IRB-0.2-preview1.apk
+
+#03_ruboto_installed.png
+
+#I originally pushed my entire library to the phone...
+$ adb push . /sdcard/jruby/rubotoonacid
+#This works...
+
+#But a single script is more distributable for now.
+#Scott Moyer called this "one script to rule them all". Muhuhuhaha...
+$ find lib/rubyonacid -type f -exec cat {} \; -exec echo "" \; | grep -v "require '" >> acid.rb; cat $HOME/Projects/rubotoonacid/examples/ruboto.rb >> acid.rb
+#May have to tweak declaration order by hand.
+$ edit acid.rb
+
+#04_script_pushed.png
+$ adb push acid.rb /sdcard/jruby/
+80 KB/s (23712 bytes in 0.286s)
+
+#You can execute from menu...
+#05_execute.png
+#But "load" commands from IRB auto-load new versions and don't require mousing.
+#06_load.png
+
+#References:
+#http://developer.android.com/sdk/index.html
+#http://ruboto.com/
+#http://github.com/ruboto/ruboto-irb
+#http://jay.mcgavren.com/presentations
