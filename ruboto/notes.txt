@@ -51,3 +51,244 @@ $ adb push acid.rb /sdcard/jruby/
 #http://ruboto.com/
 #http://github.com/ruboto/ruboto-irb
 #http://jay.mcgavren.com/presentations
+
+
+
+
+Demo
+What is Ruboto?
+  Means of packaging Ruby scripts for Android as an .apk
+  IRB
+    http://chart.apis.google.com/chart?cht=qr&chs=135x135&chl=market://details?id=org.ruboto.irb
+  Uses JRuby
+    it's Just Ruby.
+    (You just gotta read Javadocs.)
+      public void onClick(View target) -> def on_click(target)
+      this.setContentView(view) -> self.content_view = view
+      this -> self
+      LinearLayout.VERTICAL -> LinearLayout::VERTICAL
+  Full Android API
+Why Android?
+  TODO: Handset vs. desktop/laptop growth
+  TODO: Number of handsets
+  TODO: Planned additional device types
+  Rich API
+Demo 2
+Setup
+  Java
+  JRuby (recommend rvm)
+  gem install ruboto-core
+  Optional: Search for jruby.org's Ruboto IRB on Android app store
+  Android SDK
+    adb
+    emulator
+Anatomy of an Android app
+  Activity
+    Usually one per screen
+    Has child Views
+    Responsible for setup, teardown, persistence
+  View
+    A UI component
+      LinearLayout, Button, TextView...
+  Resources
+    Drawables
+      Bitmap, PathShape, etc.
+    Layouts
+      Portrait, Landscape, etc.
+    Values
+      strings
+        <string name="app_name">AcidDraw</string>
+      arrays
+        <string-array name="planets">
+          <item>Earth</item>
+          <item>Pluto</item>
+        </string-array>
+      styles
+        layout_width, textSize, typeface
+  Service
+    A background process
+      Music player, etc.
+    Can bind to it and call its methods (ex: play(), pause(), etc.)
+    They run in main thread, so spawn a new one for lengthy operations.
+  BroadcastReceiver
+    Responds to system messages
+      Timezone changed, low battery, picture taken
+    Can launch Activity, display alert, etc.
+    No UI
+  Intent
+    Launch or update an Activity or Service, or send a Broadcast
+Anatomy of a Ruboto project
+  ruboto gen app
+  AndroidManifest.xml
+    <application>
+      @name, @icon, @label
+      <activity>
+        <intent-filter>s
+          <action>
+          <category>
+      <service>
+      <receiver>
+      <provider>
+    <uses-permission>
+      CALL_PHONE
+      SEND_SMS
+      RECORD_AUDIO
+      WRITE_EXTERNAL_STORAGE
+      INSTALL_SHORTCUT
+      INTERNET
+      ACCESS_FINE/COARSE_LOCATION
+  Rakefile
+    Builds apk, etc.
+  bin/
+  libs/
+    jruby-core.jar
+    jruby-stdlib.jar
+  res/
+    drawable/
+      myimage.png
+        Reference via Java: getResources().getDrawable(R.drawable.myimage);
+        Reference via XML: <ImageView android:src="@drawable/myimage"/>
+    layout/
+      layoutname.xml
+        ViewGroup: <LinearLayout>, <TabHost>, <FrameLayout>, etc.
+          @id: "@+id/uniqueLayoutName"
+            In Java: findViewById(R.id.uniqueLayoutName)
+          @layout_width: pixels/fill_parent/wrap_content
+          @layout_height: pixels/fill_parent/wrap_content
+          Views: <EditText>, <ScrollView>, <view class="com.example.MyCustomView">, etc.
+    menu/
+    values/
+      strings.xml
+        <string name="my_string_name">Any Value</string>
+          Reference via Java: TODO
+          Reference via XML: <application android:label="@string/my_string_name"/>
+  src/
+    com/example/yourapp
+      YourappActivity.java
+        onCreate(Bundle priorState)
+        onRestart()
+        onStart()
+        onResume()
+        onPause()
+        onStop()
+        onDestroy()
+    org/ruboto/
+  assets/
+    scripts/
+      ruboto.rb
+      your_script_here.rb
+Android API
+  Gui
+    Layouts
+      layout = LinearLayout.new(self)
+      layout.orientation = LinearLayout::VERTICAL
+      layout.add_view(Button.new(self))
+      layout.add_view(Button.new(self))
+      self.content_view = layout
+    Buttons
+      def on_create(bundle)
+        layout = LinearLayout.new(self)
+        layout.orientation = LinearLayout::VERTICAL
+        button = Button.new(self)
+        button.text = "click me"
+        layout.add_view(button)
+        self.content_view = layout
+        request_callback CB_CLICK
+        button.on_click_listener = self
+      end
+      def on_click(view)
+        Toast.make_text(self, "#{view} was clicked", 5000).show
+      end
+    Text Fields
+      edit = EditText.new(self)
+      edit.text = "Hello!"
+      self.content_view = edit
+    TimePickerDialog/DatePickerDialog
+    AnalogClock
+      self.content_view = AnalogClock.new(self)
+  Hardware
+    TouchEvent
+      event.get_x(event.find_pointer_index(pointer_id))
+    Sensors
+      Sensor::TYPE_ACCELEROMETER,
+      Sensor::TYPE_MAGNETIC_FIELD
+      Sensor::TYPE_ORIENTATION
+    LocationManager/LocationProvider
+    getSystemService(Context::VIBRATOR_SERVICE)
+      vibrate(duration1, duration2, -1)
+  NotificationManager
+    Toast
+    Notification
+    Alarm
+  Canvas
+    def on_create(bundle)
+      request_callback CB_DRAW
+      self.content_view = RubotoView.new(self)
+    end
+    def on_draw(view, canvas)
+      paint = Paint.new
+      paint.color = Color.argb(255, 255, 0, 0)
+      paint.anti_alias = true
+      canvas.draw_oval(RectF.new(0, 0, 150, 200), paint)
+      paint.color = Color.argb(255, 0, 0, 255)
+      canvas.draw_rect(RectF.new(150, 300, 300, 500), paint)
+      paint.color = Color.argb(150, 0, 255, 0)
+      paint.stroke_width = 50
+      canvas.draw_line(75, 100, 225, 400, paint)
+    end
+  WebView
+    AndroidManifest.xml: <uses-permission android:name="android.permission.INTERNET"/>
+    web = WebView.new(self)
+    web.load_url 'http://mountainrb.com'
+    self.content_view = web
+  Multimedia
+    Audio
+      def on_create(bundle)
+        request_callback CB_PAUSE
+        uri = Uri.from_file(File.new("sdcard/test.mp3"))
+        player = MediaPlayer.create(self, uri)
+        player.start
+      end
+      def on_pause
+        player.stop
+      end
+    Video
+      view = VideoView.new(self)
+      view.video_path = "sdcard/test.mp4"
+      self.content_view = view
+      view.start
+    Capture media
+  Preferences
+  Database
+  ContentProvider
+  Task switching
+  Log
+    d(string)
+Tools
+  adb
+    push
+      $ adb push test.mp4 /sdcard/test.mp4
+      294 KB/s (141294 bytes in 0.468s)
+    logcat
+      $ adb logcat
+      D/RubotoActivity(  411): executing: $activity.on_create($bundle)
+      I/StagefrightPlayer(   34): setDataSource('/sdcard/test.mp3')
+      D/AudioSink(   34): bufferCount (4) is too small and increased to 12
+      I/ActivityManager(   59): Displayed activity com.mcgavren.jay.ruboto/.MyActivity: 1149 ms (total 1149 ms)
+  emulator
+  Eclipse integration?
+  Publish to Market
+    build .apk
+    sign
+  echo "libs/*.jar" >> ~/.gitexcludes; echo "generated_libs/" >> ~/.gitexcludes
+Caveats
+  Slow startup
+    Due to Dalvik's slow reflection
+    Working on it!
+Additional reading
+  Android API docs
+  Unlocking Android: A Developer’s Guide
+    Frank Ableson et al.
+Thanks
+  Charles Nutter
+  Daniel Jackoway
