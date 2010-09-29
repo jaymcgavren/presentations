@@ -10,3 +10,4 @@ test/fixtures/*
 tmp/*
 .~lock.presentation.odp
 ignite_scratch/*.png
+ruboto/static/
