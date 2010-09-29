@@ -2,10 +2,7 @@
 #References
 
 !SLIDE bullets incremental transition=fade
-* http://developer.android.com/sdk/index.html
 * http://ruboto.com/
-* http://github.com/ruboto/ruboto-irb
+* http://github.com/ruboto
+* http://developer.android.com/sdk/index.html
 * http://jay.mcgavren.com/presentations
-
-!SLIDE center transition=scrollUp
-#@jaymcgavren

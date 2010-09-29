@@ -1,5 +1,10 @@
 [
   {"section":"overview"},
   {"section":"definition"},
-  {"section":"references"}
+  {"section":"setup"},
+  {"section":"android"},
+  {"section":"ruboto"},
+  {"section":"api"},
+  {"section":"references"},
+  {"section":"ending"}
 ]

@@ -15,111 +15,111 @@ Demo
   # Caveat - slow startup
   #   Due to Dalvik's slow reflection
   #   Working on it!
-Setup
-  ruboto-irb
-    Search "ruboto" on the Android Market.
-  Java
-  JRuby (recommend rvm)
-  gem install ruboto-core
-  Optional: Search for jruby.org's Ruboto IRB on Android app store
-  Android SDK
-    adb
-    emulator
-Anatomy of an Android app
-  Activity
-    Usually one per screen
-    Has child Views
-    Responsible for setup, teardown, persistence
-  View
-    A UI component
-      LinearLayout, Button, TextView...
-  Resources
-    Drawables
-      Bitmap, PathShape, etc.
-    Layouts
-      Portrait, Landscape, etc.
-    Values
-      strings
-        <string name="app_name">AcidDraw</string>
-      arrays
-        <string-array name="planets">
-          <item>Earth</item>
-          <item>Pluto</item>
-        </string-array>
-      styles
-        layout_width, textSize, typeface
-  Service
-    A background process
-      Music player, etc.
-    Can bind to it and call its methods (ex: play(), pause(), etc.)
-    They run in main thread, so spawn a new one for lengthy operations.
-  BroadcastReceiver
-    Responds to system messages
-      Timezone changed, low battery, picture taken
-    Can launch Activity, display alert, etc.
-    No UI
-  Intent
-    Launch or update an Activity or Service, or send a Broadcast
-Anatomy of a Ruboto project
-  ruboto gen app
-  AndroidManifest.xml
-    <application>
-      @name, @icon, @label
-      <activity>
-        <intent-filter>s
-          <action>
-          <category>
-      <service>
-      <receiver>
-      <provider>
-    <uses-permission>
-      CALL_PHONE
-      SEND_SMS
-      RECORD_AUDIO
-      WRITE_EXTERNAL_STORAGE
-      INSTALL_SHORTCUT
-      INTERNET
-      ACCESS_FINE/COARSE_LOCATION
-  Rakefile
-    Builds apk, etc.
-  bin/
-  libs/
-    jruby-core.jar
-    jruby-stdlib.jar
-  res/
-    drawable/
-      myimage.png
-        Reference via Java: getResources().getDrawable(R.drawable.myimage);
-        Reference via XML: <ImageView android:src="@drawable/myimage"/>
-    layout/
-      layoutname.xml
-        ViewGroup: <LinearLayout>, <TabHost>, <FrameLayout>, etc.
-          @id: "@+id/uniqueLayoutName"
-            In Java: findViewById(R.id.uniqueLayoutName)
-          @layout_width: pixels/fill_parent/wrap_content
-          @layout_height: pixels/fill_parent/wrap_content
-          Views: <EditText>, <ScrollView>, <view class="com.example.MyCustomView">, etc.
-    menu/
-    values/
-      strings.xml
-        <string name="my_string_name">Any Value</string>
-          Reference via Java: TODO
-          Reference via XML: <application android:label="@string/my_string_name"/>
-  src/
-    com/example/yourapp
-      YourappActivity.java
-        onCreate(Bundle priorState)
-        onRestart()
-        onStart()
-        onResume()
-        onPause()
-        onStop()
-        onDestroy()
-    org/ruboto/
-  assets/
-    scripts/
-      ruboto.rb
-      your_script_here.rb
+# Setup
+#   ruboto-irb
+#     Search "ruboto" on the Android Market.
+#   Java
+#   JRuby (recommend rvm)
+#   gem install ruboto-core
+#   Optional: Search for jruby.org's Ruboto IRB on Android app store
+#   Android SDK
+#     adb
+#     emulator
+# Anatomy of an Android app
+#   Activity
+#     Usually one per screen
+#     Has child Views
+#     Responsible for setup, teardown, persistence
+#   View
+#     A UI component
+#       LinearLayout, Button, TextView...
+#   Resources
+#     Drawables
+#       Bitmap, PathShape, etc.
+#     Layouts
+#       Portrait, Landscape, etc.
+#     Values
+#       strings
+#         <string name="app_name">AcidDraw</string>
+#       arrays
+#         <string-array name="planets">
+#           <item>Earth</item>
+#           <item>Pluto</item>
+#         </string-array>
+#       styles
+#         layout_width, textSize, typeface
+#   Service
+#     A background process
+#       Music player, etc.
+#     Can bind to it and call its methods (ex: play(), pause(), etc.)
+#     They run in main thread, so spawn a new one for lengthy operations.
+#   BroadcastReceiver
+#     Responds to system messages
+#       Timezone changed, low battery, picture taken
+#     Can launch Activity, display alert, etc.
+#     No UI
+#   Intent
+#     Launch or update an Activity or Service, or send a Broadcast
+# Anatomy of a Ruboto project
+  # ruboto gen app
+  # AndroidManifest.xml
+  #   <application>
+  #     @name, @icon, @label
+  #     <activity>
+  #       <intent-filter>s
+  #         <action>
+  #         <category>
+  #     <service>
+  #     <receiver>
+  #     <provider>
+  #   <uses-permission>
+  #     CALL_PHONE
+  #     SEND_SMS
+  #     RECORD_AUDIO
+  #     WRITE_EXTERNAL_STORAGE
+  #     INSTALL_SHORTCUT
+  #     INTERNET
+  #     ACCESS_FINE/COARSE_LOCATION
+  # Rakefile
+  #   Builds apk, etc.
+  # bin/
+  # libs/
+  #   jruby-core.jar
+  #   jruby-stdlib.jar
+  # res/
+  #   drawable/
+  #     myimage.png
+  #       Reference via Java: getResources().getDrawable(R.drawable.myimage);
+  #       Reference via XML: <ImageView android:src="@drawable/myimage"/>
+  #   layout/
+  #     layoutname.xml
+  #       ViewGroup: <LinearLayout>, <TabHost>, <FrameLayout>, etc.
+  #         @id: "@+id/uniqueLayoutName"
+  #           In Java: findViewById(R.id.uniqueLayoutName)
+  #         @layout_width: pixels/fill_parent/wrap_content
+  #         @layout_height: pixels/fill_parent/wrap_content
+  #         Views: <EditText>, <ScrollView>, <view class="com.example.MyCustomView">, etc.
+  #   menu/
+  #   values/
+  #     strings.xml
+  #       <string name="my_string_name">Any Value</string>
+  #         Reference via Java: getResources().getText(R.string.main_title)
+  #         Reference via XML: <application android:label="@string/my_string_name"/>
+  # src/
+  #   com/example/yourapp
+  #     YourappActivity.java
+  #       onCreate(Bundle priorState)
+  #       onRestart()
+  #       onStart()
+  #       onResume()
+  #       onPause()
+  #       onStop()
+  #       onDestroy()
+  #   org/ruboto/
+  # assets/
+  #   scripts/
+  #     ruboto.rb
+  #     your_script_here.rb
 Android API
   Gui
     Layouts
@@ -225,6 +225,7 @@ Tools
     sign
   echo "libs/*.jar" >> ~/.gitexcludes; echo "generated_libs/" >> ~/.gitexcludes
 Additional reading
+  http://jay.mcgavren.com/presentations
   Android API docs
   Unlocking Android: A Developer’s Guide
     Frank Ableson et al.
