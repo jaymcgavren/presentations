@@ -41,6 +41,7 @@
 
 !SLIDE
 #GUI: Text Fields
+    @@@ruby
     edit = EditText.new(self)
     edit.text = "Hello!"
     self.content_view = edit
@@ -49,15 +50,18 @@
 
 !SLIDE
 #GUI: AnalogClock
+    @@@ruby
     self.content_view = AnalogClock.new(self)
 !SLIDE center transition=scrollUp
 ![](analog_clock.png)
 
 !SLIDE
 #Hardware: TouchEvent
+    @@@ruby
     event.get_x(event.find_pointer_index(pointer_id))
 !SLIDE
 #Hardware: Sensors
+    @@@ruby
     Sensor::TYPE_ACCELEROMETER,
     Sensor::TYPE_MAGNETIC_FIELD
     Sensor::TYPE_ORIENTATION
@@ -65,10 +69,13 @@
 #Hardware: LocationManager/LocationProvider
 !SLIDE
 #Hardware: Vibrator
+    @@@ruby
     getSystemService(Context::VIBRATOR_SERVICE)
     vibrate(duration1, duration2, -1)
 !SLIDE
 #Notifications: Toast
+    @@@ruby
+    Toast.make_text(self, "#{view} was clicked", 5000).show
 !SLIDE
 #Notifications: Notification
 !SLIDE
@@ -134,6 +141,7 @@
 
 !SLIDE
 #Multimedia: Audio
+    @@@ruby
     def on_create(bundle)
       request_callback CB_PAUSE
       file = File.new("sdcard/test.mp3")
@@ -146,6 +154,7 @@
     end
 !SLIDE
 #Multimedia: Video
+    @@@ruby
     view = VideoView.new(self)
     view.video_path = "sdcard/test.mp4"
     self.content_view = view

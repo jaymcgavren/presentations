@@ -1,5 +1,6 @@
-!SLIDE subsection
+!SLIDE center subsection
 #Anatomy of a Ruboto project
+![](ruboto_anatomy.png)
 
 !SLIDE bullets
 #Activity

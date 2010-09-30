@@ -1,5 +1,6 @@
-!SLIDE subsection
+!SLIDE center subsection
 #Anatomy of an Android app
+![](android_anatomy.png)
 
 !SLIDE bullets
 #Activity
