@@ -5,8 +5,6 @@
 !SLIDE bullets
 #ruboto-irb
 * Search "ruboto" on the Android Market.
-!SLIDE center transition=scrollUp
-![](search_market.png)
 
 
 !SLIDE bullets

@@ -66,20 +66,14 @@
     Sensor::TYPE_MAGNETIC_FIELD
     Sensor::TYPE_ORIENTATION
 !SLIDE
-#Hardware: LocationManager/LocationProvider
-!SLIDE
 #Hardware: Vibrator
     @@@ruby
-    getSystemService(Context::VIBRATOR_SERVICE)
+    get_system_service(VIBRATOR_SERVICE)
     vibrate(duration1, duration2, -1)
 !SLIDE
 #Notifications: Toast
     @@@ruby
     Toast.make_text(self, "#{view} was clicked", 5000).show
-!SLIDE
-#Notifications: Notification
-!SLIDE
-#Notifications: Alarm
 !SLIDE
 #Canvas
 !SLIDE transition=scrollUp
@@ -166,4 +160,9 @@
 #Multimedia: Capture audio
 !SLIDE
 #Log
-    Log.d(source, message)
+    Log.d("My Activity", "here's what's up...")
+!SLIDE commandline incremental
+    $ adb logcat
+    D/dalvikvm(  119): GC_EXPLICIT freed 1050 objects / 61056 bytes in 91ms
+    I/dalvikvm(  253): Shrank stack (to 0x41869300, curFrame is 0x418695cc)
+    D/My Activity(  253): here's what's up...
