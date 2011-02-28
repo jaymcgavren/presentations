@@ -7,5 +7,5 @@ etc,etc,etc
 EOD
 
 data.split("\n").each do |line| 
-  puts CSV.parse(line.strip).inspect
+  puts CSV.parse(line).inspect
 end

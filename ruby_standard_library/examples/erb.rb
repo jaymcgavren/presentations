@@ -1,5 +1,3 @@
-require 'erb'
-
 items = ['each', 'will', 
   'be', 'a', 'point']
 
@@ -11,4 +9,7 @@ template = <<-EOD
   </ul>
 EOD
 
-ERB.new(template).run(binding)
+require 'erb'
+
+erb = ERB.new(template)
+erb.run(binding)
