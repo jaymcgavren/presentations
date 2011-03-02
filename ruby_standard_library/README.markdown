@@ -1,8 +1,3 @@
-Ruby Standard Library
-=====================
-
-Template blatantly stolen from remi Taylor.  Thanks, sucker!  Presentation content and code samples by Jay McGavren.
-
 # Text
 
 ## CSV
@@ -33,6 +28,7 @@ Do file operations on ANY OS.
     FileUtils.cp_r(path, target)
     FileUtils.rm_rf(path)
     FileUtils.mv(path, target)
+
 ## Find
 
 Traverse directory trees
@@ -74,8 +70,11 @@ examples/open_uri.rb
 
 ## Net::HTTP
 
-    site = Net::HTTP.new('jay.mcgavren.com')
-    site.get('/blog/')
+    require 'net/http'
+    response = Net::HTTP.start('www.google.com') do |http|
+      http.get '/'
+    end
+    puts response.header
 
 ## Net::*
 
@@ -101,13 +100,13 @@ Net::Telnet
       @socket.close
     end
 
-Other
+# Other
 
 ## Win32OLE
 
     WIN32OLE.new('iTunes.Application').Play
 
-Ruby OSA on OS X
+## Ruby OSA on OS X
 
 ## Design Patterns
 
@@ -141,6 +140,15 @@ RSpec is better:
       #...
     end
 
+assert_equal
+assert_not_equal
+assert_in_delta
+assert_kind_of
+assert_nil
+assert_same
+assert_raise
+assert_nothing_raised
+
 ## OptionParser
 
 See also GetoptLong
@@ -170,3 +178,9 @@ Dave Thomas et al. - Programming Ruby
 David Koontz - What's Different About Ruby?
 
 devfu.com - Obnoxious ninjas
+
+Copyright 2009-2011, [Jay McGavren](http://jay.mcgavren.com).
+
+This presentation uses Scott Chacon's [Showoff](http://github.com/schacon/showoff).  Pre-rendered HTML version available [here](http://jay.mcgavren.com/files/presentations/ruby_standard_library).
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
