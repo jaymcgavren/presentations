@@ -1,3 +1,6 @@
+A language is only as good as its libraries, and Ruby has some of the best, right out of the box. Join us on a tour of the Ruby Standard Library, which supports everything from XML parsing to network connections to GUI applications.
+
+
 # Text
 
 ## CSV
@@ -104,7 +107,7 @@ Net::Telnet
 
 ## Win32OLE
 
-    WIN32OLE.new('iTunes.Application').Play
+    WIN32OLE.new('musicPlayer.Application').Play
 
 ## Ruby OSA on OS X
 
@@ -169,18 +172,20 @@ See also GetoptLong
 
 # Reference
 
-James Britt - http://www.ruby-doc.org/stdlib/
+James Britt's ruby-doc.org - [Ruby standard library documentation on the web](http://www.ruby-doc.org/stdlib/)
 
 Dave Thomas et al. - Programming Ruby
+
+A pre-rendered HTML version of this presentation is available [here](http://jay.mcgavren.com/files/presentations/ruby_standard_library).
 
 # Thanks
 
 David Koontz - What's Different About Ruby?
 
-devfu.com - Obnoxious ninjas
+This presentation uses Scott Chacon's [Showoff](http://github.com/schacon/showoff).
+
+# Legal
 
 Copyright 2009-2011, [Jay McGavren](http://jay.mcgavren.com).
 
-This presentation uses Scott Chacon's [Showoff](http://github.com/schacon/showoff).  Pre-rendered HTML version available [here](http://jay.mcgavren.com/files/presentations/ruby_standard_library).
-
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.  Present or publish it anywhere you like, but please give me credit!
