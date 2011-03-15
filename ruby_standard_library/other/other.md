@@ -25,9 +25,12 @@
     require 'logger'
     require 'open-uri'
     file_size = 100000; file_count = 10
-    logger = Logger.new('spider.log', file_count, file_size)
+    logger = Logger.new('spider.log',
+      file_count, file_size)
     begin
-      open('http://www.yahoo.com') {|f| logger.info f.status}
+      open('http://www.yahoo.com') do |u|
+        logger.info u.status
+      end
     rescue Exception => e
       logger.warn e
     end
@@ -53,12 +56,12 @@
     require 'test/unit'
     class MyTest < Test::Unit::TestCase
       def test_one
-        assert_equal(:cat.to_s, "cat")
+        assert_equal("cat", :cat.to_s)
         assert_in_delta(0.01, 0.009, 0.002)
       end
       def test_two
-        assert_equal(2 + 2, 4)
-        assert_equal(2 + 2, 5)
+        assert_equal(4, 2 + 2)
+        assert_equal(5, 2 + 2)
       end
     end
 
@@ -66,12 +69,12 @@
     Loaded suite -
     Started
     .F
-    Finished in 0.008393 seconds.
+    Finished in 0.014912 seconds.
 
       1) Failure:
     test_two(MyTest) [-:9]:
-    <4> expected but was
-    <5>.
+    <5> expected but was
+    <4>.
 
     2 tests, 4 assertions, 1 failures, 0 errors
 
@@ -79,7 +82,6 @@
 #Other assertions
 
 * assert_not_equal
-* assert_in_delta
 * assert_kind_of
 * assert_nil
 * assert_raise

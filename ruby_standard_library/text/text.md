@@ -85,7 +85,19 @@
 
     puts YAML.dump(array)
     puts YAML.dump(hash)
-    
+
+!SLIDE transition=scrollUp
+    --- 
+    - an
+    - array
+    - - of
+      - arrays
+    --- 
+    :a: hash
+    :of: 
+      :hashes: 
+        :of: hashes
+
 !SLIDE transition=scrollUp
     @@@ruby
     data = <<-EOD
@@ -127,6 +139,30 @@
 
 !SLIDE transition=scrollUp
     @@@ruby
+    indent_level = 2
+    xml.write($stdout, indent_level)
+
+!SLIDE transition=scrollUp
+    <?xml version='1.0' encoding='UTF-8'?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN">
+    <plist version='1.0'>
+      <array>
+        <dict>
+          <key>
+            data
+          </key>
+          <dict>
+            <key>
+              Apple URL pasteboard type
+            </key>
+            <string>
+              qss-http://www.google.com/search?hl=en&amp;q=***&amp;num=100
+            </string>
+          </dict>
+          ...
+
+!SLIDE transition=scrollUp
+    @@@ruby
     xml.elements.each('//key') do |key|
       print "#{key.text}: "
       if key.next_sibling
@@ -148,26 +184,3 @@
     QSObjectName: Google Code Search
     QSObjectType: Apple URL pasteboard type
     
-!SLIDE transition=scrollUp
-    @@@ruby
-    indent_level = 2
-    xml.write($stdout, indent_level)
-    
-!SLIDE transition=scrollUp
-    <?xml version='1.0' encoding='UTF-8'?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN">
-    <plist version='1.0'>
-      <array>
-        <dict>
-          <key>
-            data
-          </key>
-          <dict>
-            <key>
-              Apple URL pasteboard type
-            </key>
-            <string>
-              qss-http://www.google.com/search?hl=en&amp;q=***&amp;num=100
-            </string>
-          </dict>
-          ...

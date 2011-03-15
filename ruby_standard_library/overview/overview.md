@@ -39,18 +39,13 @@
 * open-uri
 * Net::HTTP
 * Net::*
-* Socket
+* DRb
 
 !SLIDE bullets incremental transition=scrollUp
 # Other
 
 * Win32OLE
-* Ruby OSA on OS X
-* Singleton
-* Observable
-
-!SLIDE bullets incremental transition=scrollUp
-
 * Logger
 * Test::Unit
 * OptionParser
+* Tk
