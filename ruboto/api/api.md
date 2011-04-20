@@ -57,25 +57,57 @@
 
 !SLIDE
 #Hardware: TouchEvent
+##Set up to receive events
     @@@ruby
-    event.get_x(event.find_pointer_index(pointer_id))
+    class MyView < RubotoView
+      def initialize(parent)
+        super
+        request_callback CB_TOUCH_EVENT
+      end
+    end
+!SLIDE transition=scrollUp
+#Hardware: TouchEvent
+##Handler method
+    @@@ruby
+    def on_touch_event(event)
+      0.upto 10 do |id|
+        index = event.find_pointer_index(id)
+        break if index == -1
+        x = event.getX(index)
+        y = event.getY(index)
+        Log.d(
+          "ONTOUCH",
+          "Pointer #{id}: #{x}, #{y}"
+        )
+      end
+      true
+    end
+
 !SLIDE
 #Hardware: Sensors
     @@@ruby
     Sensor::TYPE_ACCELEROMETER,
     Sensor::TYPE_MAGNETIC_FIELD
     Sensor::TYPE_ORIENTATION
+
 !SLIDE
 #Hardware: Vibrator
     @@@ruby
     get_system_service(VIBRATOR_SERVICE)
     vibrate(duration1, duration2, -1)
+
 !SLIDE
 #Notifications: Toast
     @@@ruby
-    Toast.make_text(self, "#{view} was clicked", 5000).show
+    Toast.make_text(
+      self,
+      "#{view} was clicked",
+      5000
+    ).show
+
 !SLIDE
 #Canvas
+
 !SLIDE transition=scrollUp
     @@@ruby
     class MyActivity
@@ -88,6 +120,7 @@
         request_callback CB_DRAW
         self.content_view = RubotoView.new(self)
       end
+
 !SLIDE transition=scrollUp
     @@@ruby
       def on_draw(view, canvas)
@@ -100,6 +133,7 @@
           @radius += 40
         end
       end
+
 !SLIDE transition=scrollUp
     @@@ruby
       def draw_arcs(canvas, paint)
@@ -113,6 +147,7 @@
           @radius += 10
         end
       end
+
 !SLIDE center transition=scrollUp
 ![](canvas.png)
 
@@ -122,6 +157,7 @@
     web = WebView.new(self)
     web.load_url 'http://mountainrb.com'
     self.content_view = web
+
 !SLIDE transition=scrollUp
 #Don't forget!
 #in AndroidManifest.xml:
@@ -156,8 +192,6 @@
 !SLIDE center transition=scrollUp
 ![](video_view.png)
 
-!SLIDE
-#Multimedia: Capture audio
 !SLIDE
 #Log
     Log.d("My Activity", "here's what's up...")

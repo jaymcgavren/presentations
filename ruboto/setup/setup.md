@@ -46,15 +46,21 @@
     ...
     
     $ export PATH=$PATH:${HOME}/Applications/android-sdk/tools/
-    
-    $ android
-    Starting Android SDK and AVD Manager
+
+!SLIDE commandline incremental transition
+#Create a new AVD
+    $ android -s create avd -f -n MyApp -t android-8
+    Android 2.2 is a basic Android platform.
+    Do you wish to create a custom hardware profile [no]
+    Created AVD 'MyApp' based on Android 2.2,
+    with the following hardware config:
+    hw.lcd.density=160
+
+!SLIDE commandline incremental transition
+#Launch the emulator
+    $ emulator -avd MyApp
 
 !SLIDE center transition=scrollUp
-#Create a new AVD
-![](create_avd.png)
-!SLIDE center transition=scrollUp
-#Launch the emulator
 ![](launch_avd.png)
 
 !SLIDE commandline incremental
@@ -67,16 +73,25 @@
     $ mate .
 
 !SLIDE commandline incremental
-#Build/install app
+#Using Rake
+    $ rake -T
+    rake clean                   # Remove any temporary products.
+    rake clobber                 # Remove any generated file.
+    rake compile_stdlib          # precompile ruby stdlib
+    rake install:restart         # Build, install, and restart the application
+    ...
+    
+!SLIDE commandline incremental transition=scrollUp
+#Build/install/run app
     $ rake
     
-    $ adb install -r bin/MyApp-debug.apk
+    $ rake install:restart
 
 !SLIDE center transition=scrollUp
 ![](run_apk.png)
 
 !SLIDE commandline incremental
 #Update as needed
-    $ rake update_scripts
+    $ rake update_scripts:restart
     
     $ adb push load_me.mp3 /sdcard

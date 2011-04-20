@@ -66,16 +66,14 @@
 * find_view_by_id(R::id::myUniqueLayoutName)
 
 !SLIDE bullets
-#res/menu/
-TODO
-!SLIDE bullets
 #res/values/
     strings.xml
       <string name="my_string_name">Any Value</string>
         Reference via Java: getResources().getText(R.string.main_title)
         Reference via XML: <application android:label="@string/my_string_name"/>
 !SLIDE bullets
-#src/com/example/yourapp/YourAppActivity.java
+#src/com/yourapp/
+#YourActivity.java
     @@@java
     onCreate(Bundle priorState)
     onRestart()
@@ -86,20 +84,20 @@ TODO
     onDestroy()
 !SLIDE bullets transition=scrollUp
     @@@java
-    package com.mcgavren.jay.ruboto;
+    package com.my.ruboto;
     import android.os.Bundle;
 
     public class MyActivity extends org.ruboto.RubotoActivity {
       public void onCreate(android.os.Bundle arg0) {
-        setScriptName("your_script.rb");
-        if (arg0 == null) {arg0 = new Bundle();}
-        arg0.putString("Remote Variable", "$activity");
-        arg0.putBoolean("Define Remote Variable", true);
+        try {
+          setSplash(
+            Class.forName("com.my.ruboto.R$layout")
+              .getField("splash")
+              .getInt(null)
+          );
+        } catch (Exception e) {}
+        setScriptName("my_activity.rb");
         super.onCreate(arg0);
-      }
-      public void onPause() {
-        this.finish();
-        super.onPause();
       }
     }
 

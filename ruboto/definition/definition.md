@@ -53,11 +53,11 @@
     @@@ ruby
     self.content_view = view
 !SLIDE
-#inner classes
+#constants
     @@@ java
     LinearLayout.VERTICAL
 !SLIDE transition=fade
-#inner classes
+#constants
     @@@ ruby
     LinearLayout::VERTICAL
 !SLIDE
