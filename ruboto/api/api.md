@@ -6,6 +6,7 @@
 * Hardware
 * Notifications
 * Canvas
+!SLIDE bullets transition=scrollUp
 * WebView
 * Multimedia
 * Log
@@ -110,52 +111,63 @@
 
 !SLIDE transition=scrollUp
     @@@ruby
-    class MyActivity
-      PALETTE = [
-        Color::RED, Color.rgb(255, 150, 0),
-        Color::YELLOW, Color::GREEN, Color::BLUE,
-        Color.rgb(75, 0, 130), Color.rgb(200, 100, 200)
-      ]
-      def on_create(bundle)
+    class CanvasView
+
+      def initialize(parent)
+        super
         request_callback CB_DRAW
-        self.content_view = RubotoView.new(self)
+        invalidate
       end
 
 !SLIDE transition=scrollUp
     @@@ruby
-      def on_draw(view, canvas)
+      def on_draw(canvas)
+        red_oval(canvas)
+        blue_box(canvas)
+        fat_green_semitransparent_line(canvas)
+      end
+
+!SLIDE transition=scrollUp
+    @@@ruby
+      def red_oval(canvas)
         paint = Paint.new
-        paint.style = Paint::Style::STROKE
-        paint.stroke_width = 11
-        @radius = 40
-        2.times do
-          draw_arcs(canvas, paint)
-          @radius += 40
-        end
+        paint.color = Color.argb(255, 255, 0, 0)
+        in_box = RectF.new(0, 0, 150, 200)
+        canvas.draw_oval(in_box, paint)
       end
 
 !SLIDE transition=scrollUp
     @@@ruby
-      def draw_arcs(canvas, paint)
-        PALETTE.each do |color|
-          paint.color = color
-          rect = RectF.new(
-            150 - @radius, 300 - @radius,
-            150 + @radius, 300 + @radius
-          )
-          canvas.draw_arc(rect, 180, 180, false, paint)
-          @radius += 10
-        end
+      def blue_box(canvas)
+        paint = Paint.new
+        paint.color = Color.argb(255, 0, 0, 255)
+        in_box = RectF.new(150, 300, 300, 500)
+        canvas.draw_rect(in_box, paint)
       end
+
+!SLIDE transition=scrollUp
+    @@@ruby
+      def fat_green_semitransparent_line(canvas)
+        paint = Paint.new
+        paint.color = Color.argb(150, 0, 255, 0)
+        paint.stroke_width = 50
+        canvas.draw_line(
+          75, 100,
+          225, 400,
+          paint
+        )
+      end
+
+    end
 
 !SLIDE center transition=scrollUp
-![](canvas.png)
+![](canvas2.png)
 
 !SLIDE
 #WebView
     @@@ruby
     web = WebView.new(self)
-    web.load_url 'http://mountainrb.com'
+    web.load_url 'http://phillyemergingtech.com'
     self.content_view = web
 
 !SLIDE transition=scrollUp
@@ -167,7 +179,7 @@
       android:name="android.permission.INTERNET"
     />
 !SLIDE center transition=scrollUp
-![](webview.png)
+![](webview2.png)
 
 !SLIDE
 #Multimedia: Audio

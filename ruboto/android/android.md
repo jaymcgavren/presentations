@@ -12,7 +12,7 @@
 #View
 !SLIDE bullets transition=scrollUp
 * A UI component
-* LinearLayout, Button, TextView...
+* CheckBox, Button, TextView...
 
 !SLIDE bullets
 #Resources: Drawables
@@ -39,12 +39,6 @@
       <item>Earth</item>
       <item>Pluto</item>
     </string-array>
-!SLIDE bullets transition=scrollUp
-#Styles
-* layout_width
-* textSize
-* typeface
-* etc.
 
 !SLIDE bullets
 #Service

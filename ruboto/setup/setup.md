@@ -61,7 +61,7 @@
     $ emulator -avd MyApp
 
 !SLIDE center transition=scrollUp
-![](launch_avd.png)
+![](launch_emulator.png)
 
 !SLIDE commandline incremental
 #Create app

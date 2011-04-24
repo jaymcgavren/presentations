@@ -6,9 +6,3 @@
 * http://github.com/ruboto
 * http://developer.android.com/sdk/index.html
 * http://jay.mcgavren.com/presentations
-
-!SLIDE bullets transition=fade
-#Thanks
-* Charlie Nutter
-* Scott Moyer
-* Daniel Jackoway

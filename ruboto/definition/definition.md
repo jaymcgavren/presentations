@@ -32,10 +32,16 @@
 
 !SLIDE bullets
 # Uses JRuby
-* it's Just Ruby.
+
+!SLIDE bullets
+#Caveat - slow startup
+* Binding Java classes is inefficient
+* ~2s startup time "definitely achievable"
+* --@headius
 
 !SLIDE center
-#(You just gotta read Javadocs.)
+#Java -> Ruby Automapping
+
 !SLIDE
 #method definitions
     @@@ java
@@ -80,12 +86,3 @@
         Toast::LENGTH_SHORT
     )
     toast.show
-
-!SLIDE bullets
-#Full Android API
-* No waiting for new ASE versions
-
-!SLIDE bullets
-#Caveat - slow startup
-* Due to Dalvik's slow reflection
-* Working on it!
