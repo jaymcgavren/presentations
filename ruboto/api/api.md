@@ -2,14 +2,23 @@
 #Android API
 
 !SLIDE bullets
+* Log
 * GUI
 * Hardware
 * Notifications
-* Canvas
 !SLIDE bullets transition=scrollUp
+* Canvas
 * WebView
 * Multimedia
-* Log
+
+!SLIDE
+#Log
+    Log.d("My Activity", "here's what's up...")
+!SLIDE commandline incremental
+    $ adb logcat
+    D/dalvikvm(  119): GC_EXPLICIT freed 1050 objects / 61056 bytes in 91ms
+    I/dalvikvm(  253): Shrank stack (to 0x41869300, curFrame is 0x418695cc)
+    D/My Activity(  253): here's what's up...
 
 !SLIDE
 #GUI: Layouts
@@ -26,17 +35,17 @@
     @@@ruby
     def on_create(bundle)
       layout = LinearLayout.new(self)
-      layout.orientation = LinearLayout::VERTICAL
       button = Button.new(self)
       button.text = "click me"
       layout.add_view(button)
       self.content_view = layout
-      request_callback CB_CLICK
-      button.on_click_listener = self
+      button.set_on_click_listener do |view|
+        Toast.make_text(
+          self, "#{view} was clicked", 5000
+        ).show
+      end
     end
-    def on_click(view)
-      Toast.make_text(self, "#{view} was clicked", 5000).show
-    end
+
 !SLIDE center transition=scrollUp
 ![](button.png)
 
@@ -60,7 +69,7 @@
 #Hardware: TouchEvent
 ##Set up to receive events
     @@@ruby
-    class MyView < RubotoView
+    class MyView
       def initialize(parent)
         super
         request_callback CB_TOUCH_EVENT
@@ -86,11 +95,68 @@
 
 !SLIDE
 #Hardware: Sensors
-    @@@ruby
-    Sensor::TYPE_ACCELEROMETER,
-    Sensor::TYPE_MAGNETIC_FIELD
-    Sensor::TYPE_ORIENTATION
 
+!SLIDE commandline incremental
+    $ ruboto gen interface android.hardware.SensorEventListener \
+      --name MySensorEventListener
+
+!SLIDE transition=scrollUp
+    @@@java
+    import android.hardware.SensorEventListener;
+    
+    public class MySensorEventListener
+      implements SensorEventListener
+    {
+      public void onSensorChanged(
+        SensorEvent event
+      ) {
+        //JRuby calls to invoke
+        //on_sensor_changed()...
+      }
+    }
+    
+!SLIDE transition=scrollUp
+    @@@ruby
+    class MySensorEventListener
+      def on_sensor_changed(event)
+        values = event.values
+        Log.d "", "x: #{values[0]}, " + 
+          "y: #{values[1]}, " + 
+          "z: #{values[2]}"
+      end
+    end
+!SLIDE transition=scrollUp
+    @@@ruby
+    def on_create(bundle)
+      @sensor_manager = get_system_service(
+        Context::SENSOR_SERVICE
+      )
+      @sensor =
+        @sensor_manager.get_default_sensor(
+          Sensor::TYPE_ACCELEROMETER
+        )
+      @listener = MySensorEventListener.new
+    end
+!SLIDE transition=scrollUp
+    @@@ruby
+    def on_resume
+      @sensor_manager.register_listener(
+        @listener, @sensor,
+        SensorManager::SENSOR_DELAY_UI
+      )
+    end
+    def on_pause
+      @sensor_manager.unregister_listener(
+        @listener, @sensor
+      )
+    end
+!SLIDE commandline incremental
+    $ adb logcat
+    D/        (23667): x: 1.1570, y: 1.2356, z: 9.5712
+    D/        (23667): x: 0.9906, y: 1.2356, z: 9.6399
+    D/        (23667): x: 0.8234, y: 1.2846, z: 9.6399
+    
+    
 !SLIDE
 #Hardware: Vibrator
     @@@ruby
@@ -203,12 +269,3 @@
     view.start
 !SLIDE center transition=scrollUp
 ![](video_view.png)
-
-!SLIDE
-#Log
-    Log.d("My Activity", "here's what's up...")
-!SLIDE commandline incremental
-    $ adb logcat
-    D/dalvikvm(  119): GC_EXPLICIT freed 1050 objects / 61056 bytes in 91ms
-    I/dalvikvm(  253): Shrank stack (to 0x41869300, curFrame is 0x418695cc)
-    D/My Activity(  253): here's what's up...
