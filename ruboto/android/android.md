@@ -10,35 +10,24 @@
 
 !SLIDE bullets
 #View
-!SLIDE bullets transition=scrollUp
 * A UI component
 * CheckBox, Button, TextView...
 
 !SLIDE bullets
 #Resources: Drawables
-!SLIDE bullets transition=scrollUp
 * Bitmap
 * PathShape
 * etc.
 
 !SLIDE bullets
 #Resources: Layouts
-!SLIDE bullets transition=scrollUp
 * Portrait
 * Landscape
 * etc.
 
 !SLIDE
-#Resources: Values
-!SLIDE transition=scrollUp
-#Strings
-    <string name="app_name">AcidDraw</string>
-!SLIDE transition=scrollUp
-#Arrays
-    <string-array name="planets">
-      <item>Earth</item>
-      <item>Pluto</item>
-    </string-array>
+#Resources: Strings
+    <string name="app_name">MyApp</string>
 
 !SLIDE bullets
 #Service

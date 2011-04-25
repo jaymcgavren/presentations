@@ -5,7 +5,6 @@
 * Log
 * GUI
 * Hardware
-* Notifications
 !SLIDE bullets transition=scrollUp
 * Canvas
 * WebView
@@ -95,6 +94,11 @@
 
 !SLIDE
 #Hardware: Sensors
+    @@@ruby
+    Sensor::TYPE_ACCELEROMETER
+    Sensor::TYPE_MAGNETIC_FIELD
+    Sensor::TYPE_ORIENTATION
+    #etc...
 
 !SLIDE commandline incremental
     $ ruboto gen interface android.hardware.SensorEventListener \
@@ -162,15 +166,6 @@
     @@@ruby
     get_system_service(VIBRATOR_SERVICE)
     vibrate(duration1, duration2, -1)
-
-!SLIDE
-#Notifications: Toast
-    @@@ruby
-    Toast.make_text(
-      self,
-      "#{view} was clicked",
-      5000
-    ).show
 
 !SLIDE
 #Canvas

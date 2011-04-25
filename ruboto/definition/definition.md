@@ -79,7 +79,7 @@
 !SLIDE transition=fade
 #Ruby
     @@@ ruby
-    import 'android.widget.Toast'
+    java_import 'android.widget.Toast'
     toast = Toast.make_text(
         $activity,
         "Domo arigato!",

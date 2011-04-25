@@ -125,7 +125,6 @@
             <category>
     <service>
     <receiver>
-    <provider>
 !SLIDE transition=scrollUp
     <uses-permission>
         CALL_PHONE
