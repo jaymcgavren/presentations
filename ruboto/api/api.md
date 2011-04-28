@@ -91,7 +91,13 @@
       end
       true
     end
-
+!SLIDE commandline incremental
+    $ adb logcat
+    D/ONTOUCH (  602): Pointer 0: 126.0, 251.0
+    D/ONTOUCH (  602): Pointer 0: 105.0, 271.0
+    D/ONTOUCH (  602): Pointer 0: 90.0, 284.0
+    D/ONTOUCH (  602): Pointer 0: 66.0, 295.0
+      
 !SLIDE
 #Hardware: Sensors
     @@@ruby
@@ -114,8 +120,10 @@
       public void onSensorChanged(
         SensorEvent event
       ) {
-        //JRuby calls to invoke
-        //on_sensor_changed()...
+        if (callbackMethods[CB_SENSOR_CHANGED]) {
+          //JRuby calls to invoke
+          //on_sensor_changed()...
+        }
       }
     }
     
@@ -160,13 +168,6 @@
     D/        (23667): x: 0.9906, y: 1.2356, z: 9.6399
     D/        (23667): x: 0.8234, y: 1.2846, z: 9.6399
     
-    
-!SLIDE
-#Hardware: Vibrator
-    @@@ruby
-    get_system_service(VIBRATOR_SERVICE)
-    vibrate(duration1, duration2, -1)
-
 !SLIDE
 #Canvas
 
