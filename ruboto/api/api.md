@@ -223,7 +223,7 @@
     end
 
 !SLIDE center transition=scrollUp
-![](canvas2.png)
+![](canvas.png)
 
 !SLIDE
 #WebView
@@ -241,7 +241,7 @@
       android:name="android.permission.INTERNET"
     />
 !SLIDE center transition=scrollUp
-![](webview2.png)
+![](webview.png)
 
 !SLIDE
 #Multimedia: Audio
