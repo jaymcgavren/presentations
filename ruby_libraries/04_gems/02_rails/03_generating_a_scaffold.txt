@@ -1,0 +1,42 @@
+$ cd movies
+$ rails generate scaffold movie title:string director:string year:integer
+Running via Spring preloader in process 81089
+      invoke  active_record
+      create    db/migrate/20160125071519_create_movies.rb
+      create    app/models/movie.rb
+      invoke    test_unit
+      create      test/models/movie_test.rb
+      create      test/fixtures/movies.yml
+      invoke  resource_route
+       route    resources :movies
+      invoke  scaffold_controller
+      create    app/controllers/movies_controller.rb
+      invoke    erb
+      create      app/views/movies
+      create      app/views/movies/index.html.erb
+      create      app/views/movies/edit.html.erb
+      create      app/views/movies/show.html.erb
+      create      app/views/movies/new.html.erb
+      create      app/views/movies/_form.html.erb
+      invoke    test_unit
+      create      test/controllers/movies_controller_test.rb
+      invoke    helper
+      create      app/helpers/movies_helper.rb
+      invoke      test_unit
+      invoke    jbuilder
+      create      app/views/movies/index.json.jbuilder
+      create      app/views/movies/show.json.jbuilder
+      invoke  assets
+      invoke    coffee
+      create      app/assets/javascripts/movies.coffee
+      invoke    scss
+      create      app/assets/stylesheets/movies.scss
+      invoke  scss
+      create    app/assets/stylesheets/scaffolds.scss
+
+The above is a log of a terminal session where I
+generated a Rails scaffold for a Movie model.
+To retrace my steps, run:
+
+$ cd movies
+$ rails generate scaffold movie title:string director:string year:integer

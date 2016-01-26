@@ -1,0 +1,5 @@
+---
+Jaws: !ruby/object:Movie
+  title: Jaws
+  director: Steven Spielberg
+  year: 1977

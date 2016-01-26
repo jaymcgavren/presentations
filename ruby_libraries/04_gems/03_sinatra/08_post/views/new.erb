@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='UTF-8' />
+    <title>My Movies - Add Movie</title>
+  </head>
+  <body>
+    <h1>Add New Movie</h1>
+    <form method="post" action="/movies/create">
+      <table>
+        <tr>
+          <td><label for="title">Title:</label></td>
+          <td><input type="text" name="title"></td>
+        </tr>
+        <tr>
+          <td><label for="director">Director:</label></td>
+          <td><input type="text" name="director"></td>
+        </tr>
+        <tr>
+          <td><label for="year">Year Published:</label></td>
+          <td><input type="text" name="year"></td>
+        </tr>
+        <tr>
+          <td><input type="submit"></td>
+        </tr>
+      </table>
+    </form>
+    <a href="/movies">Back to Index</a>
+  </body>
+</html>
