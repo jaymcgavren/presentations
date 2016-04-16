@@ -1,4 +1,4 @@
-Bash
+# Bash
 
 - alias
 - Redirecting output with >
@@ -23,7 +23,7 @@ Bash
 - set -o vi
 - man bash
 
-Utility tips
+# Utility tips
 
 - pbcopy/pbpaste/xclip, my custom "cb" wrapper
 - less config, less searching
