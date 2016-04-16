@@ -4,22 +4,22 @@ Bash
 - Redirecting output with >
 - cd -
 - Piping output between commands with |
--- grep
--- wc
--- ruby -e, -n, -p
--- head, tail
+  - grep
+  - wc
+  - ruby -e, -n, -p
+  - head, tail
 - Shell history
--- Configuration
--- Arrow keys, Ctrl-p/n
--- Searching with Ctrl-r
--- Expansion: !!, ^string^replacement^
+  - Configuration
+  - Arrow keys, Ctrl-p/n
+  - Searching with Ctrl-r
+  - Expansion: !!, ^string^replacement^
 - # comments
 - Chaining commands with ; and &&
 - Prompt setup
 - set -o emacs
--- C-a, C-e, M-f, M-b, etc.
--- C-k, M-w, etc.
--- C-y
+  - C-a, C-e, M-f, M-b, etc.
+  - C-k, M-w, etc.
+  - C-y
 - set -o vi
 - man bash
 
