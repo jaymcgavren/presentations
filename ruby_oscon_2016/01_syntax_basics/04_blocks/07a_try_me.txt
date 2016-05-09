@@ -1,0 +1,24 @@
+$ irb
+2.3.0 :001 > numbers = [3, 29, 5, 12, 18]
+ => [3, 29, 5, 12, 18]
+2.3.0 :002 > numbers.each { |number| puts number * number }
+9
+841
+25
+144
+324
+ => [3, 29, 5, 12, 18]
+2.3.0 :003 > numbers.each { |number| puts number.odd? }
+true
+true
+true
+false
+false
+ => [3, 29, 5, 12, 18]
+2.3.0 :004 > numbers.each { |number| puts "$" * number }
+$$$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$$$$
+$$$$$$$$$$$$
+$$$$$$$$$$$$$$$$$$
+ => [3, 29, 5, 12, 18]
