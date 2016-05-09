@@ -1,7 +1,6 @@
 # Bash
 
 - alias
-- Redirecting output with >
 - cd -
 - Piping output between commands with |
   - grep
@@ -29,7 +28,5 @@
 - less config, less searching
 - ssh remote commands (other than a shell), config tips
 - git checkout -
-- vi
-- emacs
 - tmux
 - man <utility name>
