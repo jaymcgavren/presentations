@@ -1,14 +1,22 @@
 class Invoice
 
-  attr_accessor :subtotal, :tax_rate
+  # Use attr_accessor to set up "subtotal"
+  # and "tax_rate" attributes. Hint: use a
+  # :symbol for each attribute.
 
   def total
-    tax = subtotal * tax_rate
-    subtotal + tax
+    # Calculate the tax by multiplying the
+    # subtotal attribute by the tax_rate
+    # attribute. Then add the subtotal and
+    # tax, and return that value. Remember,
+    # the last expression evaluated is the
+    # return value in Ruby!
   end
 
 end
 
+# When your class is complete, this code
+# should work:
 invoice = Invoice.new
 invoice.subtotal = 10.00
 invoice.tax_rate = 0.1
