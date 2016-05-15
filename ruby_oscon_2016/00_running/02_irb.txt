@@ -1,10 +1,9 @@
 $ irb
 2.3.0 :001 > 1 + 2
  => 3
-2.3.0 :002 > "Hello, world!"
- => "Hello, world!"
+2.3.0 :002 > Time.now
+ => 2016-05-15 15:42:15 -0500
 2.3.0 :003 > puts "Hello, world!"
 Hello, world!
  => nil
 2.3.0 :004 > exit
-$ 
