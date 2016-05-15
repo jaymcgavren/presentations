@@ -1,0 +1,16 @@
+$ irb
+2.3.0 :001 > directors = ["Ridley Scott", "David Fincher"]
+ => ["Ridley Scott", "David Fincher"]
+2.3.0 :002 > directors[0]
+ => "Ridley Scott"
+2.3.0 :003 > directors[1]
+ => "David Fincher"
+2.3.0 :004 > directors.push "Michael Bay"
+ => ["Ridley Scott", "David Fincher", "Michael Bay"]
+2.3.0 :005 > directors.length
+ => 3
+2.3.0 :006 > directors.pop
+ => "Michael Bay"
+2.3.0 :007 > directors
+ => ["Ridley Scott", "David Fincher"]
+2.3.0 :008 > exit

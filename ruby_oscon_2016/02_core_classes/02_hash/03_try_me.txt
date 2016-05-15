@@ -1,0 +1,12 @@
+$ irb
+2.3.0 :001 > data = {"title" => "Jaws", "year" => 1975}
+ => {"title"=>"Jaws", "year"=>1975}
+2.3.0 :002 > data["director"] = "Steven Spielberg"
+ => "Steven Spielberg"
+2.3.0 :003 > data["title"]
+ => "Jaws"
+2.3.0 :004 > data.keys
+ => ["title", "year", "director"]
+2.3.0 :005 > data.values
+ => ["Jaws", 1975, "Steven Spielberg"]
+2.3.0 :006 > exit
