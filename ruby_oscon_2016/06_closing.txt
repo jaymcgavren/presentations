@@ -1,0 +1,10 @@
+My Twitter:
+http://twitter.com/jaymcgavren
+
+All source code for this presentation:
+http://github.com/jaymcgavren/presentations
+
+Want Head First Ruby?
+Use discount code AUTHD on oreilly.com
+to get 40% off the paperback and
+50% off the ebook!
