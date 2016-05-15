@@ -1,3 +1,0 @@
-Again, look up the docs for the Hash class (and the
-Enumerable module that's mixed in to Hash) for a list of
-the available methods.

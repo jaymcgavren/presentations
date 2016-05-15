@@ -1,3 +1,0 @@
-Look up the docs for the Array class (and the
-Enumerable module that's mixed in to Array)
-for a list of the available methods.
