@@ -36,7 +36,3 @@ Running via Spring preloader in process 81089
 
 The above is a log of a terminal session where I
 generated a Rails scaffold for a Movie model.
-To retrace my steps, run:
-
-$ cd movies
-$ rails generate scaffold movie title:string director:string year:integer

@@ -152,7 +152,5 @@ $ cd movies
 
 
 The above is a log of a terminal session where
-I created a Rails app named "movies". To retrace
-my steps, run:
-
-$ rails new movies
+I created a Rails app named "movies". (Please
+don't attempt this on conference wifi!)
