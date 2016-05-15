@@ -1,6 +1,6 @@
 class AskMeAnything
   def method_missing(method_name)
-    "You called #{method_name.to_s}"
+    "You called #{method_name}"
   end
 end
 
