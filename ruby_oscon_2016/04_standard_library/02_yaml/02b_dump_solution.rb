@@ -1,11 +1,11 @@
 require "yaml"
 
-class LoveInterest
-  attr_accessor :name, :hobby
+class Song
+  attr_accessor :title, :artist
 end
 
-my_ex = LoveInterest.new
-my_ex.hobby = "drinking"
-my_ex.name = "REDACTED"
+song = Song.new
+song.title = "I Am the Highway"
+song.artist = "Audioslave"
 
-puts YAML.dump(my_ex)
+puts YAML.dump(song)
