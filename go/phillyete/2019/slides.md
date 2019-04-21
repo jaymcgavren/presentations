@@ -188,15 +188,13 @@ Markup, shell, and database query languages omitted
 
 
 
-# Go Fundamentals
+# Syntax
 
 ## Go file layout
 
-* `package`
-* `import`
+* Package clause
+* Imports
 * Code
-
-## Go file layout
 
 ``` go
 package main 
@@ -259,7 +257,7 @@ func main() {
 
 Compile error:
 
-``` go
+```
 temp.go:5:5: imported and not used: "os"
 ```
 
@@ -388,7 +386,7 @@ myInteger = "3"
 
 Compile error: 
 
-``` go
+```
 prog.go:6:14: cannot use "3" (type string) as type int in assignment
 ```
 
@@ -402,7 +400,7 @@ fmt.Println(myInteger + myFloat)
 
 Compile error: 
 
-``` go
+```
 prog.go:8:24: invalid operation: myInteger + myFloat (mismatched types int and float64)
 ```
 
@@ -425,7 +423,7 @@ fmt.Println(subtotal)
 
 Compile error:
 
-``` go
+```
 prog.go:9:2: tax declared and not used
 ```
 
@@ -475,7 +473,7 @@ for i, value := range mySlice {
 
 Compile error:
 
-``` go
+```
 prog.go:9:6: i declared and not used
 ```
 
@@ -559,13 +557,139 @@ func main() {
 
 Compile error:
 
-``` go
+```
 prog.go:9:7: assignment mismatch: 1 variable but strconv.ParseBool returns 2 values
 prog.go:10:7: assignment mismatch: 1 variable but strconv.ParseBool returns 2 values
 ```
 
+## Multiple return values
+
+``` go
+func main() {
+	flag, err := strconv.ParseBool("true")
+	if err != nil {
+		log.Fatal(err)
+	}
+	flag, err = strconv.ParseBool("foobar")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(flag)
+}
+```
+
+Output:
+
+```
+2009/11/10 23:00:00 strconv.ParseBool: parsing "foobar": invalid syntax
+```
+
+## Error handling
+
+"In Go, error handling is important. The language's design and conventions encourage you to explicitly check for errors where they occur (as distinct from the convention in other languages of throwing exceptions and **sometimes** catching them)." (Emphasis mine)
+
+Andrew Gerrand, https://blog.golang.org/error-handling-and-go
+
+## Writing functions with multiple return values
+
+``` go
+func parseBools(values []string) ([]bool, error) {
+	var bools []bool
+	for i, value := range values {
+		parsed, err := strconv.ParseBool(value)
+		if err != nil {
+			return nil, fmt.Errorf("invalid value %s at index %d", value, i)
+		}
+		bools = append(bools, parsed)
+	}
+	return bools, nil
+}
+```
+
+## Writing functions with multiple return values
+
+``` go
+func main() {
+	bools, err := parseBools([]string{"true", "false", "foobar"})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(bools)
+}
+```
+
+Output:
+
+```
+2009/11/10 23:00:00 invalid value foobar at index 2
+```
+
 ## First-class functions
 
+``` go
+func thrice(callback func()) {
+	callback()
+	callback()
+	callback()
+}
+func refrain() {
+	fmt.Print("give it away, ")
+}
+func main() {
+	thrice(refrain)
+	fmt.Println("now!")
+}
+```
+
+Output:
+
+```
+give it away, give it away, give it away, now!
+```
+
+## First-class functions
+
+``` go
+package main
+
+import "net/http"
+
+// The * is a pointer type; we'll explain shortly!
+func helloHandler(writer http.ResponseWriter, request *http.Request) {
+	// Note: error return value ignored!
+	writer.Write([]byte("<h1>Hello, web!</h1>"))
+}
+func bonjourHandler(writer http.ResponseWriter, request *http.Request) {
+	writer.Write([]byte("<h1>Bonjour, web!</h1>"))
+}
+```
+
+## First-class functions
+
+``` go
+func main() {
+	http.HandleFunc("/hello", helloHandler)
+	http.HandleFunc("/bonjour", bonjourHandler)
+	// Note: error return value ignored!
+	http.ListenAndServe("localhost:8080", nil)
+}
+```
+
+
+# More Types
+
+## Go is pass-by-value
+
+We saw a pointer type earlier... let's talk about those.
+
+``` go
+func helloHandler(writer http.ResponseWriter, request *http.Request) {
+	writer.Write([]byte("<h1>Hello, web!</h1>"))
+}
+func bonjourHandler(writer http.ResponseWriter, request *http.Request) {
+	writer.Write([]byte("<h1>Bonjour, web!</h1>"))
+}
+```
 
 ## Go is pass-by-value
 
@@ -598,11 +722,36 @@ func main() {
 }
 ```
 
+## Pointers
+
+There is no pointer arithmetic! (Whew!) 😌
+
 ## Arrays
 
-TODO Don't use; just a foundation for slices
+``` go
+var primes [3]int
+primes[0] = 2
+primes[1] = 3
+fmt.Println(primes[0]) // => 2
+fmt.Println(primes[1]) // => 3
+fmt.Println(primes)    // => [2 3 0]
+```
+
+* Can't grow when needed
+* To me, they're just a foundation for slices
 
 ## Slices
+
+``` go
+var primes []int
+primes = append(primes, 2)
+primes = append(primes, 3)
+fmt.Println(primes[0]) // => 2
+fmt.Println(primes[1]) // => 3
+fmt.Println(primes)    // => [2 3]
+primes = append(primes, 5)
+fmt.Println(primes)    // => [2 3 5]
+```
 
 ## Maps
 
@@ -690,6 +839,10 @@ Package directories
 ## Channels
 
 ## Synchronization
+
+# The Leftovers
+
+Zero values
 
 "testing" package
 
