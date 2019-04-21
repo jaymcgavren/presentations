@@ -427,6 +427,36 @@ Compile error:
 prog.go:9:2: tax declared and not used
 ```
 
+## Zero values
+
+``` go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	var myFloat float64
+	fmt.Printf("%#v\n", myFloat)  // => 0
+	var myBool bool
+	fmt.Printf("%#v\n", myBool)   // => false
+	var myString string
+	fmt.Printf("%#v\n", myString) // => ""
+}
+```
+
+## Zero values
+
+``` go
+var myFloat float64
+fmt.Println(myFloat + 2.5) // => 2.5
+var myBool bool
+fmt.Println(!myBool) // => false
+var myString string
+fmt.Println("(" + myString + ")") // => ()
+```
+
 ## "if" is unsurprising
 
 ``` go
@@ -735,12 +765,25 @@ primes[1] = 3
 fmt.Println(primes[0]) // => 2
 fmt.Println(primes[1]) // => 3
 fmt.Println(primes)    // => [2 3 0]
+// primes[2] is at zero value
 ```
 
 * Can't grow when needed
 * To me, they're just a foundation for slices
 
 ## Slices
+
+``` go
+var primes []int        // Zero value is nil
+primes = make([]int, 3) // Create a slice
+primes[0] = 2
+primes[1] = 3
+fmt.Println(primes[0])  // => 2
+fmt.Println(primes[1])  // => 3
+fmt.Println(primes)     // => [2 3 0]
+```
+
+## Slices and "append"
 
 ``` go
 var primes []int
@@ -755,13 +798,112 @@ fmt.Println(primes)    // => [2 3 5]
 
 ## Maps
 
-TODO unsurprising
+``` go
+func main() {
+	ranks := make(map[string]int)
+	ranks["gold"] = 1
+	ranks["silver"] = 2
+	ranks["bronze"] = 3
+	fmt.Println(ranks["bronze"]) // => 3
+	fmt.Println(ranks["gold"])   // => 1
+}
+```
+
+## Structs
+
+Anonymous struct types...
+
+``` go
+var bucket struct {
+	number float64
+	word   string
+	toggle bool
+}
+bucket.number = 3.14
+bucket.word = "pie"
+bucket.toggle = true
+fmt.Println(bucket.number) // => 3.14
+fmt.Println(bucket.word)   // => pie
+fmt.Println(bucket.toggle) // => true
+```
 
 ## Custom types
 
-* Underlying basic types
+But referring to a struct type by its full definition gets unwieldy...
 
-## Structs
+``` go
+var bucket1 struct {
+	number float64
+	word   string
+	toggle bool
+}
+var bucket2 struct {
+	number float64
+	word   string
+	toggle bool
+}
+fmt.Println(reflect.TypeOf(bucket1))
+fmt.Println(reflect.TypeOf(bucket2))
+```
+
+Output:
+
+``` go
+struct { number float64; word string; toggle bool }
+struct { number float64; word string; toggle bool }
+```
+
+## Custom types
+
+Instead, it's better to declare it as a new type.
+
+``` go
+type myType struct {
+	number float64
+	word   string
+	toggle bool
+}
+
+func main() {
+	var bucket1 myType
+	var bucket2 myType
+	fmt.Println(reflect.TypeOf(bucket1))
+	fmt.Println(reflect.TypeOf(bucket2))
+}
+```
+
+Output:
+
+``` go
+main.myType
+main.myType
+```
+
+## Custom types
+
+Then you can do all the same stuff using the defined type.
+
+``` go
+type myType struct {
+	number float64
+	word   string
+	toggle bool
+}
+
+func main() {
+	var bucket myType
+	bucket.number = 3.14
+	bucket.word = "pie"
+	bucket.toggle = true
+	fmt.Println(bucket.number) // => 3.14
+	fmt.Println(bucket.word)   // => pie
+	fmt.Println(bucket.toggle) // => true
+}
+```
+
+## Custom types
+
+More about custom types in a bit...
 
 
 
