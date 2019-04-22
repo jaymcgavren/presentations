@@ -1371,6 +1371,7 @@ Buffered channels
 
 <!-- TODO Samples from this presentation -->
 
+* These slides: `https://github.com/jaymcgavren/presentations`
 * Go Tour: `https://tour.golang.org`
 * Go Playground: `https://play.golang.org`
 * Me, on Twitter: `https://twitter.com/jaymcgavren`
