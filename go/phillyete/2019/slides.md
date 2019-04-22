@@ -1294,7 +1294,6 @@ Playing 9 to 5
 Stopped!
 ```
 
-
 <!-- ## "error" interface -->
 
 <!-- ## "stringer" interface -->
@@ -1302,15 +1301,6 @@ Stopped!
 <!-- ## Empty interface -->
 
 <!-- ## Type assertions -->
-
-
-<!-- # Concurrency -->
-
-<!-- ## Goroutines -->
-
-<!-- ## Channels -->
-
-<!-- ## Synchronization -->
 
 
 
@@ -1325,6 +1315,209 @@ Stopped!
 <!-- ## Getting panic value -->
 
 <!-- ## "panic" should not be used like an exception -->
+
+
+
+# Concurrency
+
+## A non-concurrent program
+
+``` go
+// responseSize retrieves "url" and prints
+// the response length in bytes.
+func responseSize(url string) {
+	fmt.Println("Getting", url)
+	// Note: errors ignored with _!
+	response, _ := http.Get(url)
+	defer response.Body.Close()
+	body, _ := ioutil.ReadAll(response.Body)
+	fmt.Println(len(body))
+}
+```
+
+## A non-concurrent program
+
+``` go
+func main() {
+    // Note the time we started.
+	start := time.Now()
+	responseSize("https://example.com/")
+	responseSize("https://golang.org/")
+	responseSize("https://golang.org/doc")
+    // Print how long everything took.
+	fmt.Println(time.Since(start).Seconds(), "seconds")
+}
+```
+
+## A non-concurrent program
+
+Output:
+
+```
+Getting https://example.com/
+1270
+Getting https://golang.org/
+8158
+Getting https://golang.org/doc
+12558
+1.5341211000000001 seconds
+```
+
+## Goroutines
+
+* `responseSize` function unchanged.
+* Just add `go` keyword before each call to it.
+
+``` go
+func main() {
+	start := time.Now()
+	go responseSize("https://example.com/")
+	go responseSize("https://golang.org/")
+	go responseSize("https://golang.org/doc")
+	fmt.Println(time.Since(start).Seconds())
+}
+```
+
+## Goroutines
+
+Output:
+
+``` go
+3.1e-06
+```
+
+* None of the `responseSize` goroutines get to even request their URL.
+* Run time so brief the duration is printed in scientific notation.
+* Problem is, `main` goroutine exits, ending the program, without waiting for `responseSize` goroutines.
+
+## Channels
+
+* Modify `responseSize` to accept a "channel" as a parameter.
+
+``` go
+// A channel type is written as "chan" followed by data type.
+func responseSize(url string, channel chan int) {
+	fmt.Println("Getting", url)              // Unchanged
+	response, _ := http.Get(url)             // Unchanged
+	defer response.Body.Close()              // Unchanged
+	body, _ := ioutil.ReadAll(response.Body) // Unchanged
+    // Send body length value via channel.
+	channel <- len(body)
+}
+```
+
+## Channels
+
+``` go
+func main() {
+	start := time.Now() // Unchanged
+    // Make a channel to carry ints.
+	sizes := make(chan int)
+    // Pass channel to each call to responseSize.
+	go responseSize("https://example.com/", sizes)
+	go responseSize("https://golang.org/", sizes)
+	go responseSize("https://golang.org/doc", sizes)
+    // Read and print values from channel.
+	fmt.Println(<-sizes)
+	fmt.Println(<-sizes)
+	fmt.Println(<-sizes)
+	fmt.Println(time.Since(start).Seconds()) // Unchanged
+}
+```
+
+## Channels
+
+Output:
+
+```
+Getting https://golang.org/doc
+Getting https://golang.org/
+Getting https://example.com/
+1270
+8158
+12558
+0.695384291
+```
+
+* Finishes in half the time of the original! (YMMV.)
+* Channel reads cause `main` goroutine to block until `responseSize` goroutines send, so they have time to finish before program ends.
+
+## Channels for structs
+
+Can't tell which size belongs to which page:
+
+```
+Getting https://golang.org/doc
+Getting https://golang.org/
+Getting https://example.com/
+1270
+8158
+12558
+0.695384291
+```
+
+## Channels for structs
+
+Create `Page` struct type to bundle URL with corresponding size:
+
+``` go
+type Page struct {
+	URL  string
+	Size int
+}
+```
+
+## Channels for structs
+
+Update `responseSize` to accept a `chan Page`:
+
+``` go
+func responseSize(url string, channel chan Page) {
+	fmt.Println("Getting", url)              // Unchanged
+	response, _ := http.Get(url)             // Unchanged
+	defer response.Body.Close()              // Unchanged
+	body, _ := ioutil.ReadAll(response.Body) // Unchanged
+	channel <- Page{URL: url, Size: len(body)}
+}
+```
+
+## Channels for structs
+
+* Update `main` to pass `chan Page` to `responseSize`.
+* Read `Page` from channel and print its `URL` and `Size`.
+
+``` go
+func main() {
+	start := time.Now()
+	pages := make(chan Page)
+	urls := []string{"https://example.com/",
+		"https://golang.org/", "https://golang.org/doc"}
+	for _, url := range urls {
+		go responseSize(url, pages)
+	}
+	for i := 0; i < len(urls); i++ {
+		page := <-pages
+		fmt.Printf("%s: %d\n", page.URL, page.Size)
+	}
+	fmt.Println(time.Since(start).Seconds())
+}
+```
+
+## Channels for structs
+
+Output:
+
+``` go
+Getting https://golang.org/doc
+Getting https://example.com/
+Getting https://golang.org/
+https://example.com/: 1270
+https://golang.org/: 8158
+https://golang.org/doc: 12558
+0.750049545
+```
+
+URLs are paired with sizes!
 
 
 <!-- # Packages -->
