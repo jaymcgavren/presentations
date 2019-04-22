@@ -32,9 +32,11 @@ TODO major sections
 TODO questions
 TODO slides are posted
 
+
+
 # A sneak peek
 
-## Hello, world
+## Sneak peek: Hello, world
 
 ``` go
 package main
@@ -46,9 +48,65 @@ func main() {
 }
 ```
 
-TODO packages
-TODO goroutines, channels
-TODO "net/http"
+## Sneak peek: A tiny web app
+
+``` go
+package main
+
+import (
+	"log"
+	"net/http"
+)
+
+func helloHandler(writer http.ResponseWriter, request *http.Request) {
+	writer.Write([]byte("<h1>Hello, web!</h1>"))
+}
+
+func main() {
+	http.HandleFunc("/hello", helloHandler)
+	err := http.ListenAndServe("localhost:8080", nil)
+	log.Fatal(err)
+}
+```
+
+## Sneak peek: goroutines and channels
+
+``` go
+package main
+
+import (
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"time"
+)
+
+func responseSize(url string, channel chan int) {
+	fmt.Println("Getting", url)
+	response, _ := http.Get(url)
+	defer response.Body.Close()
+	body, _ := ioutil.ReadAll(response.Body)
+	channel <- len(body)
+}
+```
+
+## Sneak peek: goroutines and channels
+
+``` go
+func main() {
+	sizes := make(chan int)
+	go responseSize("https://example.com/", sizes)
+	go responseSize("https://golang.org/", sizes)
+	go responseSize("https://golang.org/doc", sizes)
+	fmt.Println(<-sizes)
+	fmt.Println(<-sizes)
+	fmt.Println(<-sizes)
+}
+```
+
+<!-- TODO packages -->
+
+
 
 # Why Go?
 
