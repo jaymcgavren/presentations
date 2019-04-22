@@ -1,20 +1,38 @@
-TODO add "you are here" slides before each major section that list sections
+# The Go Language: What Makes it Different?
 
 # Introduction
 
-## About Me
+## About me
 
 * Author, _Head First Go_
 * Treehouse instructor
 
-## Talk Overview
+## Talk goals
+
+* We only have 45 minutes.
+* You are _not_ going to learn Go today.
+* We'll be moving fast.
+* But you'll get an overview of the language.
+
+## Where to Learn Go
+
+`https://tour.golang.org`
+
+![](images/go_tour.png)
+
+(We'll repeat that link at the end.)
+
+## Another humble recommendation
+
+![](images/head_first_go_cover.png)
+
+## Talk overview
 
 TODO major sections
 TODO questions
-TODO Goals: not here to learn the language, just to get a taste. I'll be moving fast.
 TODO slides are posted
 
-# A Sneak Peek
+# A sneak peek
 
 ## Hello, world
 
@@ -186,6 +204,60 @@ Markup, shell, and database query languages omitted
 * `go format` command formats code for you
 * Unit testing in standard library
 
+## "go fmt"
+
+Before
+
+``` go
+package main
+
+import "fmt"
+
+func main() {
+repeatLine("hello", 3     )
+}
+
+func repeatLine( line string ,times  int) {
+	for i := 0; i < times; i++ {
+fmt.Println(line)
+	}
+}
+```
+
+## "go fmt"
+
+``` go
+$ go fmt repeat.go
+```
+
+## "go fmt"
+
+After
+
+``` go
+package main
+
+import "fmt"
+
+func main() {
+	repeatLine("hello", 3)
+}
+
+func repeatLine(line string, times int) {
+	for i := 0; i < times; i++ {
+		fmt.Println(line)
+	}
+}
+```
+
+## Playground
+
+![](images/playground.png)
+
+::: notes
+Example saved session: https://play.golang.org/p/TRMMrDcre0V
+:::
+
 
 
 # Syntax
@@ -206,7 +278,7 @@ func main() {
 }
 ```
 
-## Go file layout
+## Imports
 
 ``` go
 package main
@@ -223,7 +295,7 @@ func main() {
 }
 ```
 
-## Go file layout
+## Other packages
 
 ``` go
 package keyboard
@@ -261,52 +333,6 @@ Compile error:
 temp.go:5:5: imported and not used: "os"
 ```
 
-## "go fmt"
-
-Before
-
-``` go
-package main
-
-import "fmt"
-
-func main() {
-	    repeatLine("hello", 3)
-}
-
-func repeatLine( line string ,times  int) {
-	for i := 0; i < times; i++ {
-fmt.Println(line)
-	}
-}
-```
-
-## "go fmt"
-
-``` go
-$ go fmt repeat.go
-```
-
-## "go fmt"
-
-After
-
-``` go
-package main
-
-import "fmt"
-
-func main() {
-	repeatLine("hello", 3)
-}
-
-func repeatLine(line string, times int) {
-	for i := 0; i < times; i++ {
-		fmt.Println(line)
-	}
-}
-```
-
 ## "goimports"
 
 * Automatically adds/removes imports
@@ -318,7 +344,7 @@ Install:
 $ go get golang.org/x/tools/cmd/goimports
 ```
 
-See directions at https://godoc.org/golang.org/x/tools/cmd/goimports for integrating with your editor.
+Do a web search for "goimports" for directions on integrating with your editor.
 
 ## "goimports"
 
@@ -735,7 +761,7 @@ func main() {
 }
 ```
 
-## Pointers
+## Pointer types
 
 ``` go
 // *mytype is a pointer type
@@ -752,7 +778,7 @@ func main() {
 }
 ```
 
-## Pointers
+## Pointer types
 
 There is no pointer arithmetic! (Whew!) 😌
 
@@ -901,96 +927,439 @@ func main() {
 }
 ```
 
-## Custom types
+## Other underlying types
 
-More about custom types in a bit...
+``` go
+type Liters float64
+type Gallons float64
 
+func main() {
+	var carFuel Gallons
+	var busFuel Liters
+	// Defining a type defines a conversion
+	// from the underlying type to the new type
+	carFuel = Gallons(10.0)
+	busFuel = Liters(240.0)
+	fmt.Println(carFuel) // => 10
+	fmt.Println(busFuel) // => 240
+}
+```
 
+## Can do math/comparisons with values of same type
 
-# Packages
+``` go
+type Liters float64
+type Gallons float64
 
-## Exported
+func main() {
+	fmt.Println(Liters(1.2) + Liters(3.4))    // => 4.6
+	fmt.Println(Gallons(1.2) == Gallons(1.2)) // => true
+	fmt.Println(Liters(3.4) < Liters(1.2))    // => false
+}
+```
 
-## Unexported
+## Can do math/comparisons with literal values
 
-## `go build`
+``` go
+type Liters float64
+type Gallons float64
 
-## `go install`
+func main() {
+	fmt.Println(Liters(1.2) + 3.4)   // => 4.6
+	fmt.Println(Gallons(1.2) == 1.2) // => true
+	fmt.Println(Liters(3.4) < 1.2)   // => false
+}
+```
 
-The Go workspace
+## _Cannot_ do math/comparisons with other types
 
-* `bin`
-* `pkg`
-* `src`
+``` go
+type Liters float64
+type Gallons float64
 
-Package directories
+func main() {
+	fmt.Println(Liters(1.2) + Gallons(3.4))
+	fmt.Println(Gallons(1.2) == Liters(1.2))
+}
+```
 
-## Import paths
+Compile errors: 
 
-## `go get`
+``` go
+prog.go:11:26: invalid operation: Liters(1.2) + Gallons(3.4) (mismatched types Liters and Gallons)
+prog.go:12:27: invalid operation: Gallons(1.2) == Liters(1.2) (mismatched types Gallons and Liters)
+```
 
-## `go doc`
+## Need to convert first
 
-* Doc comments
+``` go
+type Liters float64
+type Gallons float64
 
-## Web documentation
-
+func main() {
+	// Convert Liters to Gallons before adding to Gallons
+	fmt.Println(Gallons(Liters(1.2)*0.264) + Gallons(3.4))
+    // => 3.7168
+	// Convert Gallons to Liters before comparing to Liters
+	fmt.Println(Liters(Gallons(1.2)*3.785) == Liters(1.2))
+    // => false
+}
+```
 
 
 # OOP-*like* Concepts
 
 ## Methods
 
-* Receiver parameter
-* Pointer receiver parameters?
+``` go
+type MyType string
+
+func (m MyType) sayHi() {
+	fmt.Println("Hi")
+}
+
+func main() {
+	value := MyType("a MyType value")
+	value.sayHi() // => Hi
+	anotherValue := MyType("another value")
+	anotherValue.sayHi() => Hi
+}
+```
+
+::: notes
+* Very similar to function definition
+* Add receiver parameter before function name
+* Receiver parameter type is type method will be defined on
+:::
+
+## Receiver parameter acts like just another parameter
+
+``` go
+type MyType string
+
+func (m MyType) sayHi() {
+	fmt.Println("Hi from", m)
+}
+
+func main() {
+	value := MyType("a MyType value")
+	value.sayHi() // => Hi from a MyType value
+	anotherValue := MyType("another value")
+	anotherValue.sayHi() // => Hi from another value
+}
+```
+
+## Underlying type is _not_ a superclass
+
+``` go
+type MyType string
+
+func (m MyType) sayHi() {
+	fmt.Println("Hi from", m)
+}
+
+type MyType2 MyType
+
+func main() {
+	value2 := MyType2("a MyType2 value")
+	fmt.Println(value2)
+}
+```
+
+::: notes
+* Underlying type specifies how type's data is stored, so this is OK
+:::
+
+## Underlying type is _not_ a superclass
+
+``` go
+type MyType string
+
+func (m MyType) sayHi() {
+	fmt.Println("Hi from", m)
+}
+
+type MyType2 MyType
+
+func main() {
+	value2 := MyType2("a MyType2 value")
+	value2.sayHi()
+}
+```
+
+Compile error:
+
+``` go
+prog.go:15:8: value2.sayHi undefined (type MyType2 has no field or method sayHi)
+```
+
+## Underlying type is _not_ a superclass
+
+"Although Go has types and methods and allows an object-oriented style of programming, there is no type hierarchy."
+
+—https://golang.org/doc/faq
+
+* There is no method inheritance!
+* But there's another way to get the same benefits...
 
 ## Embedding structs
 
+``` go
+type Coordinates struct {
+	Latitude  float64
+	Longitude float64
+}
+
+type Landmark struct {
+	Name string
+	// An "anonymous field"
+	// Has no name of its own, just a type
+	Coordinates
+}
+
+func main() {
+	var l Landmark
+	l.Name = "The Googleplex"
+	// Fields for "embedded struct" are "promoted"
+	l.Latitude = 37.42
+	l.Longitude = -122.08
+	fmt.Println(l.Name, l.Latitude, l.Longitude)
+	// => The Googleplex 37.42 -122.08
+}
+```
+
 ## Promotion of embedded types' methods
+
+``` go
+func (c Coordinates) Location() string {
+	return fmt.Sprintf("(%0.2f, %0.2f)",
+		c.Latitude, c.Longitude)
+}
+
+func main() {
+	var l Landmark
+	l.Name = "The Googleplex"
+	l.Latitude = 37.42
+	l.Longitude = -122.08
+	// Methods from embedded type are
+	// promoted to outer type
+	fmt.Println(l.Location())
+	// => (37.42, -122.08)
+}
+```
 
 ## Interfaces
 
-## `error` interface
+A type with `Play` and `Stop` methods...
 
-## `stringer` interface
+``` go
+type TapePlayer struct {
+	Batteries string
+}
+func (t TapePlayer) Play(song string) {
+	fmt.Println("Playing", song)
+}
+func (t TapePlayer) Stop() {
+	fmt.Println("Stopped!")
+}
+```
 
-## Empty interface
+## Interfaces
 
-## Type assertions
+_Another_ type with `Play` and `Stop` methods...
+
+``` go
+type TapeRecorder struct {
+	Microphones int
+}
+func (t TapeRecorder) Play(song string) {
+	fmt.Println("Playing", song)
+}
+func (t TapeRecorder) Record() {
+	fmt.Println("Recording")
+}
+func (t TapeRecorder) Stop() {
+	fmt.Println("Stopped!")
+}
+```
+
+## Interfaces
+
+A function that accepts a `TapePlayer`, but not a `TapeRecorder`...
+
+``` go
+func playList(device TapePlayer, songs []string) {
+	for _, song := range songs {
+		device.Play(song)
+	}
+	device.Stop()
+}
+```
+
+## Interfaces
+
+``` go
+func main() {
+	mixtape := []string{"Jessie's Girl", "Whip It", "9 to 5"}
+	var player TapePlayer
+	playList(player, mixtape)
+}
+```
+
+Output:
+
+```
+Playing Jessie's Girl
+Playing Whip It
+Playing 9 to 5
+Stopped!
+```
+
+## Interfaces
+
+``` go
+func main() {
+	mixtape := []string{"Jessie's Girl", "Whip It", "9 to 5"}
+	var recorder TapeRecorder
+	playList(recorder, mixtape)
+}
+```
+
+Compile error:
+
+```
+prog.go:40:10: cannot use recorder (type TapeRecorder) as type TapePlayer in argument to playList
+```
+
+## Interfaces
+
+Define a `Player` interface with the methods you want:
+
+``` go
+type Player interface {
+    // Must have a Play method with
+    // a single string parameter
+	Play(string)
+    // Must have a Stop method with
+    // no parameters
+	Stop()
+}
+```
+
+Notice we don't have to modify the `TapePlayer` or `TapeRecorder` type definitions!
+
+::: notes
+* No return values specified, so neither method can have a return value
+:::
+
+## Interfaces
+
+Modify the `playList` function to accept a value of the `Player` (interface) type:
+
+``` go
+func playList(device Player, songs []string) {
+	for _, song := range songs {
+		device.Play(song)
+	}
+	device.Stop()
+}
+```
+
+## Interface
+
+Now, you can pass in a `TapePlayer` _or_ a `TapeRecorder` (or any other type with `Play` and `Stop` methods)!
+
+``` go
+func main() {
+	mixtape := []string{"Jessie's Girl", "Whip It", "9 to 5"}
+	var player TapePlayer
+	playList(player, mixtape)
+	var recorder TapeRecorder
+	playList(recorder, mixtape)
+}
+```
+
+## Interfaces
+
+Output:
+
+```
+Playing Jessie's Girl
+Playing Whip It
+Playing 9 to 5
+Stopped!
+Playing Jessie's Girl
+Playing Whip It
+Playing 9 to 5
+Stopped!
+```
 
 
-# `defer`, `panic`, and `recover`
+<!-- ## "error" interface -->
 
-## `defer`
+<!-- ## "stringer" interface -->
 
-## `panic`
+<!-- ## Empty interface -->
 
-## `recover`
-
-## Getting panic value
-
-## `panic` should not be used like an exception
+<!-- ## Type assertions -->
 
 
+<!-- # Concurrency -->
+
+<!-- ## Goroutines -->
+
+<!-- ## Channels -->
+
+<!-- ## Synchronization -->
 
 
-# Concurrency
 
-## Goroutines
+<!-- # Error handling -->
 
-## Channels
+<!-- ## "defer" -->
 
-## Synchronization
+<!-- ## "panic" -->
 
-# The Leftovers
+<!-- ## "recover" -->
 
-Zero values
+<!-- ## Getting panic value -->
+
+<!-- ## "panic" should not be used like an exception -->
+
+
+<!-- # Packages -->
+
+<!-- ## Exported -->
+
+<!-- ## Unexported -->
+
+<!-- ## "go build" -->
+
+<!-- ## The Go workspace -->
+
+<!-- * `bin` -->
+<!-- * `pkg` -->
+<!-- * `src` -->
+
+<!-- Package directories -->
+
+<!-- ## Import paths -->
+
+<!-- ## "go get" -->
+
+<!-- ## "go doc" -->
+
+<!-- * Doc comments -->
+
+<!-- ## Web documentation -->
+
+
+
+# Closing
+
+## The leftovers
 
 "testing" package
-
-Web development
-
-"net/http" package
 
 Gorilla
 
@@ -998,4 +1367,17 @@ Buffalo
 
 Buffered channels
 
-Other resources
+## Other resources
+
+<!-- TODO Samples from this presentation -->
+
+* Go Tour: `https://tour.golang.org`
+* Go Playground: `https://play.golang.org`
+* Me, on Twitter: `https://twitter.com/jaymcgavren`
+* Head First Go: `https://headfirstgo.com`
+
+### Questions?
+
+::: notes
+Repeat each question before answering!
+:::
