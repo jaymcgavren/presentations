@@ -8,13 +8,13 @@
 
 * Author, _Head First Go_
 * Treehouse instructor
-* _Not_ a language implementer! 😛
+* Unlike the Rust and Zig speakers, _not_ a language implementer! 😛
 
 :::
 
 ::: notes
 
-(Unlike fellow speakers Andy Kelly and Carol Goulding)
+(Carol Goulding and Andy Kelley)
 
 :::
 
@@ -48,7 +48,6 @@
 * OOP-*like* Concepts
 * Error handling
 * Concurrency
-* Packages
 
 :::
 
@@ -1524,153 +1523,11 @@ Getting https://example.com/
 
 
 
-# Packages
-
-## The "main" package
-
-* Code intended for direct execution goes in the `main` package.
-* Go looks for a `main` function and calls that first.
-
-``` go
-package main
-
-import "fmt"
-
-func Hello() {
-	fmt.Println("Hello!")
-}
-func Hi() {
-	fmt.Println("Hi!")
-}
-func main() {
-    Hello()
-}
-```
-
-## The "main" package
-
-But sticking everything in one package will only get you so far...
-
-## The Go workspace
-
-* A directory to hold package code.
-* `~/go` by default.
-* Or set `$GOPATH` environment variable to a different directory.
-
-## Workspace subdirectories
-
-* `bin`: holds binary executables.
-    * Add it to your `$PATH` and you can run them from anywhere.
-* `pkg`: holds compiled package files.
-    * You generally don't need to touch this.
-* `src`: holds source code.
-    * Including your code!
-
-## Setting up a package
-
-Let's move our functions to another package.
-
-`~/go/src/greeting/greeting.go`
-
-``` go
-package greeting
-
-import "fmt"
-
-func Hello() {
-	fmt.Println("Hello!")
-}
-
-func Hi() {
-	fmt.Println("Hi!")
-}
-```
-
-## Importing our package
-
-`random_directory/hi.go`
-
-``` go
-package main
-
-import "greeting"
-
-func main() {
-	greeting.Hello()
-	greeting.Hi()
-}
-```
-
-## "go run"
-
-```
-$ go run hi.go
-Hello!
-Hi!
-```
-
-## Moving "main" to the workspace
-
-`~/go/src/hi/main.go`
-
-``` go
-package main
-
-import "greeting"
-
-func main() {
-	greeting.Hello()
-	greeting.Hi()
-}
-```
-
-## "go install"
-
-```
-$ go install hi
-$ tree ~/go
-go
-|-- bin
-|   `-- hi
-`-- src
-    |-- greeting
-    |   `-- greeting.go
-    `-- hi
-        `-- main.go
-```
-
-## "go install"
-
-```
-$ export PATH=$PATH:$HOME/go/bin
-```
-
-(Go installer does this for you.)
-
-## "go install"
-
-```
-$ hi
-Hello!
-Hi!
-```
-
-## "go get"
-
-* Uses same package semantics to download others' packages and install them in your workspace, making them accessible to your code.
-* Included with all Go installs.
-* Not versioned. 😞
-
-## Go modules
-
-* 
-
-
-
 # Closing
 
 ## What we didn't have time for
 
+* Packages and modules
 * "testing" package
 * Buffered channels
 * Runes and UTF8 support
