@@ -28,9 +28,19 @@
 
 ## Talk overview
 
-TODO major sections
-TODO questions
-TODO slides are posted
+* A Sneak Peek
+* Why Go?
+* Syntax
+* More Types
+* OOP-*like* Concepts
+* Error handling
+* Concurrency
+* Packages
+
+## Talk overview
+
+* These slides are posted at `https://github.com/jaymcgavren/presentations`; we'll show that URL again at the end.
+* I'll take questions at the end.
 
 
 
@@ -103,8 +113,6 @@ func main() {
 	fmt.Println(<-sizes)
 }
 ```
-
-<!-- TODO packages -->
 
 
 
