@@ -4,15 +4,26 @@
 
 ## About me
 
+::: incremental
+
 * Author, _Head First Go_
 * Treehouse instructor
+* _Not_ a language implementer! 😛
+
+:::
+
+::: notes
+
+(Unlike fellow speakers Andy Kelly and Carol Goulding)
+
+:::
 
 ## Talk goals
 
+* Get an overview of the language.
 * We only have 45 minutes.
-* You are _not_ going to learn Go today.
 * We'll be moving fast.
-* But you'll get an overview of the language.
+* You are _not_ going to learn Go by the end of the session.
 
 ## Where to Learn Go
 
@@ -28,14 +39,18 @@
 
 ## Talk overview
 
+::: incremental
+
 * A Sneak Peek
 * Why Go?
 * Syntax
-* More Types
+* Types
 * OOP-*like* Concepts
 * Error handling
 * Concurrency
 * Packages
+
+:::
 
 ## Talk overview
 
@@ -114,11 +129,17 @@ func main() {
 }
 ```
 
+## Sneak peek
+
+We'll take a more detailed look at each of these programs later.
+
 
 
 # Why Go?
 
 ## Go at a glance
+
+::: incremental
 
 * C-like syntax
 * Compiles to native code
@@ -126,66 +147,66 @@ func main() {
 * Garbage collected
 * Concurrency built into language
 
-## Languages in order of creation
+:::
 
-| Year | Language |
-| ---- | -------- |
-| 1972 | C |
-| 1983 | C++ |
-| 1991 | Python |
-| 1995 | Java |
-| 1995 | JavaScript |
-| 1995 | PHP |
-| 1995 | Ruby |
-| 2000 | C# |
-| 2009 | **Go** |
-| 2011 | Kotlin |
-| 2014 | Swift |
+::: notes
 
-https://en.wikipedia.org/wiki/Timeline_of_programming_languages
+"Unpredictable stop the world latency glitches" -Andy Kelley 😏
 
-## Languages in (subjective) order of execution speed
+:::
 
-https://benchmarksgame-team.pages.debian.net/benchmarksgame/performance/mandelbrot.html
+## OK, but what can you do with Go?
 
-| Run Time | Language |
-| -------- | -------- |
-| 1.5s | C++ |
-| 1.65s | C |
-| 2.2s | Rust |
-| 3.22 | Swift |
-| 5.5s | **Go** |
-| 5.5s | C# (.NET Core) |
-| 6.84s | Java |
-| 18.13s | JavaScript (Node.js) |
-| 118.28s | PHP |
-| 265.56s | Python 3 |
-| >420s | Ruby |
+## Docker
 
-## Languages in (subjective) order of execution speed
+![](images/docker.png)
 
-https://benchmarksgame-team.pages.debian.net/benchmarksgame/performance/binarytrees.html
+## Docker
 
-| Run Time | Language |
-| -------- | -------- |
-| 3.1s | Rust |
-| 3.48s | C |
-| 3.77s | C++ |
-| 5.05s | Swift |
-| 7.85s | C# (.NET Core) |
-| 8.32s | Java |
-| 26.94s | **Go** |
-| 45.89s | JavaScript (Node.js) |
-| 58.93s | PHP |
-| 64.07s | Ruby |
-| 81.74s | Python 3 |
+* "'go build' will embed everything you need. (No more 'install this in order to run my stuff'.)"
+* "Extensive standard library and data types."
+* "Strong duck typing."
 
-## Languages in (subjective) order of deployment ease
+—Jérôme Petazzoni, "Docker and Go: why did we decide to write Docker in Go?"
 
-1. Native binary: C++, C, **Go**, Rust
-1. Standalone *or* framework/VM dependent: C#, Kotlin
-1. VM-dependent: JavaScript, Java
-1. Interpreter-dependent: Python, PHP, Ruby
+::: notes
+
+https://www.slideshare.net/jpetazzo/docker-and-go-why-did-we-decide-to-write-docker-in-go
+
+:::
+
+## Kubernetes
+
+![](images/kubernetes.png)
+
+## Kubernetes
+
+* "Code in Go isn't overly complex. People don't create FactoryFactory objects."
+* "Something with the feel of C with more advanced features like anonymous functions is a great combo."
+* "Garbage Collection: We all know how to clean up after our selves but it is so nice to not have to worry about it."
+
+—Joe Beda, "Kubernetes + Go = Crazy Delicious"
+
+## My take
+
+* Go always favors simplicity.
+    * If a feature complicates code, or slows down compilation or execution, it's left out.
+* Go values conceptual consistency.
+    * Blocks work the same at all levels (func/for/if)
+    * Same naming rules for everything (variables/functions/types)
+* Go values stability.
+
+## On stability
+
+"It is intended that programs written to the Go 1 specification will continue to compile and run correctly, unchanged, over the lifetime of that specification."
+
+—`https://golang.org/doc/go1compat`
+
+## My favorite summary
+
+"It's just a boring, really reliable, good language."
+
+—Ben DiFrancesco, overheard at PhillyETE
 
 ## Languages in order of popularity
 
@@ -202,62 +223,59 @@ https://benchmarksgame-team.pages.debian.net/benchmarksgame/performance/binarytr
 1. Kotlin (6.4%)
 1. Rust (3.2%)
 
-Stack Overflow 2019 Developer Survey - percentage of developers saying they use a language
-
 ::: notes
-Markup, shell, and database query languages omitted
+
+* Stack Overflow 2019 Developer Survey - percentage of developers saying they use a language
+* Markup, shell, and database query languages omitted
+
 :::
+
+## History
+
+* Designed by small team at Google in 2007
+* Made open source in 2009
+* Version 1.0 in 2012
 
 ## Rationale
 
-"we had become frustrated by the undue complexity required to use the languages we worked with to develop server software"
+Simplicity: "we had become frustrated by the undue complexity required to use the languages we worked with to develop server software"
 
-"multi[-core] processors were becoming universal but most languages offered little help to program them efficiently and safely"
+Concurrency: "multi[-core] processors were becoming universal but most languages offered little help to program them efficiently and safely"
 
-"to make resource management tractable in a large concurrent program, garbage collection... was required"
+Automatic memory management: "to make resource management tractable in a large concurrent program, garbage collection... was required"
 
 —https://golang.org/doc/faq
 
-## Some overgeneralizations
-
-* Go always favors simplicity.
-    * If a feature complicates code, or slows down compilation or execution, it's left out.
-* Go values conceptual consistency.
-    * Blocks work the same at all levels (func/for/if)
-    * Same naming rules for everything (variables/functions/types)
-
 ## Left out (on purpose)
 
-* Constructors
+* Object constructors
 * Method overloading
 * Class inheritance (mostly)
 * Exceptions
 
 ## NO EXCEPTIONS?!
 
-"We believe that coupling exceptions to a control structure, as in the try-catch-finally idiom, results in convoluted code. It also tends to encourage programmers to label too many ordinary errors, such as failing to open a file, as exceptional."
+Desire to avoid exception abuse: "We believe that coupling exceptions to a control structure, as in the try-catch-finally idiom, results in convoluted code. It also tends to encourage programmers to label too many ordinary errors, such as failing to open a file, as exceptional."
 
-"For plain error handling, Go's multi-value returns make it easy to report an error without overloading the return value."
-
-—https://golang.org/doc/faq
-
-## Why Goroutines?
-
-"multiplex independently executing functions—coroutines—onto a set of threads"
-
-"The result, which we call goroutines, can be very cheap"
-
-"It is practical to create hundreds of thousands of goroutines in the same address space"
+Alternatives provided: "For plain error handling, Go's multi-value returns make it easy to report an error without overloading the return value."
 
 —https://golang.org/doc/faq
 
 ## Go and object-oriented programming
 
-"Although Go has types and methods and allows an object-oriented style of programming, there is no type hierarchy."
+No inheritance: "Although Go has types and methods and allows an object-oriented style of programming, there is no type hierarchy."
 
-"There are... ways to embed types in other types to provide something analogous—but not identical—to subclassing."
+Alternatives provided: "There are... ways to embed types in other types to provide something analogous—but not identical—to subclassing."
 
-"methods in Go are more general than in C++ or Java: they can be defined for any sort of data, even built-in types"
+And even improvements: "methods in Go are more general than in C++ or Java: they can be defined for any sort of data, even built-in types"
+
+—https://golang.org/doc/faq
+
+## Why Goroutines?
+
+One thread, many goroutines: "multiplex independently executing functions—coroutines—onto a set of threads... The result, which we call goroutines, can be very cheap..."
+
+Create all you want: "It is practical to create hundreds of thousands of goroutines in the same address space"
 
 —https://golang.org/doc/faq
 
@@ -769,6 +787,20 @@ Output:
 give it away, give it away, give it away, now!
 ```
 
+## Anonymous functions
+
+``` go
+func thrice(callback func()) {
+	callback()
+	callback()
+	callback()
+}
+func main() {
+	thrice(func() { fmt.Print("give it away, ") })
+	fmt.Println("now!")
+}
+```
+
 ## First-class functions
 
 ``` go
@@ -796,6 +828,13 @@ func main() {
 	http.ListenAndServe("localhost:8080", nil)
 }
 ```
+
+::: notes
+
+`samples/web_app.go`
+
+:::
+
 
 
 # More Types
@@ -1812,6 +1851,31 @@ URLs are paired with sizes!
 
 # Packages
 
+## The "main" package
+
+* Code intended for direct execution goes in the `main` package.
+* Go looks for a `main` function and calls that first.
+
+``` go
+package main
+
+import "fmt"
+
+func Hello() {
+	fmt.Println("Hello!")
+}
+func Hi() {
+	fmt.Println("Hi!")
+}
+func main() {
+    Hello()
+}
+```
+
+## The "main" package
+
+But sticking everything in one package will only get you so far...
+
 ## The Go workspace
 
 * A directory to hold package code.
@@ -1820,11 +1884,16 @@ URLs are paired with sizes!
 
 ## Workspace subdirectories
 
-* `bin`: holds binary executables
-* `pkg`: holds compiled package files
-* `src`: holds source code
+* `bin`: holds binary executables.
+    * Add it to your `$PATH` and you can run them from anywhere.
+* `pkg`: holds compiled package files.
+    * You generally don't need to touch this.
+* `src`: holds source code.
+    * Including your code!
 
 ## Setting up a package
+
+Let's move our functions to another package.
 
 `~/go/src/greeting/greeting.go`
 
@@ -1842,11 +1911,78 @@ func Hi() {
 }
 ```
 
+## Importing our package
+
+`random_directory/hi.go`
+
+``` go
+package main
+
+import "greeting"
+
+func main() {
+	greeting.Hello()
+	greeting.Hi()
+}
+```
+
+## "go run"
+
+```
+$ go run hi.go
+Hello!
+Hi!
+```
+
+## Moving "main" to the workspace
+
+`~/go/src/hi/main.go`
+
+``` go
+package main
+
+import "greeting"
+
+func main() {
+	greeting.Hello()
+	greeting.Hi()
+}
+```
+
+## "go install"
+
+```
+$ go install
+$ tree ~/go
+go
+|-- bin
+|   `-- hi
+`-- src
+    |-- greeting
+    |   `-- greeting.go
+    `-- hi
+        `-- main.go
+```
+
+## "go install"
+
+```
+$ export PATH=$PATH:$HOME/go/bin
+```
+
+(Go installer does this for you.)
+
+## "go install"
+
+```
+$ hi
+Hello!
+Hi!
+```
+
 ## Exported
 
 ## Unexported
-
-## "go build"
 
 ## Import paths
 
