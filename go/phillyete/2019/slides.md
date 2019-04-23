@@ -69,7 +69,7 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("Hello, Philadelphia!")
+	fmt.Println("Hello, Philly!")
 }
 ```
 
@@ -208,7 +208,7 @@ https://www.slideshare.net/jpetazzo/docker-and-go-why-did-we-decide-to-write-doc
 
 —Ben DiFrancesco, overheard at PhillyETE
 
-## Languages in order of popularity
+## StackOverflow 2019 developer survey - popularity
 
 1. JavaScript (67.8%)
 1. Python (41.7%)
@@ -283,7 +283,7 @@ Create all you want: "It is practical to create hundreds of thousands of gorouti
 
 * First-class functions
 * Built-in UTF8 support
-* Interfaces fully decoupled from types
+* Interfaces fully decoupled from types ("compile time duck typing")
 * `go get` package manager standard
 * `go format` command formats code for you
 * Unit testing in standard library
@@ -339,7 +339,9 @@ func repeatLine(line string, times int) {
 ![](images/playground.png)
 
 ::: notes
+
 Example saved session: https://play.golang.org/p/TRMMrDcre0V
+
 :::
 
 
@@ -376,23 +378,6 @@ import (
 func main() {
 	fmt.Println(math.Floor(2.75))
 	fmt.Println(strings.Title("head first go"))
-}
-```
-
-## Other packages
-
-``` go
-package keyboard
-
-import (
-	"bufio"
-	"os"
-	"strconv"
-	"strings"
-)
-
-func GetFloat() (float64, error) {
-	// GetFloat code here...
 }
 ```
 
@@ -486,43 +471,6 @@ fmt.Println(reflect.TypeOf(myInteger)) // => int
 fmt.Println(reflect.TypeOf(myFloat))   // => float64
 ```
 
-## Type Safety
-
-``` go
-myInteger := 1
-myFloat := 3.1415
-myInteger = "3"
-```
-
-Compile error: 
-
-```
-prog.go:6:14: cannot use "3" (type string) as type int in assignment
-```
-
-## Type Safety
-
-``` go
-myInteger := 1
-myFloat := 3.1415
-fmt.Println(myInteger + myFloat)
-```
-
-Compile error: 
-
-```
-prog.go:8:24: invalid operation: myInteger + myFloat (mismatched types int and float64)
-```
-
-## Casting
-
-``` go
-myInteger := 1
-myFloat := 3.1415
-fmt.Println(float64(myInteger) + myFloat)
-// => 4.141500000000001
-```
-
 ## Must use every variable you declare
 
 ``` go
@@ -567,25 +515,7 @@ var myString string
 fmt.Println("(" + myString + ")") // => ()
 ```
 
-## "if" is unsurprising
-
-``` go
-if 1 < 2 {
-	fmt.Println("Universe is OK")
-} else {
-	fmt.Println("We have a problem")
-}
-```
-
-## "for" is unsurprising
-
-``` go
-for i := 1; i <= 3; i++ {
-	fmt.Println(i)
-}
-```
-
-## "for" is unsurprising... mostly
+## "for" ... "range"
 
 ``` go
 mySlice := []string{"one", "two", "three"}
@@ -634,55 +564,6 @@ Output:
 one
 two
 three
-```
-
-## Functions
-
-``` go
-func quote(text string) {
-	lines := strings.Split(text, "\n")
-	for _, line := range lines {
-		fmt.Println(">", line)
-	}
-}
-
-func main() {
-	originalMessage :=
-`You still haven't finished your
-PhillyETE slides?? ...Fine. Just
-PLEASE have them ready Tuesday!`
-	quote(originalMessage)
-	fmt.Println("I will, I promise!")
-}
-```
-
-## Return values
-
-``` go
-// Specify return value type after parameters
-func quote(text string) []string {
-	lines := strings.Split(text, "\n")
-	var quoted []string
-	for _, line := range lines {
-		quoted = append(quoted, "> "+line)
-	}
-	return quoted
-}
-```
-
-## Return values
-
-``` go
-func main() {
-	originalMessage :=
-`You still haven't finished your
-PhillyETE slides?? ...Fine. Just
-PLEASE have them ready Tuesday!`
-	quoted := quote(originalMessage)
-	for _, line := range quoted {
-		fmt.Println(line)
-	}
-}
 ```
 
 ## Multiple return values
@@ -839,33 +720,6 @@ func main() {
 
 # More Types
 
-## Go is pass-by-value
-
-We saw a pointer type earlier... let's talk about those.
-
-``` go
-func helloHandler(writer http.ResponseWriter, request *http.Request) {
-	writer.Write([]byte("<h1>Hello, web!</h1>"))
-}
-func bonjourHandler(writer http.ResponseWriter, request *http.Request) {
-	writer.Write([]byte("<h1>Bonjour, web!</h1>"))
-}
-```
-
-## Go is pass-by-value
-
-``` go
-func Increment(value int) {
-	value += 1
-}
-
-func main() {
-	value := 9
-	Increment(value)
-	fmt.Println(value) // => 9
-}
-```
-
 ## Pointer types
 
 ``` go
@@ -960,34 +814,7 @@ fmt.Println(bucket.toggle) // => true
 
 ## Custom types
 
-But referring to a struct type by its full definition gets unwieldy...
-
-``` go
-var bucket1 struct {
-	number float64
-	word   string
-	toggle bool
-}
-var bucket2 struct {
-	number float64
-
-	word   string
-	toggle bool
-}
-fmt.Println(reflect.TypeOf(bucket1))
-fmt.Println(reflect.TypeOf(bucket2))
-```
-
-Output:
-
-``` go
-struct { number float64; word string; toggle bool }
-struct { number float64; word string; toggle bool }
-```
-
-## Custom types
-
-Instead, it's better to declare it as a new type.
+`type myType` followed by an underlying type declares a new type.
 
 ``` go
 type myType struct {
@@ -995,33 +822,11 @@ type myType struct {
 	word   string
 	toggle bool
 }
-
-func main() {
-	var bucket1 myType
-	var bucket2 myType
-	fmt.Println(reflect.TypeOf(bucket1))
-	fmt.Println(reflect.TypeOf(bucket2))
-}
-```
-
-Output:
-
-``` go
-main.myType
-main.myType
 ```
 
 ## Custom types
 
-Then you can do all the same stuff using the defined type.
-
 ``` go
-type myType struct {
-	number float64
-	word   string
-	toggle bool
-}
-
 func main() {
 	var bucket myType
 	bucket.number = 3.14
@@ -1034,6 +839,8 @@ func main() {
 ```
 
 ## Other underlying types
+
+A custom type can have an underlying basic type
 
 ``` go
 type Liters float64
@@ -1051,66 +858,6 @@ func main() {
 }
 ```
 
-## Can do math/comparisons with values of same type
-
-``` go
-type Liters float64
-type Gallons float64
-
-func main() {
-	fmt.Println(Liters(1.2) + Liters(3.4))    // => 4.6
-	fmt.Println(Gallons(1.2) == Gallons(1.2)) // => true
-	fmt.Println(Liters(3.4) < Liters(1.2))    // => false
-}
-```
-
-## Can do math/comparisons with literal values
-
-``` go
-type Liters float64
-type Gallons float64
-
-func main() {
-	fmt.Println(Liters(1.2) + 3.4)   // => 4.6
-	fmt.Println(Gallons(1.2) == 1.2) // => true
-	fmt.Println(Liters(3.4) < 1.2)   // => false
-}
-```
-
-## _Cannot_ do math/comparisons with other types
-
-``` go
-type Liters float64
-type Gallons float64
-
-func main() {
-	fmt.Println(Liters(1.2) + Gallons(3.4))
-	fmt.Println(Gallons(1.2) == Liters(1.2))
-}
-```
-
-Compile errors: 
-
-``` go
-prog.go:11:26: invalid operation: Liters(1.2) + Gallons(3.4) (mismatched types Liters and Gallons)
-prog.go:12:27: invalid operation: Gallons(1.2) == Liters(1.2) (mismatched types Gallons and Liters)
-```
-
-## Need to convert first
-
-``` go
-type Liters float64
-type Gallons float64
-
-func main() {
-	// Convert Liters to Gallons before adding to Gallons
-	fmt.Println(Gallons(Liters(1.2)*0.264) + Gallons(3.4))
-    // => 3.7168
-	// Convert Gallons to Liters before comparing to Liters
-	fmt.Println(Liters(Gallons(1.2)*3.785) == Liters(1.2))
-    // => false
-}
-```
 
 
 # OOP-*like* Concepts
@@ -1133,9 +880,11 @@ func main() {
 ```
 
 ::: notes
+
 * Very similar to function definition
 * Add receiver parameter before function name
 * Receiver parameter type is type method will be defined on
+
 :::
 
 ## Receiver parameter acts like just another parameter
@@ -1173,7 +922,9 @@ func main() {
 ```
 
 ::: notes
+
 * Underlying type specifies how type's data is stored, so this is OK
+
 :::
 
 ## Underlying type is _not_ a superclass
@@ -1222,7 +973,9 @@ type Landmark struct {
 	// Has no name of its own, just a type
 	Coordinates
 }
+```
 
+``` go
 func main() {
 	var l Landmark
 	l.Name = "The Googleplex"
@@ -1291,7 +1044,7 @@ func (t TapeRecorder) Stop() {
 
 ## Interfaces
 
-A function that accepts a `TapePlayer`, but not a `TapeRecorder`...
+A function that accepts a `TapePlayer`...
 
 ``` go
 func playList(device TapePlayer, songs []string) {
@@ -1323,6 +1076,8 @@ Stopped!
 
 ## Interfaces
 
+But don't try to pass it a `TapeRecorder`!
+
 ``` go
 func main() {
 	mixtape := []string{"Jessie's Girl", "Whip It", "9 to 5"}
@@ -1353,10 +1108,6 @@ type Player interface {
 ```
 
 Notice we don't have to modify the `TapePlayer` or `TapeRecorder` type definitions!
-
-::: notes
-* No return values specified, so neither method can have a return value
-:::
 
 ## Interfaces
 
@@ -1400,13 +1151,11 @@ Playing 9 to 5
 Stopped!
 ```
 
-<!-- ## "error" interface -->
+## Interfaces
 
-<!-- ## "stringer" interface -->
+"Structural typing is like compile time duck typing. It makes Go feel like a dynamic language, such as Ruby or Python."
 
-<!-- ## Empty interface -->
-
-<!-- ## Type assertions -->
+-Jared Carroll, "[Structural Typing: Compile Time Duck Typing](https://blog.carbonfive.com/2012/09/23/structural-typing-compile-time-duck-typing/)"
 
 
 
@@ -1562,7 +1311,6 @@ func Socialize() {
 	// The below code won't be run!
 	fmt.Println("Nice weather, eh?")
 }
-
 ```
 
 ## "panic" and "defer"
@@ -1767,85 +1515,12 @@ Getting https://example.com/
 0.695384291
 ```
 
+## Channels
+
 * Finishes in half the time of the original! (YMMV.)
 * Channel reads cause `main` goroutine to block until `responseSize` goroutines send, so they have time to finish before program ends.
+* Can't tell which size belongs to which page, but you could make a channel for structs that pairs URLs with byte sizes.
 
-## Channels for structs
-
-Can't tell which size belongs to which page:
-
-```
-Getting https://golang.org/doc
-Getting https://golang.org/
-Getting https://example.com/
-1270
-8158
-12558
-0.695384291
-```
-
-## Channels for structs
-
-Create `Page` struct type to bundle URL with corresponding size:
-
-``` go
-type Page struct {
-	URL  string
-	Size int
-}
-```
-
-## Channels for structs
-
-Update `responseSize` to accept a `chan Page`:
-
-``` go
-func responseSize(url string, channel chan Page) {
-	fmt.Println("Getting", url)              // Unchanged
-	response, _ := http.Get(url)             // Unchanged
-	defer response.Body.Close()              // Unchanged
-	body, _ := ioutil.ReadAll(response.Body) // Unchanged
-	channel <- Page{URL: url, Size: len(body)}
-}
-```
-
-## Channels for structs
-
-* Update `main` to pass `chan Page` to `responseSize`.
-* Read `Page` from channel and print its `URL` and `Size`.
-
-``` go
-func main() {
-	start := time.Now()
-	pages := make(chan Page)
-	urls := []string{"https://example.com/",
-		"https://golang.org/", "https://golang.org/doc"}
-	for _, url := range urls {
-		go responseSize(url, pages)
-	}
-	for i := 0; i < len(urls); i++ {
-		page := <-pages
-		fmt.Printf("%s: %d\n", page.URL, page.Size)
-	}
-	fmt.Println(time.Since(start).Seconds())
-}
-```
-
-## Channels for structs
-
-Output:
-
-``` go
-Getting https://golang.org/doc
-Getting https://example.com/
-Getting https://golang.org/
-https://example.com/: 1270
-https://golang.org/: 8158
-https://golang.org/doc: 12558
-0.750049545
-```
-
-URLs are paired with sizes!
 
 
 
@@ -1952,7 +1627,7 @@ func main() {
 ## "go install"
 
 ```
-$ go install
+$ go install hi
 $ tree ~/go
 go
 |-- bin
@@ -1980,76 +1655,25 @@ Hello!
 Hi!
 ```
 
-## Exported
-
-## Unexported
-
-## Import paths
-
 ## "go get"
 
-I set up a repo at `https://github.com/headfirstgo/greeting`, and pushed the package code there...
+* Uses same package semantics to download others' packages and install them in your workspace, making them accessible to your code.
+* Included with all Go installs.
+* Not versioned. 😞
 
-![](images/github.png)
+## Go modules
 
-## "go get"
-
-Now anyone can retrieve the package with `go get github.com/headfirstgo/greeting`:
-
-```
-$ go get github.com/headfirstgo/greeting
-$ tree ~/go
-go
-`-- src
-    `-- github.com
-        `-- headfirstgo
-            `-- greeting
-                |-- dansk
-                |   `-- dansk.go
-                |-- deutsch
-                |   `-- deutsch.go
-                `-- greeting.go
-```
-
-## "go get"
-
-`~/go/src/hi/main.go`
-
-``` go
-package main
-
-import (
-	"github.com/headfirstgo/greeting"
-	"github.com/headfirstgo/greeting/dansk"
-	"github.com/headfirstgo/greeting/deutsch"
-)
-
-func main() {
-	greeting.Hello()   // => Hello!
-	dansk.Hej()        // => Hej!
-	deutsch.GutenTag() // => Guten Tag!
-}
-```
-
-## "go doc"
-
-* Doc comments
-
-## Web documentation
+* 
 
 
 
 # Closing
 
-## The leftovers
+## What we didn't have time for
 
-"testing" package
-
-Gorilla
-
-Buffalo
-
-Buffered channels
+* "testing" package
+* Buffered channels
+* Runes and UTF8 support
 
 ## Credits
 
