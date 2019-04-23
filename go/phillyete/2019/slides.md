@@ -923,6 +923,7 @@ var bucket1 struct {
 }
 var bucket2 struct {
 	number float64
+
 	word   string
 	toggle bool
 }
@@ -1573,7 +1574,7 @@ I know of one place in the standard library that `panic` is used in normal progr
 
 ## "panic" should not be used like an exception
 
-Aside from that, panic is used only to indicate "impossible" situations:
+Generally, `panic` should be used only to indicate "impossible" situations:
 
 ``` go
 func awardPrize() {
@@ -1585,7 +1586,7 @@ func awardPrize() {
 	} else if doorNumber == 3 {
 		fmt.Println("You win a goat!")
 	} else {
-        // This should never happen
+        // This should never happen.
 		panic("invalid door number")
 	}
 }
@@ -1593,7 +1594,8 @@ func awardPrize() {
 
 ## "panic" should not be used like an exception
 
-If you know an error could happen, use normal control flow statements to handle it.
+* If you know an error could happen, use normal control flow statements to handle it.
+* Google "golang errors are values" (which should take you to `https://blog.golang.org/errors-are-values`) for some tips on making error handling more pleasant.
 
 
 
@@ -1799,31 +1801,97 @@ https://golang.org/doc: 12558
 URLs are paired with sizes!
 
 
-<!-- # Packages -->
 
-<!-- ## Exported -->
+# Packages
 
-<!-- ## Unexported -->
+## The Go workspace
 
-<!-- ## "go build" -->
+* A directory to hold package code.
+* `~/go` by default.
+* Or set `$GOPATH` environment variable to a different directory.
 
-<!-- ## The Go workspace -->
+## Workspace subdirectories
 
-<!-- * `bin` -->
-<!-- * `pkg` -->
-<!-- * `src` -->
+* `bin`: holds binary executables
+* `pkg`: holds compiled package files
+* `src`: holds source code
 
-<!-- Package directories -->
+## Setting up a package
 
-<!-- ## Import paths -->
+`~/go/src/greeting/greeting.go`
 
-<!-- ## "go get" -->
+``` go
+package greeting
 
-<!-- ## "go doc" -->
+import "fmt"
 
-<!-- * Doc comments -->
+func Hello() {
+	fmt.Println("Hello!")
+}
 
-<!-- ## Web documentation -->
+func Hi() {
+	fmt.Println("Hi!")
+}
+```
+
+## Exported
+
+## Unexported
+
+## "go build"
+
+## Import paths
+
+## "go get"
+
+I set up a repo at `https://github.com/headfirstgo/greeting`, and pushed the package code there...
+
+![](images/github.png)
+
+## "go get"
+
+Now anyone can retrieve the package with `go get github.com/headfirstgo/greeting`:
+
+```
+$ go get github.com/headfirstgo/greeting
+$ tree ~/go
+go
+`-- src
+    `-- github.com
+        `-- headfirstgo
+            `-- greeting
+                |-- dansk
+                |   `-- dansk.go
+                |-- deutsch
+                |   `-- deutsch.go
+                `-- greeting.go
+```
+
+## "go get"
+
+`~/go/src/hi/main.go`
+
+``` go
+package main
+
+import (
+	"github.com/headfirstgo/greeting"
+	"github.com/headfirstgo/greeting/dansk"
+	"github.com/headfirstgo/greeting/deutsch"
+)
+
+func main() {
+	greeting.Hello()   // => Hello!
+	dansk.Hej()        // => Hej!
+	deutsch.GutenTag() // => Guten Tag!
+}
+```
+
+## "go doc"
+
+* Doc comments
+
+## Web documentation
 
 
 
@@ -1839,6 +1907,10 @@ Buffalo
 
 Buffered channels
 
+## Credits
+
+* Go Gopher by Renee French, used under a CC-Attribution-3.0 license.
+
 ## Other resources
 
 <!-- TODO Samples from this presentation -->
@@ -1850,6 +1922,8 @@ Buffered channels
 * Head First Go: `https://headfirstgo.com`
 
 ### Questions?
+
+`https://2019.phillyemergingtech.com/qa/`
 
 ::: notes
 Repeat each question before answering!
