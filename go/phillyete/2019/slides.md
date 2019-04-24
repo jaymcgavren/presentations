@@ -60,7 +60,16 @@ We'll show that URL again at the end.
 
 
 
-# A sneak peek
+
+## You Are Here
+
+* __A Sneak Peek__
+* Why Go?
+* Syntax
+* OOP-*like* Concepts
+* Goroutines and Channels
+
+# A Sneak Peek
 
 ## Sneak peek: Hello, world
 
@@ -135,6 +144,14 @@ func main() {
 We'll take a more detailed look at each of these programs later.
 
 
+
+## You Are Here
+
+* A Sneak Peek
+* __Why Go?__
+* Syntax
+* OOP-*like* Concepts
+* Goroutines and Channels
 
 # Why Go?
 
@@ -347,6 +364,14 @@ func repeatLine(line string, times int) {
 ![](images/playground.png)
 
 
+
+## You Are Here
+
+* A Sneak Peek
+* Why Go?
+* __Syntax__
+* OOP-*like* Concepts
+* Goroutines and Channels
 
 # Syntax
 
@@ -740,6 +765,14 @@ func main() {
 
 
 
+## You Are Here
+
+* A Sneak Peek
+* Why Go?
+* Syntax
+* __OOP-like Concepts__
+* Goroutines and Channels
+
 # OOP-*like* Concepts
 
 ## Structs
@@ -1132,6 +1165,15 @@ Stopped!
 -Jared Carroll, "[Structural Typing: Compile Time Duck Typing](https://blog.carbonfive.com/2012/09/23/structural-typing-compile-time-duck-typing/)"
 
 
+
+
+## You Are Here
+
+* A Sneak Peek
+* Why Go?
+* Syntax
+* OOP-*like* Concepts
+* __Goroutines and Channels__
 
 # Goroutines and Channels
 
