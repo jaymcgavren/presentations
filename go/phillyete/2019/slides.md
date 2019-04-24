@@ -45,8 +45,7 @@
 * Why Go?
 * Syntax
 * OOP-*like* Concepts
-* Defer, Panic, and Recover
-* Concurrency
+* Goroutines and Channels
 
 :::
 
@@ -1134,7 +1133,7 @@ Stopped!
 
 
 
-# Concurrency
+# Goroutines and Channels
 
 ## A non-concurrent program
 
@@ -1179,6 +1178,8 @@ Getting https://golang.org/doc
 1.5341211000000001 seconds
 ```
 
+If only we could make additional calls to `responseSize` while we were waiting for HTTP responses...
+
 ## Goroutines
 
 * `responseSize` function unchanged.
@@ -1202,8 +1203,8 @@ Output:
 3.1e-06
 ```
 
-* None of the `responseSize` goroutines get to even request their URL.
 * Run time so brief the duration is printed in scientific notation.
+* None of the `responseSize` goroutines get to even request their URL.
 * Problem is, `main` goroutine exits, ending the program, without waiting for `responseSize` goroutines.
 
 ## Channels
@@ -1243,8 +1244,6 @@ func main() {
 
 ## Channels
 
-Output:
-
 ```
 Getting https://golang.org/doc
 Getting https://golang.org/
@@ -1255,11 +1254,10 @@ Getting https://example.com/
 0.695384291
 ```
 
-## Channels
-
 * Finishes in half the time of the original! (YMMV.)
-* Channel reads cause `main` goroutine to block until `responseSize` goroutines send, so they have time to finish before program ends.
-* Can't tell which size belongs to which page, but you could make a channel for structs that pairs URLs with byte sizes.
+* The channel accomplishes two things:
+    * Channel reads cause `main` goroutine to block until `responseSize` goroutines send, so they have time to finish before program ends.
+    * The channel transmits data from the `responseSize` goroutines back to the `main` goroutine.
 
 
 
@@ -1274,18 +1272,17 @@ Getting https://example.com/
 * Buffered channels
 * Runes and UTF8 support
 
-## Credits
+## Go Gopher
 
-* Go Gopher by Renee French, used under a CC-Attribution-3.0 license.
+By Renee French, used under a CC-Attribution-3.0 license.
+
+![](images/gopher_color.png)
 
 ## Other resources
-
-<!-- TODO Samples from this presentation -->
 
 * These slides: `https://github.com/jaymcgavren/presentations`
 * Go Tour: `https://tour.golang.org`
 * Go Playground: `https://play.golang.org`
-* Me, on Twitter: `https://twitter.com/jaymcgavren`
 * Head First Go: `https://headfirstgo.com`
 
 ### Questions?
