@@ -812,6 +812,20 @@ func main() {
 ``` go
 type MyType string
 
+// Specify a "receiver parameter" within a function
+// definition to make it a method. The receiver 
+// parameter's type will be the type the method 
+// gets defined on.
+func (m MyType) sayHi() {
+	fmt.Println("Hi")
+}
+```
+
+## Methods
+
+``` go
+type MyType string
+
 func (m MyType) sayHi() {
 	fmt.Println("Hi")
 }
@@ -820,17 +834,9 @@ func main() {
 	value := MyType("a MyType value")
 	value.sayHi() // => Hi
 	anotherValue := MyType("another value")
-	anotherValue.sayHi() => Hi
+	anotherValue.sayHi() // => Hi
 }
 ```
-
-::: notes
-
-* Very similar to function definition
-* Add receiver parameter before function name
-* Receiver parameter type is type method will be defined on
-
-:::
 
 ## Receiver parameter acts like just another parameter
 
@@ -851,6 +857,8 @@ func main() {
 
 ## Underlying type is _not_ a superclass
 
+The underlying type specifies how a type's data will be stored, so this is OK...
+
 ``` go
 type MyType string
 
@@ -866,13 +874,9 @@ func main() {
 }
 ```
 
-::: notes
-
-* Underlying type specifies how type's data is stored, so this is OK
-
-:::
-
 ## Underlying type is _not_ a superclass
+
+But a type does _not_ inherit methods from its underlying type.
 
 ``` go
 type MyType string
@@ -904,7 +908,7 @@ prog.go:15:8: value2.sayHi undefined (type MyType2 has no field or method sayHi)
 * There is no method inheritance!
 * But there's another way to get the same benefits...
 
-## Embedding structs
+## Embedding structs is like inheriting fields
 
 ``` go
 type Coordinates struct {
@@ -951,6 +955,31 @@ func main() {
 	// => (37.42, -122.08)
 }
 ```
+
+## Promotion of embedded types' methods
+
+* Embed additional types to gain additional methods.
+* You've heard "favor composition over inheritance"...
+* Go implements that principle at the language level.
+
+``` go
+type Coordinates struct {
+	Latitude  float64
+	Longitude float64
+}
+func (c Coordinates) Location() string {
+	return fmt.Sprintf("(%0.2f, %0.2f)",
+		c.Latitude, c.Longitude)
+}
+type Landmark struct {
+	Name string
+	Coordinates
+}
+```
+
+## Interfaces
+
+(This part is my favorite!)
 
 ## Interfaces
 
@@ -1021,7 +1050,7 @@ Stopped!
 
 ## Interfaces
 
-But don't try to pass it a `TapeRecorder`!
+But don't try to pass a `TapeRecorder` to `playList`!
 
 ``` go
 func main() {
@@ -1052,7 +1081,8 @@ type Player interface {
 }
 ```
 
-Notice we don't have to modify the `TapePlayer` or `TapeRecorder` type definitions!
+* Notice we don't have to modify the `TapePlayer` or `TapeRecorder` type definitions!
+* Any type with `Play(string)` and `Stop()` methods automatically _satisfies_ this interface.
 
 ## Interfaces
 
@@ -1496,6 +1526,10 @@ Getting https://example.com/
 
 `https://2019.phillyemergingtech.com/qa/`
 
+![](images/head_first_go_cover.png)
+
 ::: notes
+
 Repeat each question before answering!
+
 :::
