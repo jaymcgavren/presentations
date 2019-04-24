@@ -53,8 +53,12 @@
 
 ## Talk overview
 
-* These slides are posted at `https://github.com/jaymcgavren/presentations`; we'll show that URL again at the end.
-* I'll take questions at the end.
+Review these slides at:
+
+`https://github.com/jaymcgavren/presentations`
+
+We'll show that URL again at the end.
+
 
 
 
@@ -186,20 +190,13 @@ https://www.slideshare.net/jpetazzo/docker-and-go-why-did-we-decide-to-write-doc
 
 —Joe Beda, "Kubernetes + Go = Crazy Delicious"
 
-## My take
-
-* Go always favors simplicity.
-    * If a feature complicates code, or slows down compilation or execution, it's left out.
-* Go values conceptual consistency.
-    * Blocks work the same at all levels (func/for/if)
-    * Same naming rules for everything (variables/functions/types)
-* Go values stability.
-
-## On stability
+## Go values stability
 
 "It is intended that programs written to the Go 1 specification will continue to compile and run correctly, unchanged, over the lifetime of that specification."
 
-—`https://golang.org/doc/go1compat`
+—The Go "compatibility promise"
+
+`https://golang.org/doc/go1compat`
 
 ## My favorite summary
 
@@ -270,7 +267,7 @@ And even improvements: "methods in Go are more general than in C++ or Java: they
 
 —https://golang.org/doc/faq
 
-## Why Goroutines?
+## Concurrency support
 
 One thread, many goroutines: "multiplex independently executing functions—coroutines—onto a set of threads... The result, which we call goroutines, can be very cheap..."
 
@@ -278,14 +275,24 @@ Create all you want: "It is practical to create hundreds of thousands of gorouti
 
 —https://golang.org/doc/faq
 
+* It's like having multiple function calls running simultanously.
+* Multi-core processor? Goroutines will help you make use of it.
+
 ## Neat stuff
 
 * First-class functions
-* Built-in UTF8 support
+* Built-in UTF8 support, `rune` type
 * Interfaces fully decoupled from types ("compile time duck typing")
-* `go get` package manager standard
-* `go format` command formats code for you
-* Unit testing in standard library
+* Included tools:
+    * `go get`: download and install packages
+    * `go fmt`: formats code for you
+    * `go test`: runs tests for you
+
+## "go fmt"
+
+* Automatically fixes code style
+* Acts as community's style guide
+* No more arguing tabs vs. spaces!
 
 ## "go fmt"
 
@@ -335,13 +342,11 @@ func repeatLine(line string, times int) {
 
 ## Playground
 
+* You don't even have to install Go to try it!
+* Edit and run Go code in your browser
+* Link at end of talk
+
 ![](images/playground.png)
-
-::: notes
-
-Example saved session: https://play.golang.org/p/TRMMrDcre0V
-
-:::
 
 
 
@@ -403,8 +408,8 @@ temp.go:5:5: imported and not used: "os"
 
 ## "goimports"
 
-* Automatically adds/removes imports
 * Wrapper for `go fmt`
+* Automatically adds/removes imports
 
 Install:
 
@@ -509,9 +514,25 @@ func main() {
 var myFloat float64
 fmt.Println(myFloat + 2.5) // => 2.5
 var myBool bool
-fmt.Println(!myBool) // => false
+fmt.Println(!myBool) // => true
 var myString string
 fmt.Println("(" + myString + ")") // => ()
+```
+
+## "for"
+
+``` go
+for i := 1; i <= 3; i++ {
+	fmt.Println(i)
+}
+```
+
+Output:
+
+```
+1
+2
+3
 ```
 
 ## "for" ... "range"
@@ -548,7 +569,8 @@ prog.go:9:6: i declared and not used
 
 ## Use the blank identifier to ignore values
 
-(Provides clear visual indicator that a value's being ignored!)
+* Discards the value.
+* Provides clear visual indicator that a value's being ignored!
 
 ``` go
 mySlice := []string{"one", "two", "three"}
@@ -590,6 +612,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println(flag)
 	flag, err = strconv.ParseBool("foobar")
 	if err != nil {
 		log.Fatal(err)
@@ -601,6 +624,7 @@ func main() {
 Output:
 
 ```
+true
 2009/11/10 23:00:00 strconv.ParseBool: parsing "foobar": invalid syntax
 ```
 
@@ -608,7 +632,7 @@ Output:
 
 "In Go, error handling is important. The language's design and conventions encourage you to explicitly check for errors where they occur (as distinct from the convention in other languages of throwing exceptions and **sometimes** catching them)." (Emphasis mine)
 
-Andrew Gerrand, https://blog.golang.org/error-handling-and-go
+-Andrew Gerrand, https://blog.golang.org/error-handling-and-go
 
 ## Writing functions with multiple return values
 
@@ -618,7 +642,8 @@ func parseBools(values []string) ([]bool, error) {
 	for i, value := range values {
 		parsed, err := strconv.ParseBool(value)
 		if err != nil {
-			return nil, fmt.Errorf("invalid value %s at index %d", value, i)
+			return nil, fmt.Errorf(
+                "invalid value %s at index %d", value, i)
 		}
 		bools = append(bools, parsed)
 	}
@@ -630,7 +655,8 @@ func parseBools(values []string) ([]bool, error) {
 
 ``` go
 func main() {
-	bools, err := parseBools([]string{"true", "false", "foobar"})
+	bools, err := parseBools(
+        []string{"true", "false", "foobar"})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -681,14 +707,13 @@ func main() {
 }
 ```
 
-## First-class functions
+## First-class functions: a simple web app
 
 ``` go
 package main
 
 import "net/http"
 
-// The * is a pointer type; we'll explain shortly!
 func helloHandler(writer http.ResponseWriter, request *http.Request) {
 	// Note: error return value ignored!
 	writer.Write([]byte("<h1>Hello, web!</h1>"))
@@ -698,7 +723,7 @@ func bonjourHandler(writer http.ResponseWriter, request *http.Request) {
 }
 ```
 
-## First-class functions
+## First-class functions: a simple web app
 
 ``` go
 func main() {
