@@ -44,7 +44,6 @@
 * A Sneak Peek
 * Why Go?
 * Syntax
-* Types
 * OOP-*like* Concepts
 * Error handling
 * Concurrency
@@ -742,81 +741,7 @@ func main() {
 
 
 
-# More Types
-
-## Pointer types
-
-``` go
-// *mytype is a pointer type
-func Increment(myPointer *int) {
-	// Read "*myPointer" aloud as "value at myPointer"
-	*myPointer += 1
-}
-
-func main() {
-	value := 9
-    // Read "&value" aloud as "address of value"
-	Increment(&value)
-	fmt.Println(value) // => 10
-}
-```
-
-## Pointer types
-
-There is no pointer arithmetic! (Whew!) 😌
-
-## Arrays
-
-``` go
-var primes [3]int
-primes[0] = 2
-primes[1] = 3
-fmt.Println(primes[0]) // => 2
-fmt.Println(primes[1]) // => 3
-fmt.Println(primes)    // => [2 3 0]
-// primes[2] is at zero value
-```
-
-* Can't grow when needed
-* To me, they're just a foundation for slices
-
-## Slices
-
-``` go
-var primes []int        // Zero value is nil
-primes = make([]int, 3) // Create a slice
-primes[0] = 2
-primes[1] = 3
-fmt.Println(primes[0])  // => 2
-fmt.Println(primes[1])  // => 3
-fmt.Println(primes)     // => [2 3 0]
-```
-
-## Slices and "append"
-
-``` go
-var primes []int
-primes = append(primes, 2)
-primes = append(primes, 3)
-fmt.Println(primes[0]) // => 2
-fmt.Println(primes[1]) // => 3
-fmt.Println(primes)    // => [2 3]
-primes = append(primes, 5)
-fmt.Println(primes)    // => [2 3 5]
-```
-
-## Maps
-
-``` go
-func main() {
-	ranks := make(map[string]int)
-	ranks["gold"] = 1
-	ranks["silver"] = 2
-	ranks["bronze"] = 3
-	fmt.Println(ranks["bronze"]) // => 3
-	fmt.Println(ranks["gold"])   // => 1
-}
-```
+# OOP-*like* Concepts
 
 ## Structs
 
@@ -881,10 +806,6 @@ func main() {
 	fmt.Println(busFuel) // => 240
 }
 ```
-
-
-
-# OOP-*like* Concepts
 
 ## Methods
 
