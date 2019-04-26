@@ -61,14 +61,6 @@ We'll show that URL again at the end.
 
 
 
-## You Are Here
-
-* __A Sneak Peek__
-* Why Go?
-* Syntax
-* OOP-*like* Concepts
-* Goroutines and Channels
-
 # A Sneak Peek
 
 ## Sneak peek: Hello, world
@@ -145,14 +137,6 @@ We'll take a more detailed look at each of these programs later.
 
 
 
-## You Are Here
-
-* A Sneak Peek
-* __Why Go?__
-* Syntax
-* OOP-*like* Concepts
-* Goroutines and Channels
-
 # Why Go?
 
 ## Go at a glance
@@ -164,12 +148,6 @@ We'll take a more detailed look at each of these programs later.
 * Type-safe
 * Garbage collected
 * Concurrency built into language
-
-:::
-
-::: notes
-
-"Unpredictable stop the world latency glitches" -Andy Kelley 😏
 
 :::
 
@@ -364,14 +342,6 @@ func repeatLine(line string, times int) {
 ![](images/playground.png)
 
 
-
-## You Are Here
-
-* A Sneak Peek
-* Why Go?
-* __Syntax__
-* OOP-*like* Concepts
-* Goroutines and Channels
 
 # Syntax
 
@@ -764,14 +734,6 @@ func main() {
 :::
 
 
-
-## You Are Here
-
-* A Sneak Peek
-* Why Go?
-* Syntax
-* __OOP-like Concepts__
-* Goroutines and Channels
 
 # OOP-*like* Concepts
 
@@ -1167,14 +1129,6 @@ Stopped!
 
 
 
-## You Are Here
-
-* A Sneak Peek
-* Why Go?
-* Syntax
-* OOP-*like* Concepts
-* __Goroutines and Channels__
-
 # Goroutines and Channels
 
 ## A non-concurrent program
@@ -1303,12 +1257,716 @@ Getting https://example.com/
 
 
 
+# Defer, Panic, and Recover
+
+## "defer"
+
+It's usually polite to end conversations with "goodbye":
+
+``` go
+func Socialize() {
+	fmt.Println("Hello!")
+	fmt.Println("Nice weather, eh?")
+	fmt.Println("Goodbye!")
+}
+
+func main() {
+	Socialize()
+}
+```
+
+Output:
+
+```
+Goodbye!
+Hello!
+Nice weather, eh?
+```
+
+## "defer"
+
+Write `defer` before a function call, and it will be "deferred" until enclosing function ends.
+
+``` go
+func Socialize() {
+	// This call will be made when Socialize ends.
+	defer fmt.Println("Goodbye!")
+	fmt.Println("Hello!")
+	fmt.Println("Nice weather, eh?")
+}
+```
+
+Output:
+
+```
+Hello!
+Nice weather, eh?
+Goodbye!
+```
+
+## "defer" calls made no matter what
+
+``` go
+func Socialize() error {
+	// Deferred call is made even if Socialize
+	// exits early (say, due to an error).
+	defer fmt.Println("Goodbye!")
+	fmt.Println("Hello!")
+	return fmt.Errorf("I don't want to talk.")
+	// The below code won't be run!
+	fmt.Println("Nice weather, eh?")
+	return nil
+}
+
+func main() {
+	err := Socialize()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+## "defer" calls made no matter what
+
+Output:
+
+```
+Hello!
+Goodbye!
+2019/04/22 11:22:29 I don't want to talk.
+exit status 1
+```
+
+## A (somewhat) more realistic example
+
+``` go
+func PrintLines(fileName string) error {
+	file, err := os.Open(fileName)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
+	if scanner.Err() != nil {
+		return scanner.Err()
+	}
+	return nil
+}
+```
+
+## A (somewhat) more realistic example
+
+``` go
+func main() {
+	err := PrintLines("lorem_ipsum.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+## "panic"
+
+* `panic` usually signals an _unanticipated_ error.
+* This example is just to show its mechanics.
+
+``` go
+func Socialize() {
+	fmt.Println("Hello!")
+	panic("I need to get out of here!")
+	// The below code won't be run!
+	fmt.Println("Nice weather, eh?")
+	fmt.Println("Goodbye!")
+}
+```
+
+## "panic"
+
+Output:
+
+``` go
+Hello!
+panic: I need to get out of here.
+
+goroutine 1 [running]:
+main.Socialize()
+        /Users/jay/socialize4_panic.go:9 +0x79
+main.main()
+        /Users/jay/socialize4_panic.go:16 +0x20
+exit status 2
+```
+
+## "panic" and "defer"
+
+``` go
+func Socialize() {
+	defer fmt.Println("Goodbye!")
+	fmt.Println("Hello!")
+	panic("I need to get out of here!")
+	// The below code won't be run!
+	fmt.Println("Nice weather, eh?")
+}
+```
+
+## "panic" and "defer"
+
+Output:
+
+```
+Hello!
+Goodbye!
+panic: I need to get out of here!
+
+goroutine 1 [running]:
+main.Socialize()
+        /Users/jay/socialize5_panic_defer.go:10 +0xd5
+main.main()
+        /Users/jay/socialize5_panic_defer.go:16 +0x20
+exit status 2
+```
+
+## "recover"
+
+``` go
+func CalmDown() {
+	// Halt the panic.
+	panicValue := recover()
+	// Print value passed to panic().
+	fmt.Println(panicValue)
+}
+
+func Socialize() {
+	defer fmt.Println("Goodbye!")
+	defer CalmDown()
+	fmt.Println("Hello!")
+	panic("I need to get out of here!")
+	// The below code won't be run!
+	fmt.Println("Nice weather, eh?")
+}
+```
+
+## "recover"
+
+Output:
+
+```
+Hello!
+I need to get out of here!
+Goodbye!
+```
+
+* Deferred `CalmDown` prints the `panic` value.
+* Deferred `Println` prints "Goodbye!".
+
+## "panic" should not be used like an exception
+
+I know of one place in the standard library that `panic` is used in normal program flow: in a recursive parsing function that panics to unwind the call stack after a parsing error. (The function then recovers and handles the error normally.)
+
+## "panic" should not be used like an exception
+
+Generally, `panic` should be used only to indicate "impossible" situations:
+
+``` go
+func awardPrize() {
+	doorNumber := rand.Intn(3) + 1
+	if doorNumber == 1 {
+		fmt.Println("You win a cruise!")
+	} else if doorNumber == 2 {
+		fmt.Println("You win a car!")
+	} else if doorNumber == 3 {
+		fmt.Println("You win a goat!")
+	} else {
+        // This should never happen.
+		panic("invalid door number")
+	}
+}
+```
+
+## "panic" should not be used like an exception
+
+* If you know an error could happen, use normal control flow statements to handle it.
+* Google "golang errors are values" (which should take you to `https://blog.golang.org/errors-are-values`) for some tips on making error handling more pleasant.
+
+
+
+# Defer, Panic, and Recover
+
+## "defer"
+
+It's usually polite to end conversations with "goodbye":
+
+``` go
+func Socialize() {
+	fmt.Println("Hello!")
+	fmt.Println("Nice weather, eh?")
+	fmt.Println("Goodbye!")
+}
+
+func main() {
+	Socialize()
+}
+```
+
+Output:
+
+```
+Goodbye!
+Hello!
+Nice weather, eh?
+```
+
+## "defer"
+
+Write `defer` before a function call, and it will be "deferred" until enclosing function ends.
+
+``` go
+func Socialize() {
+	// This call will be made when Socialize ends.
+	defer fmt.Println("Goodbye!")
+	fmt.Println("Hello!")
+	fmt.Println("Nice weather, eh?")
+}
+```
+
+Output:
+
+```
+Hello!
+Nice weather, eh?
+Goodbye!
+```
+
+## "defer" calls made no matter what
+
+``` go
+func Socialize() error {
+	// Deferred call is made even if Socialize
+	// exits early (say, due to an error).
+	defer fmt.Println("Goodbye!")
+	fmt.Println("Hello!")
+	return fmt.Errorf("I don't want to talk.")
+	// The below code won't be run!
+	fmt.Println("Nice weather, eh?")
+	return nil
+}
+
+func main() {
+	err := Socialize()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+## "defer" calls made no matter what
+
+Output:
+
+```
+Hello!
+Goodbye!
+2019/04/22 11:22:29 I don't want to talk.
+exit status 1
+```
+
+## A (somewhat) more realistic example
+
+``` go
+func PrintLines(fileName string) error {
+	file, err := os.Open(fileName)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
+	if scanner.Err() != nil {
+		return scanner.Err()
+	}
+	return nil
+}
+```
+
+## A (somewhat) more realistic example
+
+``` go
+func main() {
+	err := PrintLines("lorem_ipsum.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+## "panic"
+
+* `panic` usually signals an _unanticipated_ error.
+* This example is just to show its mechanics.
+
+``` go
+func Socialize() {
+	fmt.Println("Hello!")
+	panic("I need to get out of here!")
+	// The below code won't be run!
+	fmt.Println("Nice weather, eh?")
+	fmt.Println("Goodbye!")
+}
+```
+
+## "panic"
+
+Output:
+
+``` go
+Hello!
+panic: I need to get out of here.
+
+goroutine 1 [running]:
+main.Socialize()
+        /Users/jay/socialize4_panic.go:9 +0x79
+main.main()
+        /Users/jay/socialize4_panic.go:16 +0x20
+exit status 2
+```
+
+## "panic" and "defer"
+
+``` go
+func Socialize() {
+	defer fmt.Println("Goodbye!")
+	fmt.Println("Hello!")
+	panic("I need to get out of here!")
+	// The below code won't be run!
+	fmt.Println("Nice weather, eh?")
+}
+```
+
+## "panic" and "defer"
+
+Output:
+
+```
+Hello!
+Goodbye!
+panic: I need to get out of here!
+
+goroutine 1 [running]:
+main.Socialize()
+        /Users/jay/socialize5_panic_defer.go:10 +0xd5
+main.main()
+        /Users/jay/socialize5_panic_defer.go:16 +0x20
+exit status 2
+```
+
+## "recover"
+
+``` go
+func CalmDown() {
+	// Halt the panic.
+	panicValue := recover()
+	// Print value passed to panic().
+	fmt.Println(panicValue)
+}
+
+func Socialize() {
+	defer fmt.Println("Goodbye!")
+	defer CalmDown()
+	fmt.Println("Hello!")
+	panic("I need to get out of here!")
+	// The below code won't be run!
+	fmt.Println("Nice weather, eh?")
+}
+```
+
+## "recover"
+
+Output:
+
+```
+Hello!
+I need to get out of here!
+Goodbye!
+```
+
+* Deferred `CalmDown` prints the `panic` value.
+* Deferred `Println` prints "Goodbye!".
+
+## "panic" should not be used like an exception
+
+I know of one place in the standard library that `panic` is used in normal program flow: in a recursive parsing function that panics to unwind the call stack after a parsing error. (The function then recovers and handles the error normally.)
+
+## "panic" should not be used like an exception
+
+Generally, `panic` should be used only to indicate "impossible" situations:
+
+``` go
+func awardPrize() {
+	doorNumber := rand.Intn(3) + 1
+	if doorNumber == 1 {
+		fmt.Println("You win a cruise!")
+	} else if doorNumber == 2 {
+		fmt.Println("You win a car!")
+	} else if doorNumber == 3 {
+		fmt.Println("You win a goat!")
+	} else {
+        // This should never happen.
+		panic("invalid door number")
+	}
+}
+```
+
+## "panic" should not be used like an exception
+
+* If you know an error could happen, use normal control flow statements to handle it.
+* Google "golang errors are values" (which should take you to `https://blog.golang.org/errors-are-values`) for some tips on making error handling more pleasant.
+
+
+
+# Defer, Panic, and Recover
+
+## "defer"
+
+It's usually polite to end conversations with "goodbye":
+
+``` go
+func Socialize() {
+	fmt.Println("Hello!")
+	fmt.Println("Nice weather, eh?")
+	fmt.Println("Goodbye!")
+}
+
+func main() {
+	Socialize()
+}
+```
+
+Output:
+
+```
+Goodbye!
+Hello!
+Nice weather, eh?
+```
+
+## "defer"
+
+Write `defer` before a function call, and it will be "deferred" until enclosing function ends.
+
+``` go
+func Socialize() {
+	// This call will be made when Socialize ends.
+	defer fmt.Println("Goodbye!")
+	fmt.Println("Hello!")
+	fmt.Println("Nice weather, eh?")
+}
+```
+
+Output:
+
+```
+Hello!
+Nice weather, eh?
+Goodbye!
+```
+
+## "defer" calls made no matter what
+
+``` go
+func Socialize() error {
+	// Deferred call is made even if Socialize
+	// exits early (say, due to an error).
+	defer fmt.Println("Goodbye!")
+	fmt.Println("Hello!")
+	return fmt.Errorf("I don't want to talk.")
+	// The below code won't be run!
+	fmt.Println("Nice weather, eh?")
+	return nil
+}
+
+func main() {
+	err := Socialize()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+## "defer" calls made no matter what
+
+Output:
+
+```
+Hello!
+Goodbye!
+2019/04/22 11:22:29 I don't want to talk.
+exit status 1
+```
+
+## A (somewhat) more realistic example
+
+``` go
+func PrintLines(fileName string) error {
+	file, err := os.Open(fileName)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
+	if scanner.Err() != nil {
+		return scanner.Err()
+	}
+	return nil
+}
+```
+
+## A (somewhat) more realistic example
+
+``` go
+func main() {
+	err := PrintLines("lorem_ipsum.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+## "panic"
+
+* `panic` usually signals an _unanticipated_ error.
+* This example is just to show its mechanics.
+
+``` go
+func Socialize() {
+	fmt.Println("Hello!")
+	panic("I need to get out of here!")
+	// The below code won't be run!
+	fmt.Println("Nice weather, eh?")
+	fmt.Println("Goodbye!")
+}
+```
+
+## "panic"
+
+Output:
+
+``` go
+Hello!
+panic: I need to get out of here.
+
+goroutine 1 [running]:
+main.Socialize()
+        /Users/jay/socialize4_panic.go:9 +0x79
+main.main()
+        /Users/jay/socialize4_panic.go:16 +0x20
+exit status 2
+```
+
+## "panic" and "defer"
+
+``` go
+func Socialize() {
+	defer fmt.Println("Goodbye!")
+	fmt.Println("Hello!")
+	panic("I need to get out of here!")
+	// The below code won't be run!
+	fmt.Println("Nice weather, eh?")
+}
+```
+
+## "panic" and "defer"
+
+Output:
+
+```
+Hello!
+Goodbye!
+panic: I need to get out of here!
+
+goroutine 1 [running]:
+main.Socialize()
+        /Users/jay/socialize5_panic_defer.go:10 +0xd5
+main.main()
+        /Users/jay/socialize5_panic_defer.go:16 +0x20
+exit status 2
+```
+
+## "recover"
+
+``` go
+func CalmDown() {
+	// Halt the panic.
+	panicValue := recover()
+	// Print value passed to panic().
+	fmt.Println(panicValue)
+}
+
+func Socialize() {
+	defer fmt.Println("Goodbye!")
+	defer CalmDown()
+	fmt.Println("Hello!")
+	panic("I need to get out of here!")
+	// The below code won't be run!
+	fmt.Println("Nice weather, eh?")
+}
+```
+
+## "recover"
+
+Output:
+
+```
+Hello!
+I need to get out of here!
+Goodbye!
+```
+
+* Deferred `CalmDown` prints the `panic` value.
+* Deferred `Println` prints "Goodbye!".
+
+## "panic" should not be used like an exception
+
+I know of one place in the standard library that `panic` is used in normal program flow: in a recursive parsing function that panics to unwind the call stack after a parsing error. (The function then recovers and handles the error normally.)
+
+## "panic" should not be used like an exception
+
+Generally, `panic` should be used only to indicate "impossible" situations:
+
+``` go
+func awardPrize() {
+	doorNumber := rand.Intn(3) + 1
+	if doorNumber == 1 {
+		fmt.Println("You win a cruise!")
+	} else if doorNumber == 2 {
+		fmt.Println("You win a car!")
+	} else if doorNumber == 3 {
+		fmt.Println("You win a goat!")
+	} else {
+        // This should never happen.
+		panic("invalid door number")
+	}
+}
+```
+
+## "panic" should not be used like an exception
+
+* If you know an error could happen, use normal control flow statements to handle it.
+* Google "golang errors are values" (which should take you to `https://blog.golang.org/errors-are-values`) for some tips on making error handling more pleasant.
+
+
+
 
 # Closing
 
-## Stuff we didn't have time for
+## What we didn't have time for
 
-* `defer`, `panic`, and `recover`
 * Packages and modules
 * "testing" package
 * Buffered channels
