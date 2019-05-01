@@ -4,26 +4,8 @@
 
 ## About me
 
-::: incremental
-
 * Author, _Head First Go_
-* Treehouse instructor
-* Unlike the Rust and Zig speakers, _not_ a language implementer! 😛
-
-:::
-
-::: notes
-
-(Carol Goulding and Andy Kelley)
-
-:::
-
-## Talk goals
-
-* Get an overview of the language.
-* We only have 45 minutes.
-* We'll be moving fast.
-* You are _not_ going to learn Go by the end of the session.
+* Treehouse software development instructor
 
 ## Where to Learn Go
 
@@ -37,103 +19,7 @@
 
 ![](images/head_first_go_cover.png)
 
-## Talk overview
 
-::: incremental
-
-* A Sneak Peek
-* Why Go?
-* Syntax
-* OOP-*like* Concepts
-* Goroutines and Channels
-
-:::
-
-## Talk overview
-
-Review these slides at:
-
-`https://github.com/jaymcgavren/presentations`
-
-We'll show that URL again at the end.
-
-
-
-
-
-# A Sneak Peek
-
-## Sneak peek: Hello, world
-
-``` go
-package main
-
-import "fmt"
-
-func main() {
-	fmt.Println("Hello, Philly!")
-}
-```
-
-## Sneak peek: A tiny web app
-
-``` go
-package main
-
-import (
-	"log"
-	"net/http"
-)
-
-func helloHandler(writer http.ResponseWriter, request *http.Request) {
-	writer.Write([]byte("<h1>Hello, web!</h1>"))
-}
-
-func main() {
-	http.HandleFunc("/hello", helloHandler)
-	err := http.ListenAndServe("localhost:8080", nil)
-	log.Fatal(err)
-}
-```
-
-## Sneak peek: goroutines and channels
-
-``` go
-package main
-
-import (
-	"fmt"
-	"io/ioutil"
-	"net/http"
-	"time"
-)
-
-func responseSize(url string, channel chan int) {
-	fmt.Println("Getting", url)
-	response, _ := http.Get(url)
-	defer response.Body.Close()
-	body, _ := ioutil.ReadAll(response.Body)
-	channel <- len(body)
-}
-```
-
-## Sneak peek: goroutines and channels
-
-``` go
-func main() {
-	sizes := make(chan int)
-	go responseSize("https://example.com/", sizes)
-	go responseSize("https://golang.org/", sizes)
-	go responseSize("https://golang.org/doc", sizes)
-	fmt.Println(<-sizes)
-	fmt.Println(<-sizes)
-	fmt.Println(<-sizes)
-}
-```
-
-## Sneak peek
-
-We'll take a more detailed look at each of these programs later.
 
 
 
@@ -141,15 +27,11 @@ We'll take a more detailed look at each of these programs later.
 
 ## Go at a glance
 
-::: incremental
-
 * C-like syntax
 * Compiles to native code
 * Type-safe
 * Garbage collected
 * Concurrency built into language
-
-:::
 
 ## OK, but what can you do with Go?
 
@@ -183,103 +65,41 @@ https://www.slideshare.net/jpetazzo/docker-and-go-why-did-we-decide-to-write-doc
 
 —Joe Beda, "Kubernetes + Go = Crazy Delicious"
 
-## Go values stability
+## Poll: What do you want to make with Go?
 
-"It is intended that programs written to the Go 1 specification will continue to compile and run correctly, unchanged, over the lifetime of that specification."
+1. A system utility
+1. A web app or service
+1. Something else entirely
+1. I don't know yet
 
-—The Go "compatibility promise"
+## Playground
 
-`https://golang.org/doc/go1compat`
+* You don't even have to install Go to try it!
+* Edit and run Go code in your browser
 
-## My favorite summary
+![](images/playground.png)
 
-"It's just a boring, really reliable, good language."
+TODO info on exercise format
 
-—Ben DiFrancesco, overheard at PhillyETE
 
-## StackOverflow 2019 developer survey - popularity
 
-1. JavaScript (67.8%)
-1. Python (41.7%)
-1. Java (41.1%)
-1. C# (31.0%)
-1. PHP (26.4%)
-1. C++ (23.5%)
-1. C (20.6%)
-1. Ruby (8.4%)
-1. **Go** (8.2%)
-1. Swift (6.6%)
-1. Kotlin (6.4%)
-1. Rust (3.2%)
+# Syntax
 
-::: notes
+## Go file layout
 
-* Stack Overflow 2019 Developer Survey - percentage of developers saying they use a language
-* Markup, shell, and database query languages omitted
+* Package clause
+* Imports
+* Code
 
-:::
+``` go
+package main 
 
-## History
+import "fmt" 
 
-* Designed by small team at Google in 2007
-* Made open source in 2009
-* Version 1.0 in 2012
-
-## Rationale
-
-Simplicity: "we had become frustrated by the undue complexity required to use the languages we worked with to develop server software"
-
-Concurrency: "multi[-core] processors were becoming universal but most languages offered little help to program them efficiently and safely"
-
-Automatic memory management: "to make resource management tractable in a large concurrent program, garbage collection... was required"
-
-—https://golang.org/doc/faq
-
-## Left out (on purpose)
-
-* Object constructors
-* Method overloading
-* Class inheritance (mostly)
-* Exceptions
-
-## NO EXCEPTIONS?!
-
-Desire to avoid exception abuse: "We believe that coupling exceptions to a control structure, as in the try-catch-finally idiom, results in convoluted code. It also tends to encourage programmers to label too many ordinary errors, such as failing to open a file, as exceptional."
-
-Alternatives provided: "For plain error handling, Go's multi-value returns make it easy to report an error without overloading the return value."
-
-—https://golang.org/doc/faq
-
-## Go and object-oriented programming
-
-No inheritance: "Although Go has types and methods and allows an object-oriented style of programming, there is no type hierarchy."
-
-Alternatives provided: "There are... ways to embed types in other types to provide something analogous—but not identical—to subclassing."
-
-And even improvements: "methods in Go are more general than in C++ or Java: they can be defined for any sort of data, even built-in types"
-
-—https://golang.org/doc/faq
-
-## Concurrency support
-
-One thread, many goroutines: "multiplex independently executing functions—coroutines—onto a set of threads... The result, which we call goroutines, can be very cheap..."
-
-Create all you want: "It is practical to create hundreds of thousands of goroutines in the same address space"
-
-—https://golang.org/doc/faq
-
-* It's like having multiple function calls running simultanously.
-* Multi-core processor? Goroutines will help you make use of it.
-
-## Neat stuff
-
-* First-class functions
-* Built-in UTF8 support, `rune` type
-* Interfaces fully decoupled from types ("compile time duck typing")
-* Included tools:
-    * `go get`: download and install packages
-    * `go fmt`: formats code for you
-    * `go test`: runs tests for you
+func main() {
+	fmt.Println("Hello, Go!")
+}
+```
 
 ## "go fmt"
 
@@ -333,33 +153,17 @@ func repeatLine(line string, times int) {
 }
 ```
 
-## Playground
+## "go run"
 
-* You don't even have to install Go to try it!
-* Edit and run Go code in your browser
-* Link at end of talk
+TODO
 
-![](images/playground.png)
+## "go build"
 
+TODO
 
+## Calling Functions
 
-# Syntax
-
-## Go file layout
-
-* Package clause
-* Imports
-* Code
-
-``` go
-package main 
-
-import "fmt" 
-
-func main() {
-	fmt.Println("Hello, Go!")
-}
-```
+TODO
 
 ## Imports
 
@@ -381,11 +185,11 @@ func main() {
 ## Unused imports not allowed
 
 ``` go
-package main 
+package main
 
 import (
 	"fmt"
-    "os"
+	"os"
 )
 
 func main() {
@@ -482,103 +286,22 @@ Compile error:
 prog.go:9:2: tax declared and not used
 ```
 
-## Zero values
+## Exercise: Go syntax
 
-``` go
-package main
+TODO
 
-import (
-	"fmt"
-)
 
-func main() {
-	var myFloat float64
-	fmt.Printf("%#v\n", myFloat)  // => 0
-	var myBool bool
-	fmt.Printf("%#v\n", myBool)   // => false
-	var myString string
-	fmt.Printf("%#v\n", myString) // => ""
-}
-```
 
-## Zero values
 
-``` go
-var myFloat float64
-fmt.Println(myFloat + 2.5) // => 2.5
-var myBool bool
-fmt.Println(!myBool) // => true
-var myString string
-fmt.Println("(" + myString + ")") // => ()
-```
+# Declaring Functions
 
-## "for"
+## Declaring Functions
 
-``` go
-for i := 1; i <= 3; i++ {
-	fmt.Println(i)
-}
-```
+TODO
 
-Output:
+## Variable Scope
 
-```
-1
-2
-3
-```
-
-## "for" ... "range"
-
-``` go
-mySlice := []string{"one", "two", "three"}
-for i, value := range mySlice {
-	fmt.Println(i, value)
-}
-```
-
-Output:
-
-``` go
-0 one
-1 two
-2 three
-```
-
-## What if we skip using the index?
-
-``` go
-mySlice := []string{"one", "two", "three"}
-for i, value := range mySlice {
-	fmt.Println(value)
-}
-```
-
-Compile error:
-
-```
-prog.go:9:6: i declared and not used
-```
-
-## Use the blank identifier to ignore values
-
-* Discards the value.
-* Provides clear visual indicator that a value's being ignored!
-
-``` go
-mySlice := []string{"one", "two", "three"}
-for _, value := range mySlice {
-	fmt.Println(value)
-}
-```
-
-Output:
-
-``` go
-one
-two
-three
-```
+TODO
 
 ## Multiple return values
 
@@ -663,79 +386,227 @@ Output:
 2009/11/10 23:00:00 invalid value foobar at index 2
 ```
 
-## First-class functions
+## Exercise: Declaring Functions
 
-``` go
-func thrice(callback func()) {
-	callback()
-	callback()
-	callback()
-}
-func refrain() {
-	fmt.Print("give it away, ")
-}
-func main() {
-	thrice(refrain)
-	fmt.Println("now!")
-}
-```
+TODO
 
-Output:
+## Pass-by-value
 
-```
-give it away, give it away, give it away, now!
-```
+TODO
 
-## Anonymous functions
+## Pointers
 
-``` go
-func thrice(callback func()) {
-	callback()
-	callback()
-	callback()
-}
-func main() {
-	thrice(func() { fmt.Print("give it away, ") })
-	fmt.Println("now!")
-}
-```
+TODO
 
-## First-class functions: a simple web app
+## Exercise: Passing pointers
+
+
+
+
+# Declaring Packages
+
+## The "main" package
+
+* Code intended for direct execution goes in the `main` package.
+* Go looks for a `main` function and calls that first.
 
 ``` go
 package main
 
-import "net/http"
+import "fmt"
 
-func helloHandler(writer http.ResponseWriter, request *http.Request) {
-	// Note: error return value ignored!
-	writer.Write([]byte("<h1>Hello, web!</h1>"))
+func Hello() {
+        fmt.Println("Hello!")
 }
-func bonjourHandler(writer http.ResponseWriter, request *http.Request) {
-	writer.Write([]byte("<h1>Bonjour, web!</h1>"))
+func Hi() {
+        fmt.Println("Hi!")
+}
+func main() {
+    Hello()
 }
 ```
 
-## First-class functions: a simple web app
+## The "main" package
+
+But sticking everything in one package will only get you so far...
+
+## The Go workspace
+
+* A directory to hold package code.
+* `~/go` by default.
+* Or set `$GOPATH` environment variable to a different directory.
+
+## Workspace subdirectories
+
+* `bin`: holds binary executables.
+    * Add it to your `$PATH` and you can run them from anywhere.
+* `pkg`: holds compiled package files.
+    * You generally don't need to touch this.
+* `src`: holds source code.
+    * Including your code!
+
+## Setting up a package
+
+Let's move our functions to another package.
+
+`~/go/src/greeting/greeting.go`
 
 ``` go
-func main() {
-	http.HandleFunc("/hello", helloHandler)
-	http.HandleFunc("/bonjour", bonjourHandler)
-	// Note: error return value ignored!
-	http.ListenAndServe("localhost:8080", nil)
+package greeting
+
+import "fmt"
+
+func Hello() {
+        fmt.Println("Hello!")
+}
+
+func Hi() {
+        fmt.Println("Hi!")
 }
 ```
 
-::: notes
+## Importing our package
 
-`samples/web_app.go`
+`random_directory/hi.go`
 
-:::
+``` go
+package main
+
+import "greeting"
+
+func main() {
+        greeting.Hello()
+        greeting.Hi()
+}
+```
+
+## "go run"
+
+```
+$ go run hi.go
+Hello!
+Hi!
+```
+
+## Moving "main" to the workspace
+
+`~/go/src/hi/main.go`
+
+``` go
+package main
+
+import "greeting"
+
+func main() {
+        greeting.Hello()
+        greeting.Hi()
+}
+```
+
+## "go install"
+
+```
+$ go install
+$ tree ~/go
+go
+|-- bin
+|   `-- hi
+`-- src
+    |-- greeting
+    |   `-- greeting.go
+    `-- hi
+        `-- main.go
+```
+
+## "go install"
+
+```
+$ export PATH=$PATH:$HOME/go/bin
+```
+
+(Go installer does this for you.)
+
+## "go install"
+
+```
+$ hi
+Hello!
+Hi!
+```
+
+## Exported
+
+TODO
+
+## Unexported
+
+TODO
+
+## Import paths
+
+TODO
+
+## "go get"
+
+I set up a repo at `https://github.com/headfirstgo/greeting`, and pushed the package code there...
+
+![](images/github.png)
+
+## "go get"
+
+Now anyone can retrieve the package with `go get github.com/headfirstgo/greeting`:
+
+```
+$ go get github.com/headfirstgo/greeting
+$ tree ~/go
+go
+`-- src
+    `-- github.com
+        `-- headfirstgo
+            `-- greeting
+                |-- dansk
+                |   `-- dansk.go
+                |-- deutsch
+                |   `-- deutsch.go
+                `-- greeting.go
+```
+
+## "go get"
+
+`~/go/src/hi/main.go`
+
+``` go
+package main
+
+import (
+        "github.com/headfirstgo/greeting"
+        "github.com/headfirstgo/greeting/dansk"
+        "github.com/headfirstgo/greeting/deutsch"
+)
+
+func main() {
+        greeting.Hello()   // => Hello!
+        dansk.Hej()        // => Hej!
+        deutsch.GutenTag() // => Guten Tag!
+}
+```
+
+## "go doc"
+
+TODO Doc comments
+
+## Web documentation
+
+TODO
+
+## Exercise: Using package documentation
+
+TODO
 
 
 
-# OOP-*like* Concepts
+
+# Structs
 
 ## Structs
 
@@ -781,7 +652,41 @@ func main() {
 }
 ```
 
-## Other underlying types
+## Embedding structs is like inheriting fields
+
+``` go
+type Coordinates struct {
+	Latitude  float64
+	Longitude float64
+}
+
+type Landmark struct {
+	Name string
+	// An "anonymous field"
+	// Has no name of its own, just a type
+	Coordinates
+}
+```
+
+``` go
+func main() {
+	var l Landmark
+	l.Name = "The Googleplex"
+	// Fields for "embedded struct" are "promoted"
+	l.Latitude = 37.42
+	l.Longitude = -122.08
+	fmt.Println(l.Name, l.Latitude, l.Longitude)
+	// => The Googleplex 37.42 -122.08
+}
+```
+
+## Exercise: Struct types
+
+
+
+# Defined Types
+
+## Underlying basic types
 
 A custom type can have an underlying basic type
 
@@ -904,6 +809,8 @@ prog.go:15:8: value2.sayHi undefined (type MyType2 has no field or method sayHi)
 
 ## Embedding structs is like inheriting fields
 
+Remember how fields for an embedded struct get promoted to the outer struct?
+
 ``` go
 type Coordinates struct {
 	Latitude  float64
@@ -930,7 +837,10 @@ func main() {
 }
 ```
 
+
 ## Promotion of embedded types' methods
+
+Methods for an embedded type get promoted too!
 
 ``` go
 func (c Coordinates) Location() string {
@@ -971,9 +881,15 @@ type Landmark struct {
 }
 ```
 
-## Interfaces
+## Exercise: Defined types
 
-(This part is my favorite!)
+TODO
+
+
+
+
+
+# Interfaces
 
 ## Interfaces
 
@@ -1120,16 +1036,253 @@ Playing 9 to 5
 Stopped!
 ```
 
-## Interfaces
+## Type assertions
 
-"Structural typing is like compile time duck typing. It makes Go feel like a dynamic language, such as Ruby or Python."
+TODO
 
--Jared Carroll, "[Structural Typing: Compile Time Duck Typing](https://blog.carbonfive.com/2012/09/23/structural-typing-compile-time-duck-typing/)"
-
-
+## Exercise: Interfaces
 
 
-# Goroutines and Channels
+
+# Handling Errors
+
+## "defer"
+
+It's usually polite to end conversations with "goodbye":
+
+``` go
+func Socialize() {
+	fmt.Println("Hello!")
+	fmt.Println("Nice weather, eh?")
+	fmt.Println("Goodbye!")
+}
+
+func main() {
+	Socialize()
+}
+```
+
+Output:
+
+```
+Goodbye!
+Hello!
+Nice weather, eh?
+```
+
+## "defer"
+
+Write `defer` before a function call, and it will be "deferred" until enclosing function ends.
+
+``` go
+func Socialize() {
+	// This call will be made when Socialize ends.
+	defer fmt.Println("Goodbye!")
+	fmt.Println("Hello!")
+	fmt.Println("Nice weather, eh?")
+}
+```
+
+Output:
+
+```
+Hello!
+Nice weather, eh?
+Goodbye!
+```
+
+## "defer" calls made no matter what
+
+``` go
+func Socialize() error {
+	// Deferred call is made even if Socialize
+	// exits early (say, due to an error).
+	defer fmt.Println("Goodbye!")
+	fmt.Println("Hello!")
+	return fmt.Errorf("I don't want to talk.")
+	// The below code won't be run!
+	fmt.Println("Nice weather, eh?")
+	return nil
+}
+
+func main() {
+	err := Socialize()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+## "defer" calls made no matter what
+
+Output:
+
+```
+Hello!
+Goodbye!
+2019/04/22 11:22:29 I don't want to talk.
+exit status 1
+```
+
+## A (somewhat) more realistic example
+
+``` go
+func PrintLines(fileName string) error {
+	file, err := os.Open(fileName)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
+	if scanner.Err() != nil {
+		return scanner.Err()
+	}
+	return nil
+}
+```
+
+## A (somewhat) more realistic example
+
+``` go
+func main() {
+	err := PrintLines("lorem_ipsum.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+## "panic"
+
+* `panic` usually signals an _unanticipated_ error.
+* This example is just to show its mechanics.
+
+``` go
+func Socialize() {
+	fmt.Println("Hello!")
+	panic("I need to get out of here!")
+	// The below code won't be run!
+	fmt.Println("Nice weather, eh?")
+	fmt.Println("Goodbye!")
+}
+```
+
+## "panic"
+
+Output:
+
+``` go
+Hello!
+panic: I need to get out of here.
+
+goroutine 1 [running]:
+main.Socialize()
+        /Users/jay/socialize4_panic.go:9 +0x79
+main.main()
+        /Users/jay/socialize4_panic.go:16 +0x20
+exit status 2
+```
+
+## "panic" and "defer"
+
+``` go
+func Socialize() {
+	defer fmt.Println("Goodbye!")
+	fmt.Println("Hello!")
+	panic("I need to get out of here!")
+	// The below code won't be run!
+	fmt.Println("Nice weather, eh?")
+}
+```
+
+## "panic" and "defer"
+
+Output:
+
+```
+Hello!
+Goodbye!
+panic: I need to get out of here!
+
+goroutine 1 [running]:
+main.Socialize()
+        /Users/jay/socialize5_panic_defer.go:10 +0xd5
+main.main()
+        /Users/jay/socialize5_panic_defer.go:16 +0x20
+exit status 2
+```
+
+## "recover"
+
+``` go
+func CalmDown() {
+	// Halt the panic.
+	panicValue := recover()
+	// Print value passed to panic().
+	fmt.Println(panicValue)
+}
+
+func Socialize() {
+	defer fmt.Println("Goodbye!")
+	defer CalmDown()
+	fmt.Println("Hello!")
+	panic("I need to get out of here!")
+	// The below code won't be run!
+	fmt.Println("Nice weather, eh?")
+}
+```
+
+## "recover"
+
+Output:
+
+```
+Hello!
+I need to get out of here!
+Goodbye!
+```
+
+* Deferred `CalmDown` prints the `panic` value.
+* Deferred `Println` prints "Goodbye!".
+
+## "panic" should not be used like an exception
+
+I know of one place in the standard library that `panic` is used in normal program flow: in a recursive parsing function that panics to unwind the call stack after a parsing error. (The function then recovers and handles the error normally.)
+
+## "panic" should not be used like an exception
+
+Generally, `panic` should be used only to indicate "impossible" situations:
+
+``` go
+func awardPrize() {
+	doorNumber := rand.Intn(3) + 1
+	if doorNumber == 1 {
+		fmt.Println("You win a cruise!")
+	} else if doorNumber == 2 {
+		fmt.Println("You win a car!")
+	} else if doorNumber == 3 {
+		fmt.Println("You win a goat!")
+	} else {
+        // This should never happen.
+		panic("invalid door number")
+	}
+}
+```
+
+## "panic" should not be used like an exception
+
+* If you know an error could happen, use normal control flow statements to handle it.
+* Google "golang errors are values" (which should take you to `https://blog.golang.org/errors-are-values`) for some tips on making error handling more pleasant.
+
+## Exercise: Handling errors
+
+
+
+
+# Concurrency
 
 ## A non-concurrent program
 
@@ -1255,722 +1408,92 @@ Getting https://example.com/
     * Channel reads cause `main` goroutine to block until `responseSize` goroutines send, so they have time to finish before program ends.
     * The channel transmits data from the `responseSize` goroutines back to the `main` goroutine.
 
+## Exercise: Goroutines and channels
+
+https://is.gd/goex_goroutines
+
+<!-- https://play.golang.org/p/mtfvNLts6Vm -->
+
+<!-- solutions/goroutines.go -->
 
 
-# Defer, Panic, and Recover
 
-## "defer"
 
-It's usually polite to end conversations with "goodbye":
 
-``` go
-func Socialize() {
-	fmt.Println("Hello!")
-	fmt.Println("Nice weather, eh?")
-	fmt.Println("Goodbye!")
-}
 
-func main() {
-	Socialize()
-}
-```
 
-Output:
 
-```
-Goodbye!
-Hello!
-Nice weather, eh?
-```
 
-## "defer"
+# Where to Go Next
 
-Write `defer` before a function call, and it will be "deferred" until enclosing function ends.
+## Arrays
+
+TODO eliminate zero values
 
 ``` go
-func Socialize() {
-	// This call will be made when Socialize ends.
-	defer fmt.Println("Goodbye!")
-	fmt.Println("Hello!")
-	fmt.Println("Nice weather, eh?")
-}
+var primes [3]int
+primes[0] = 2
+primes[1] = 3
+fmt.Println(primes[0]) // => 2
+fmt.Println(primes[1]) // => 3
+fmt.Println(primes)    // => [2 3 0]
+// primes[2] is at zero value
 ```
 
-Output:
+* Can't grow when needed
+* To me, they're just a foundation for slices
 
-```
-Hello!
-Nice weather, eh?
-Goodbye!
-```
+## Slices
 
-## "defer" calls made no matter what
+TODO eliminate zero values
 
 ``` go
-func Socialize() error {
-	// Deferred call is made even if Socialize
-	// exits early (say, due to an error).
-	defer fmt.Println("Goodbye!")
-	fmt.Println("Hello!")
-	return fmt.Errorf("I don't want to talk.")
-	// The below code won't be run!
-	fmt.Println("Nice weather, eh?")
-	return nil
-}
-
-func main() {
-	err := Socialize()
-	if err != nil {
-		log.Fatal(err)
-	}
-}
+var primes []int        // Zero value is nil
+primes = make([]int, 3) // Create a slice
+primes[0] = 2
+primes[1] = 3
+fmt.Println(primes[0])  // => 2
+fmt.Println(primes[1])  // => 3
+fmt.Println(primes)     // => [2 3 0]
 ```
 
-## "defer" calls made no matter what
-
-Output:
-
-```
-Hello!
-Goodbye!
-2019/04/22 11:22:29 I don't want to talk.
-exit status 1
-```
-
-## A (somewhat) more realistic example
+## Slices and "append"
 
 ``` go
-func PrintLines(fileName string) error {
-	file, err := os.Open(fileName)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		fmt.Println(scanner.Text())
-	}
-	if scanner.Err() != nil {
-		return scanner.Err()
-	}
-	return nil
-}
+var primes []int
+primes = append(primes, 2)
+primes = append(primes, 3)
+fmt.Println(primes[0]) // => 2
+fmt.Println(primes[1]) // => 3
+fmt.Println(primes)    // => [2 3]
+primes = append(primes, 5)
+fmt.Println(primes)    // => [2 3 5]
 ```
 
-## A (somewhat) more realistic example
+## Maps
 
 ``` go
 func main() {
-	err := PrintLines("lorem_ipsum.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
+        ranks := make(map[string]int)
+        ranks["gold"] = 1
+        ranks["silver"] = 2
+        ranks["bronze"] = 3
+        fmt.Println(ranks["bronze"]) // => 3
+        fmt.Println(ranks["gold"])   // => 1
 }
 ```
 
-## "panic"
+## "testing" package
 
-* `panic` usually signals an _unanticipated_ error.
-* This example is just to show its mechanics.
+TODO
 
-``` go
-func Socialize() {
-	fmt.Println("Hello!")
-	panic("I need to get out of here!")
-	// The below code won't be run!
-	fmt.Println("Nice weather, eh?")
-	fmt.Println("Goodbye!")
-}
-```
+## Web development
 
-## "panic"
+TODO
 
-Output:
+## Buffered channels
 
-``` go
-Hello!
-panic: I need to get out of here.
-
-goroutine 1 [running]:
-main.Socialize()
-        /Users/jay/socialize4_panic.go:9 +0x79
-main.main()
-        /Users/jay/socialize4_panic.go:16 +0x20
-exit status 2
-```
-
-## "panic" and "defer"
-
-``` go
-func Socialize() {
-	defer fmt.Println("Goodbye!")
-	fmt.Println("Hello!")
-	panic("I need to get out of here!")
-	// The below code won't be run!
-	fmt.Println("Nice weather, eh?")
-}
-```
-
-## "panic" and "defer"
-
-Output:
-
-```
-Hello!
-Goodbye!
-panic: I need to get out of here!
-
-goroutine 1 [running]:
-main.Socialize()
-        /Users/jay/socialize5_panic_defer.go:10 +0xd5
-main.main()
-        /Users/jay/socialize5_panic_defer.go:16 +0x20
-exit status 2
-```
-
-## "recover"
-
-``` go
-func CalmDown() {
-	// Halt the panic.
-	panicValue := recover()
-	// Print value passed to panic().
-	fmt.Println(panicValue)
-}
-
-func Socialize() {
-	defer fmt.Println("Goodbye!")
-	defer CalmDown()
-	fmt.Println("Hello!")
-	panic("I need to get out of here!")
-	// The below code won't be run!
-	fmt.Println("Nice weather, eh?")
-}
-```
-
-## "recover"
-
-Output:
-
-```
-Hello!
-I need to get out of here!
-Goodbye!
-```
-
-* Deferred `CalmDown` prints the `panic` value.
-* Deferred `Println` prints "Goodbye!".
-
-## "panic" should not be used like an exception
-
-I know of one place in the standard library that `panic` is used in normal program flow: in a recursive parsing function that panics to unwind the call stack after a parsing error. (The function then recovers and handles the error normally.)
-
-## "panic" should not be used like an exception
-
-Generally, `panic` should be used only to indicate "impossible" situations:
-
-``` go
-func awardPrize() {
-	doorNumber := rand.Intn(3) + 1
-	if doorNumber == 1 {
-		fmt.Println("You win a cruise!")
-	} else if doorNumber == 2 {
-		fmt.Println("You win a car!")
-	} else if doorNumber == 3 {
-		fmt.Println("You win a goat!")
-	} else {
-        // This should never happen.
-		panic("invalid door number")
-	}
-}
-```
-
-## "panic" should not be used like an exception
-
-* If you know an error could happen, use normal control flow statements to handle it.
-* Google "golang errors are values" (which should take you to `https://blog.golang.org/errors-are-values`) for some tips on making error handling more pleasant.
-
-
-
-# Defer, Panic, and Recover
-
-## "defer"
-
-It's usually polite to end conversations with "goodbye":
-
-``` go
-func Socialize() {
-	fmt.Println("Hello!")
-	fmt.Println("Nice weather, eh?")
-	fmt.Println("Goodbye!")
-}
-
-func main() {
-	Socialize()
-}
-```
-
-Output:
-
-```
-Goodbye!
-Hello!
-Nice weather, eh?
-```
-
-## "defer"
-
-Write `defer` before a function call, and it will be "deferred" until enclosing function ends.
-
-``` go
-func Socialize() {
-	// This call will be made when Socialize ends.
-	defer fmt.Println("Goodbye!")
-	fmt.Println("Hello!")
-	fmt.Println("Nice weather, eh?")
-}
-```
-
-Output:
-
-```
-Hello!
-Nice weather, eh?
-Goodbye!
-```
-
-## "defer" calls made no matter what
-
-``` go
-func Socialize() error {
-	// Deferred call is made even if Socialize
-	// exits early (say, due to an error).
-	defer fmt.Println("Goodbye!")
-	fmt.Println("Hello!")
-	return fmt.Errorf("I don't want to talk.")
-	// The below code won't be run!
-	fmt.Println("Nice weather, eh?")
-	return nil
-}
-
-func main() {
-	err := Socialize()
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-```
-
-## "defer" calls made no matter what
-
-Output:
-
-```
-Hello!
-Goodbye!
-2019/04/22 11:22:29 I don't want to talk.
-exit status 1
-```
-
-## A (somewhat) more realistic example
-
-``` go
-func PrintLines(fileName string) error {
-	file, err := os.Open(fileName)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		fmt.Println(scanner.Text())
-	}
-	if scanner.Err() != nil {
-		return scanner.Err()
-	}
-	return nil
-}
-```
-
-## A (somewhat) more realistic example
-
-``` go
-func main() {
-	err := PrintLines("lorem_ipsum.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-```
-
-## "panic"
-
-* `panic` usually signals an _unanticipated_ error.
-* This example is just to show its mechanics.
-
-``` go
-func Socialize() {
-	fmt.Println("Hello!")
-	panic("I need to get out of here!")
-	// The below code won't be run!
-	fmt.Println("Nice weather, eh?")
-	fmt.Println("Goodbye!")
-}
-```
-
-## "panic"
-
-Output:
-
-``` go
-Hello!
-panic: I need to get out of here.
-
-goroutine 1 [running]:
-main.Socialize()
-        /Users/jay/socialize4_panic.go:9 +0x79
-main.main()
-        /Users/jay/socialize4_panic.go:16 +0x20
-exit status 2
-```
-
-## "panic" and "defer"
-
-``` go
-func Socialize() {
-	defer fmt.Println("Goodbye!")
-	fmt.Println("Hello!")
-	panic("I need to get out of here!")
-	// The below code won't be run!
-	fmt.Println("Nice weather, eh?")
-}
-```
-
-## "panic" and "defer"
-
-Output:
-
-```
-Hello!
-Goodbye!
-panic: I need to get out of here!
-
-goroutine 1 [running]:
-main.Socialize()
-        /Users/jay/socialize5_panic_defer.go:10 +0xd5
-main.main()
-        /Users/jay/socialize5_panic_defer.go:16 +0x20
-exit status 2
-```
-
-## "recover"
-
-``` go
-func CalmDown() {
-	// Halt the panic.
-	panicValue := recover()
-	// Print value passed to panic().
-	fmt.Println(panicValue)
-}
-
-func Socialize() {
-	defer fmt.Println("Goodbye!")
-	defer CalmDown()
-	fmt.Println("Hello!")
-	panic("I need to get out of here!")
-	// The below code won't be run!
-	fmt.Println("Nice weather, eh?")
-}
-```
-
-## "recover"
-
-Output:
-
-```
-Hello!
-I need to get out of here!
-Goodbye!
-```
-
-* Deferred `CalmDown` prints the `panic` value.
-* Deferred `Println` prints "Goodbye!".
-
-## "panic" should not be used like an exception
-
-I know of one place in the standard library that `panic` is used in normal program flow: in a recursive parsing function that panics to unwind the call stack after a parsing error. (The function then recovers and handles the error normally.)
-
-## "panic" should not be used like an exception
-
-Generally, `panic` should be used only to indicate "impossible" situations:
-
-``` go
-func awardPrize() {
-	doorNumber := rand.Intn(3) + 1
-	if doorNumber == 1 {
-		fmt.Println("You win a cruise!")
-	} else if doorNumber == 2 {
-		fmt.Println("You win a car!")
-	} else if doorNumber == 3 {
-		fmt.Println("You win a goat!")
-	} else {
-        // This should never happen.
-		panic("invalid door number")
-	}
-}
-```
-
-## "panic" should not be used like an exception
-
-* If you know an error could happen, use normal control flow statements to handle it.
-* Google "golang errors are values" (which should take you to `https://blog.golang.org/errors-are-values`) for some tips on making error handling more pleasant.
-
-
-
-# Defer, Panic, and Recover
-
-## "defer"
-
-It's usually polite to end conversations with "goodbye":
-
-``` go
-func Socialize() {
-	fmt.Println("Hello!")
-	fmt.Println("Nice weather, eh?")
-	fmt.Println("Goodbye!")
-}
-
-func main() {
-	Socialize()
-}
-```
-
-Output:
-
-```
-Goodbye!
-Hello!
-Nice weather, eh?
-```
-
-## "defer"
-
-Write `defer` before a function call, and it will be "deferred" until enclosing function ends.
-
-``` go
-func Socialize() {
-	// This call will be made when Socialize ends.
-	defer fmt.Println("Goodbye!")
-	fmt.Println("Hello!")
-	fmt.Println("Nice weather, eh?")
-}
-```
-
-Output:
-
-```
-Hello!
-Nice weather, eh?
-Goodbye!
-```
-
-## "defer" calls made no matter what
-
-``` go
-func Socialize() error {
-	// Deferred call is made even if Socialize
-	// exits early (say, due to an error).
-	defer fmt.Println("Goodbye!")
-	fmt.Println("Hello!")
-	return fmt.Errorf("I don't want to talk.")
-	// The below code won't be run!
-	fmt.Println("Nice weather, eh?")
-	return nil
-}
-
-func main() {
-	err := Socialize()
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-```
-
-## "defer" calls made no matter what
-
-Output:
-
-```
-Hello!
-Goodbye!
-2019/04/22 11:22:29 I don't want to talk.
-exit status 1
-```
-
-## A (somewhat) more realistic example
-
-``` go
-func PrintLines(fileName string) error {
-	file, err := os.Open(fileName)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		fmt.Println(scanner.Text())
-	}
-	if scanner.Err() != nil {
-		return scanner.Err()
-	}
-	return nil
-}
-```
-
-## A (somewhat) more realistic example
-
-``` go
-func main() {
-	err := PrintLines("lorem_ipsum.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-```
-
-## "panic"
-
-* `panic` usually signals an _unanticipated_ error.
-* This example is just to show its mechanics.
-
-``` go
-func Socialize() {
-	fmt.Println("Hello!")
-	panic("I need to get out of here!")
-	// The below code won't be run!
-	fmt.Println("Nice weather, eh?")
-	fmt.Println("Goodbye!")
-}
-```
-
-## "panic"
-
-Output:
-
-``` go
-Hello!
-panic: I need to get out of here.
-
-goroutine 1 [running]:
-main.Socialize()
-        /Users/jay/socialize4_panic.go:9 +0x79
-main.main()
-        /Users/jay/socialize4_panic.go:16 +0x20
-exit status 2
-```
-
-## "panic" and "defer"
-
-``` go
-func Socialize() {
-	defer fmt.Println("Goodbye!")
-	fmt.Println("Hello!")
-	panic("I need to get out of here!")
-	// The below code won't be run!
-	fmt.Println("Nice weather, eh?")
-}
-```
-
-## "panic" and "defer"
-
-Output:
-
-```
-Hello!
-Goodbye!
-panic: I need to get out of here!
-
-goroutine 1 [running]:
-main.Socialize()
-        /Users/jay/socialize5_panic_defer.go:10 +0xd5
-main.main()
-        /Users/jay/socialize5_panic_defer.go:16 +0x20
-exit status 2
-```
-
-## "recover"
-
-``` go
-func CalmDown() {
-	// Halt the panic.
-	panicValue := recover()
-	// Print value passed to panic().
-	fmt.Println(panicValue)
-}
-
-func Socialize() {
-	defer fmt.Println("Goodbye!")
-	defer CalmDown()
-	fmt.Println("Hello!")
-	panic("I need to get out of here!")
-	// The below code won't be run!
-	fmt.Println("Nice weather, eh?")
-}
-```
-
-## "recover"
-
-Output:
-
-```
-Hello!
-I need to get out of here!
-Goodbye!
-```
-
-* Deferred `CalmDown` prints the `panic` value.
-* Deferred `Println` prints "Goodbye!".
-
-## "panic" should not be used like an exception
-
-I know of one place in the standard library that `panic` is used in normal program flow: in a recursive parsing function that panics to unwind the call stack after a parsing error. (The function then recovers and handles the error normally.)
-
-## "panic" should not be used like an exception
-
-Generally, `panic` should be used only to indicate "impossible" situations:
-
-``` go
-func awardPrize() {
-	doorNumber := rand.Intn(3) + 1
-	if doorNumber == 1 {
-		fmt.Println("You win a cruise!")
-	} else if doorNumber == 2 {
-		fmt.Println("You win a car!")
-	} else if doorNumber == 3 {
-		fmt.Println("You win a goat!")
-	} else {
-        // This should never happen.
-		panic("invalid door number")
-	}
-}
-```
-
-## "panic" should not be used like an exception
-
-* If you know an error could happen, use normal control flow statements to handle it.
-* Google "golang errors are values" (which should take you to `https://blog.golang.org/errors-are-values`) for some tips on making error handling more pleasant.
-
-
-
-
-# Closing
-
-## What we didn't have time for
-
-* Packages and modules
-* "testing" package
-* Buffered channels
-* Runes and UTF8 support
+TODO
 
 ## Go Gopher
 
@@ -1980,19 +1503,6 @@ By Renee French, used under a CC-Attribution-3.0 license.
 
 ## Other resources
 
-* These slides: `https://github.com/jaymcgavren/presentations`
 * Go Tour: `https://tour.golang.org`
 * Go Playground: `https://play.golang.org`
 * Head First Go: `https://headfirstgo.com`
-
-### Questions?
-
-`https://2019.phillyemergingtech.com/qa/`
-
-![](images/head_first_go_cover.png)
-
-::: notes
-
-Repeat each question before answering!
-
-:::
