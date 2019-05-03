@@ -422,7 +422,6 @@ x is now 6
 
 ## Exercise: Go syntax
 
-TODO
 
 
 
@@ -631,8 +630,6 @@ Output:
 ```
 
 ## Exercise: Declaring Functions
-
-TODO
 
 ## Pass-by-value
 
@@ -845,7 +842,6 @@ TODO
 
 ## Exercise: Using package documentation
 
-TODO
 
 
 
@@ -1127,7 +1123,6 @@ type Landmark struct {
 
 ## Exercise: Defined types
 
-TODO
 
 
 
