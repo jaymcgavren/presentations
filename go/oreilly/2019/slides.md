@@ -79,7 +79,15 @@ https://www.slideshare.net/jpetazzo/docker-and-go-why-did-we-decide-to-write-doc
 
 ![](images/playground.png)
 
-TODO info on exercise format
+## Exercises for this training
+
+* The Go Playground lets you save your code and share it at a URL
+* Others can edit that code
+* We'll use that ability for most of our exercises
+* We'll post a link
+* You visit it and follow the instructions there (add code, fill in blanks, etc.)
+
+
 
 
 
@@ -92,9 +100,9 @@ TODO info on exercise format
 * Code
 
 ``` go
-package main 
+package main
 
-import "fmt" 
+import "fmt"
 
 func main() {
 	fmt.Println("Hello, Go!")
@@ -155,17 +163,87 @@ func repeatLine(line string, times int) {
 
 ## "go run"
 
-TODO
+* Compiles a Go source file and runs it
+* No executable is saved
+
+``` go
+$ go run repeat.go
+hello
+hello
+hello
+```
 
 ## "go build"
 
-TODO
+* Compiles Go source file(s) into an executable
+
+``` go
+$ go build repeat.go
+$ ls -l
+total 2064
+-rwxr-xr-x 1 jay staff 2106512 May  1 21:13 repeat
+-rw-r--r-- 1 jay staff     166 May  1 21:13 repeat.go
+$ ./repeat
+hello
+hello
+hello
+```
 
 ## Calling Functions
 
-TODO
+``` go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println() // No arguments
+	fmt.Println("argument 1")
+	fmt.Println("argument 1", "argument 2")	
+}
+```
+
+## Calling Functions
+
+* `fmt.Println` can take any number and type of arguments.
+* Most functions require a _specific_ number and type of arguments.
+
+``` go
+package main
+
+import "math"
+
+func main() {
+	math.Floor(3.1415)        // valid...
+	math.Floor()              // not enough arguments
+	math.Floor(3.1415, 12.34) // too many arguments
+	math.Floor("a string")    // wrong type
+}
+```
 
 ## Imports
+
+``` go
+package main
+
+func main() {
+	fmt.Println(math.Floor(2.75))
+	fmt.Println(strings.Title("head first go"))
+}
+```
+
+Compile errors:
+
+```
+prog.go:4:2: undefined: fmt
+prog.go:4:14: undefined: math
+prog.go:5:2: undefined: fmt
+prog.go:5:14: undefined: strings
+```
+
+## Imports
+
+Need to add `import` statement:
 
 ``` go
 package main
@@ -180,6 +258,13 @@ func main() {
 	fmt.Println(math.Floor(2.75))
 	fmt.Println(strings.Title("head first go"))
 }
+```
+
+Output:
+
+```
+2
+Head First Go
 ```
 
 ## Unused imports not allowed
@@ -286,6 +371,55 @@ Compile error:
 prog.go:9:2: tax declared and not used
 ```
 
+## "if"
+
+``` go
+if 1 < 2 {
+	fmt.Println("It's true!")
+}
+```
+
+Output:
+
+```
+It's true!
+```
+
+## "if"
+
+Parentheses discouraged. `go fmt` will remove these:
+
+``` go
+if (1 < 2) {
+	fmt.Println("It's true!")
+}
+```
+
+Opening curly brace _must_ be on same line as `if`. This is a syntax error:
+
+``` go
+if (1 < 2)
+{
+	fmt.Println("It's true!")
+}
+```
+
+## "for"
+
+``` go
+for x := 4; x <= 6; x++ {
+	fmt.Println("x is now", x)
+}
+```
+
+Output:
+
+```
+x is now 4
+x is now 5
+x is now 6
+```
+
 ## Exercise: Go syntax
 
 TODO
@@ -297,11 +431,121 @@ TODO
 
 ## Declaring Functions
 
-TODO
+``` go
+func sayHi() {
+	fmt.Println("Hi!")
+}
+
+func main() {
+	sayHi()
+}
+```
 
 ## Variable Scope
 
-TODO
+Variable scope limited to function where it's declared.
+
+``` go
+func myFunction() {
+	myVariable := 10
+}
+
+func main() {
+	myFunction()
+	fmt.Println(myVariable) // out of scope!
+}
+```
+
+Compile error:
+
+```
+prog.go:11:14: undefined: myVariable
+```
+
+## Variable Scope
+
+By the way, variable scope also limited by "if" blocks:
+
+``` go
+if grade >= 60 {
+	status := "passing"
+} else {
+	status := "failing"
+}
+fmt.Println(status) // out of scope!
+```
+
+## Variable Scope
+
+And by "for" blocks:
+
+``` go
+	for x := 1; x <= 3; x++ {
+		y := x + 1
+		fmt.Println(y)
+	}
+	fmt.Println(y) // out of scope!
+```
+
+## Variable Scope
+
+Solution is to declare variable _before_ block:
+
+``` go
+var status string // declare up here
+if grade >= 60 {
+	status = "passing" // still in scope
+} else {
+	status = "failing" // still in scope
+}
+fmt.Println(status) // still in scope
+```
+
+## Variable Scope
+
+Same for loops:
+
+``` go
+var y int // declare up here
+for x := 1; x <= 3; x++ {
+	y = x + 1 // still in scope
+	fmt.Println(y)
+}
+fmt.Println(y) // still in scope
+```
+
+## Function return values
+
+So how do we get a value from a function to its caller?
+
+``` go
+func myFunction() {
+	myVariable := 10
+}
+
+func main() {
+	myFunction()
+	fmt.Println(myVariable) // out of scope!
+}
+```
+
+## Function return values
+
+Add a return value!
+
+``` go
+// Add return value type after parentheses
+func myFunction() int {
+	// Use "return" keyword
+	return 10
+}
+
+func main() {
+	// Assign returned value to variable
+	myVariable := myFunction()
+	fmt.Println(myVariable)
+}
+```
 
 ## Multiple return values
 
