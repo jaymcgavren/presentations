@@ -440,7 +440,35 @@ func main() {
 }
 ```
 
-## Variable Scope
+## Function names
+
+* Use `CamelCase`: capitalize each word after the first.
+* If the first letter of a function name is `Capitalized`, it's considered __exported__: it can be used from other packages.
+* If the first letter of a function name is `uncapitalized`, it's considered __unexported__: it can only be used _within_ its package.
+* This is why all the names of standard library functions we've been calling are capitalized. (E.g. `fmt.Println`, `math.Floor`, etc.)
+
+More on exported/unexported later.
+
+## Parameters
+
+``` go
+// In parentheses, list parameter name(s)
+// followed by type(s).
+func say(phrase string, times int) {
+	for i := 0; i < times; i++ {
+		fmt.Print(phrase)
+	}
+	fmt.Print("\n")
+}
+
+func main() {
+	// Provide argument(s) when calling.
+	say("Hi", 4)  // => HiHiHiHi
+	say("Bye", 2) // => ByeBye
+}
+```
+
+## Variable scope
 
 Variable scope limited to function where it's declared.
 
@@ -461,7 +489,7 @@ Compile error:
 prog.go:11:14: undefined: myVariable
 ```
 
-## Variable Scope
+## Variable scope
 
 By the way, variable scope also limited by "if" blocks:
 
@@ -474,7 +502,7 @@ if grade >= 60 {
 fmt.Println(status) // out of scope!
 ```
 
-## Variable Scope
+## Variable scope
 
 And by "for" blocks:
 
@@ -486,7 +514,7 @@ And by "for" blocks:
 	fmt.Println(y) // out of scope!
 ```
 
-## Variable Scope
+## Variable scope
 
 Solution is to declare variable _before_ block:
 
@@ -500,7 +528,7 @@ if grade >= 60 {
 fmt.Println(status) // still in scope
 ```
 
-## Variable Scope
+## Variable scope
 
 Same for loops:
 
@@ -615,7 +643,7 @@ func parseBools(values []string) ([]bool, error) {
 ``` go
 func main() {
 	bools, err := parseBools(
-        []string{"true", "false", "foobar"})
+		[]string{"true", "false", "foobar"})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -633,14 +661,137 @@ Output:
 
 ## Pass-by-value
 
-TODO
+* Go is a "pass-by-value" language (as opposed to "pass-by-reference").
+* This means Go functions receive a copy of whatever values you pass to them.
+* That's fine, until you want a function to alter a value...
+
+## Pass-by-value
+
+``` go
+func main() {
+	amount := 6
+	// We want to set "amount" to 12
+	double(amount)
+	fmt.Println(amount) // But this prints "6"!
+}
+
+// double is SUPPOSED to take a value and double it
+func double(number int) {
+	// But this doubles the COPY, not the original
+	number *= 2
+}
+```
 
 ## Pointers
 
-TODO
+The `&` ("address of") operator gets a pointer to a value.
+
+``` go
+amount := 6
+fmt.Println(amount)  // => 6
+fmt.Println(&amount) // => 0x1040a124
+```
+
+## Pointers
+
+We can get pointers to values of any type.
+
+``` go
+var myInt int
+fmt.Println(&myInt)   // => 0x1040a128
+var myFloat float64
+fmt.Println(&myFloat) // => 0x1040a140
+var myBool bool
+fmt.Println(&myBool)  // => 0x1040a148
+```
+
+## Pointers
+
+A pointer to an `int` is written `*int`, a pointer to a `bool` as `*bool`, and so on.
+
+``` go
+func main() {
+	var myInt int
+	fmt.Println(reflect.TypeOf(&myInt))   // => *int
+	var myFloat float64
+	fmt.Println(reflect.TypeOf(&myFloat)) // => *float64
+	var myBool bool
+	fmt.Println(reflect.TypeOf(&myBool))  // => *bool
+}
+```
+
+## Pointers
+
+You can declare variables that hold pointers:
+
+``` go
+var myInt int
+var myIntPointer *int
+myIntPointer = &myInt
+fmt.Println(myIntPointer) // => 0x1040a128
+
+var myFloat float64
+var myFloatPointer *float64
+myFloatPointer = &myFloat
+fmt.Println(myFloatPointer) // => 0x1040a140
+```
+
+## Pointers
+
+The `*` _operator_ gets the value a pointer refers to.
+
+``` go
+myInt := 4
+myIntPointer := &myInt
+fmt.Println(myIntPointer)    // => 0x1040a124
+fmt.Println(*myIntPointer)   // => 4
+
+myFloat := 98.6
+myFloatPointer := &myFloat
+fmt.Println(myFloatPointer)  // => 0x1040a140
+fmt.Println(*myFloatPointer) // => 98.6
+```
+
+## Pointers
+
+The `*` operator can also be used to update the value at a pointer:
+
+``` go
+myInt := 4
+fmt.Println(myInt)         // => 4
+myIntPointer := &myInt
+// Update the value at the pointer.
+*myIntPointer = 8
+fmt.Println(*myIntPointer) // => 8
+fmt.Println(myInt)         // => 8
+```
+
+## Pointers
+
+We can use pointers to fix our `double` function:
+
+``` go
+func main() {
+	amount := 6
+	// Pass pointer instead of value
+	double(&amount)
+	fmt.Println(amount) // => 12
+}
+
+// Accept pointer instead of value
+func double(number *int) {
+	// Update value at pointer
+	*number *= 2
+}
+```
 
 ## Exercise: Passing pointers
 
+<!-- https://is.gd/goex_pointers -->
+
+<!-- https://play.golang.org/p/wGKDcFH1Hr0 -->
+
+<!-- ./solutions/pointers.go -->
 
 
 
@@ -747,7 +898,7 @@ func main() {
 ## "go install"
 
 ```
-$ go install
+$ go install hi
 $ tree ~/go
 go
 |-- bin
@@ -777,15 +928,180 @@ Hi!
 
 ## Exported
 
-TODO
+We ensured our function names were capitalized so they were exported:
+
+`~/go/src/greeting/greeting.go`
+
+``` go
+package greeting
+
+import "fmt"
+
+func Hello() {
+        fmt.Println("Hello!")
+}
+
+func Hi() {
+        fmt.Println("Hi!")
+}
+```
 
 ## Unexported
 
-TODO
+What if we made them unexported?
+
+`~/go/src/greeting/greeting.go`
+
+``` go
+package greeting
+
+import "fmt"
+
+func hello() {
+        fmt.Println("Hello!")
+}
+
+func hi() {
+        fmt.Println("Hi!")
+}
+```
+
+## Unexported
+
+Even if we update the function calls in `main` to match...
+
+`~/go/src/hi/main.go`
+
+``` go
+package main
+
+import "greeting"
+
+func main() {
+        greeting.hello()
+        greeting.hi()
+}
+```
+
+## Unexported
+
+We're not allowed to call unexported functions from another package.
+
+``` go
+$ go install hi
+# hi
+go/src/hi/main.go:6:9: cannot refer to unexported name greeting.hello
+go/src/hi/main.go:6:9: undefined: greeting.hello
+go/src/hi/main.go:7:9: cannot refer to unexported name greeting.hi
+go/src/hi/main.go:7:9: undefined: greeting.hi
+```
+
+## Unexported
+
+So why would you ever make functions unexported?
+
+* Unexported methods are Go's equivalent to Java's `private` methods.
+* Use for helper functions that other packages shouldn't call.
+* Once you export a function, you shouldn't change it any more.
+    * You can change how it works _internally_...
+    * But you shouldn't change its parameters, return value, etc.
+    * If you do, you risk breaking others' code!
+* But you can change unexported functions all you want!
 
 ## Import paths
 
-TODO
+Suppose we want to add support for other languages...
+
+We can nest them under the `greeting` directory.
+
+``` go
+$ tree ~/go/
+go
+`-- src
+    `-- greeting
+        |-- dansk
+        |   `-- dansk.go
+        |-- deutsch
+        |   `-- deutsch.go
+        `-- greeting.go
+```
+
+## Import paths
+
+`~/go/src/greeting/deutsch/deutsch.go`
+
+``` go
+// Notice it's not "greeting/deutsch",
+// it's just "deutsch".
+package deutsch
+
+import "fmt"
+
+func Hallo() {
+	fmt.Println("Hallo!")
+}
+
+func GutenTag() {
+	fmt.Println("Guten Tag!")
+}
+```
+
+## Import paths
+
+`~/go/src/greeting/dansk/dansk.go`
+
+``` go
+// Notice it's not "greeting/dansk",
+// it's just "dansk".
+package dansk
+
+import "fmt"
+
+func Hej() {
+	fmt.Println("Hej!")
+}
+
+func GodMorgen() {
+	fmt.Println("God morgen!")
+}
+```
+
+## Import paths
+
+Now we can import and use these packages as well.
+
+~/go/src/hi/main.go`
+
+``` go
+package main
+
+import (
+	"greeting"
+	"greeting/dansk"
+	"greeting/deutsch"
+)
+
+func main() {
+	greeting.Hello()   // => Hello!
+	greeting.Hi()      // => Hi!
+	dansk.Hej()        // => Hej!
+	dansk.GodMorgen()  // => God morgen!
+	deutsch.Hallo()    // => Hallo!
+	deutsch.GutenTag() // => Guten Tag!
+}
+```
+
+## Import paths
+
+* Notice the import paths are not the same as the package names!
+* Package name is whatever is used in `package` clause in files: `package dansk`
+* By convention, last segment of import path is used as package name.
+
+| Import Path | Package Name |
+| ----------- | ------------ |
+| _greeting_ | _greeting_ |
+| greeting/_dansk_ | _dansk_ |
+| greeting/_deutsch_ | _deutsch_ |
 
 ## "go get"
 
@@ -834,11 +1150,98 @@ func main() {
 
 ## "go doc"
 
-TODO Doc comments
+* To document a package, just add an ordinary comment before its `package` clause.
+* Comments can span as many lines as you need.
+
+``` go
+// Package greeting greets the user in English.
+package greeting
+
+import "fmt"
+
+func Hello() {
+	fmt.Println("Hello!")
+}
+
+func Hi() {
+	fmt.Println("Hi!")
+}
+```
+
+## "go doc"
+
+* To document functions, add an ordinary comment before each.
+
+``` go
+// Package greeting greets the user in English.
+package greeting
+
+import "fmt"
+
+// Hello prints the string "Hello!".
+func Hello() {
+	fmt.Println("Hello!")
+}
+
+// Hi prints the string "Hi!".
+func Hi() {
+	fmt.Println("Hi!")
+}
+```
+
+## "go doc"
+
+Get documentation on a package:
+
+```
+$ go doc github.com/headfirstgo/greeting
+package greeting // import "github.com/headfirstgo/greeting"
+
+Package greeting greets the user.
+
+func Hello()
+func Hi()
+```
+
+## "go doc"
+
+Get documentation on a function:
+
+```
+$ go doc github.com/headfirstgo/greeting Hello
+func Hello()
+    Hello prints the string "Hello!".
+```
 
 ## Web documentation
 
-TODO
+```
+$ godoc -http=:6060
+```
+
+Then visit `http://localhost:6060/pkg/`...
+
+## Web documentation
+
+![](images/godoc.png)
+
+## Web documentation
+
+* Other servers like `godoc.org` make package documentation available on the web.
+* For example, `https://godoc.org/github.com/headfirstgo/greeting` got created automatically for the `greeting` package.
+
+![](images/godog.org.png)
+
+## Web documentation
+
+* Want to know more about the `fmt` package?
+* Just Google "golang fmt"!
+
+![](images/google.png)
+
+## Web documentation
+
+![](images/fmt_docs.png)
 
 ## Exercise: Using package documentation
 
@@ -1221,11 +1624,11 @@ Define a `Player` interface with the methods you want:
 
 ``` go
 type Player interface {
-    // Must have a Play method with
-    // a single string parameter
+	// Must have a Play method with
+	// a single string parameter
 	Play(string)
-    // Must have a Stop method with
-    // no parameters
+	// Must have a Stop method with
+	// no parameters
 	Stop()
 }
 ```
@@ -1277,7 +1680,57 @@ Stopped!
 
 ## Type assertions
 
-TODO
+* If you have a value with an interface type, you can only call methods included in that interface.
+* This is true even if the concrete value has that method!
+
+## Type assertions
+
+``` go
+func main() {
+	// Even though we're passing in a TapeRecorder...
+	TryOut(TapeRecorder{})
+}
+
+func TryOut(player Player) {
+	player.Play("Test Track")
+	player.Stop()
+	// Player interface doesn't include this method!
+	player.Record()
+}
+```
+
+Compile error:
+
+```
+player.Record undefined (type Player has no field or method Record)
+```
+
+## Type assertions
+
+``` go
+func main() {
+	TryOut(TapeRecorder{})
+}
+
+func TryOut(player Player) {
+	player.Play("Test Track")
+	player.Stop()
+	// Do a type assertion to get the concrete value back...
+	recorder := player.(TapeRecorder)
+	// Then you can call Record on that.
+	recorder.Record()
+}
+```
+
+## Type assertions
+
+Output:
+
+```
+Playing Test Track
+Stopped!
+Recording
+```
 
 ## Exercise: Interfaces
 
@@ -1616,13 +2069,13 @@ func responseSize(url string, channel chan int) {
 ``` go
 func main() {
 	start := time.Now() // Unchanged
-    // Make a channel to carry ints.
+	// Make a channel to carry ints.
 	sizes := make(chan int)
-    // Pass channel to each call to responseSize.
+	// Pass channel to each call to responseSize.
 	go responseSize("https://example.com/", sizes)
 	go responseSize("https://golang.org/", sizes)
 	go responseSize("https://golang.org/doc", sizes)
-    // Read and print values from channel.
+	// Read and print values from channel.
 	fmt.Println(<-sizes)
 	fmt.Println(<-sizes)
 	fmt.Println(<-sizes)
@@ -1649,7 +2102,7 @@ Getting https://example.com/
 
 ## Exercise: Goroutines and channels
 
-https://is.gd/goex_goroutines
+<!-- https://is.gd/goex_goroutines -->
 
 <!-- https://play.golang.org/p/mtfvNLts6Vm -->
 
@@ -1658,16 +2111,9 @@ https://is.gd/goex_goroutines
 
 
 
-
-
-
-
-
 # Where to Go Next
 
 ## Arrays
-
-TODO eliminate zero values
 
 ``` go
 var primes [3]int
@@ -1675,8 +2121,6 @@ primes[0] = 2
 primes[1] = 3
 fmt.Println(primes[0]) // => 2
 fmt.Println(primes[1]) // => 3
-fmt.Println(primes)    // => [2 3 0]
-// primes[2] is at zero value
 ```
 
 * Can't grow when needed
@@ -1684,16 +2128,13 @@ fmt.Println(primes)    // => [2 3 0]
 
 ## Slices
 
-TODO eliminate zero values
-
 ``` go
-var primes []int        // Zero value is nil
-primes = make([]int, 3) // Create a slice
+var primes []int
+primes = make([]int, 2)
 primes[0] = 2
 primes[1] = 3
 fmt.Println(primes[0])  // => 2
 fmt.Println(primes[1])  // => 3
-fmt.Println(primes)     // => [2 3 0]
 ```
 
 ## Slices and "append"
@@ -1713,26 +2154,130 @@ fmt.Println(primes)    // => [2 3 5]
 
 ``` go
 func main() {
-        ranks := make(map[string]int)
-        ranks["gold"] = 1
-        ranks["silver"] = 2
-        ranks["bronze"] = 3
-        fmt.Println(ranks["bronze"]) // => 3
-        fmt.Println(ranks["gold"])   // => 1
+	ranks := make(map[string]int)
+	ranks["gold"] = 1
+	ranks["silver"] = 2
+	ranks["bronze"] = 3
+	fmt.Println(ranks["bronze"]) // => 3
+	fmt.Println(ranks["gold"])   // => 1
 }
 ```
 
-## "testing" package
+## "go test"
 
-TODO
+Suppose we're not certain this function works correctly...
+
+``` go
+func JoinWithCommas(phrases []string) string {
+	if len(phrases) == 2 {
+		return phrases[0] + " and " + phrases[1]
+	} else {
+		result := strings.Join(phrases[:len(phrases)-1], ", ")
+		result += ", and "
+		result += phrases[len(phrases)-1]
+		return result
+	}
+}
+```
+
+## "go test"
+
+We can use the `testing` package to write a test function...
+
+``` go
+import (
+	"fmt"
+	"testing"
+)
+
+func TestTwoElements(t *testing.T) {
+	list := []string{"apple", "orange"}
+	want := "apple and orange"
+	got := JoinWithCommas(list)
+	if got != want {
+		t.Error(errorString(list, got, want))
+	}
+}
+```
+
+## "go test"
+
+Add tests for all the functionality we want...
+
+``` go
+import (
+	"fmt"
+	"testing"
+)
+
+func TestOneElement(t *testing.T) {
+	list := []string{"apple"}
+	want := "apple"
+	got := JoinWithCommas(list)
+	if got != want {
+		t.Error(errorString(list, got, want))
+	}
+}
+
+func TestTwoElements(t *testing.T) {
+	list := []string{"apple", "orange"}
+	want := "apple and orange"
+	got := JoinWithCommas(list)
+	if got != want {
+		t.Error(errorString(list, got, want))
+	}
+}
+
+func TestThreeElements(t *testing.T) {
+	list := []string{"apple", "orange", "pear"}
+	want := "apple, orange, and pear"
+	got := JoinWithCommas(list)
+	if got != want {
+		t.Error(errorString(list, got, want))
+	}
+}
+
+func errorString(list []string, got string, want string) string {
+	return fmt.Sprintf("JoinWithCommas(%#v) = \"%s\", want \"%s\"", list, got, want)
+}
+```
+
+## "go test"
+
+Then just run `go test` and get a summary of the tests that failed!
+
+``` go
+$ go test github.com/headfirstgo/prose
+--- FAIL: TestOneElement (0.00s)
+lists_test.go:13: JoinWithCommas([]string{"apple"}) = ", and apple", want "apple"
+FAIL
+FAIL    github.com/headfirstgo/prose    0.006s
+```
 
 ## Web development
 
-TODO
+The standard library includes the `net/http` package:
 
-## Buffered channels
+``` go
+package main
 
-TODO
+import "net/http"
+
+func helloHandler(writer http.ResponseWriter, request *http.Request) {
+	// Note: unhandled error!
+	writer.Write([]byte("<h1>Hello, web!</h1>"))
+}
+
+func main() {
+	http.HandleFunc("/hello", helloHandler)
+	// Note: unhandled error!
+	http.ListenAndServe("localhost:8080", nil)
+}
+```
+
+## Web development
+
+![](images/web_app.png)
 
 ## Go Gopher
 
