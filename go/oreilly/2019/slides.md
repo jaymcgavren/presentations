@@ -255,16 +255,9 @@ import (
 )
 
 func main() {
-	fmt.Println(math.Floor(2.75))
-	fmt.Println(strings.Title("head first go"))
+	fmt.Println(math.Floor(2.75)) // => 2
+	fmt.Println(strings.Title("head first go")) // => Head First Go
 }
-```
-
-Output:
-
-```
-2
-Head First Go
 ```
 
 ## Unused imports not allowed
@@ -422,13 +415,18 @@ x is now 6
 
 ## Exercise: Go syntax
 
+<!-- https://is.gd/goex_syntax -->
+
+<!-- https://play.golang.org/p/x9BXw0z5LXT -->
+
+<!-- ./solutions/syntax.go -->
 
 
 
 
 # Declaring Functions
 
-## Declaring Functions
+## Declaring functions
 
 ``` go
 func sayHi() {
