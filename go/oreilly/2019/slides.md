@@ -1,4 +1,4 @@
-# The Go Language: What Makes it Different?
+# Introduction to the Go Programming Language
 
 # Introduction
 
