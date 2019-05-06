@@ -2351,3 +2351,5 @@ By Renee French, used under a CC-Attribution-3.0 license.
 * Go Tour: `https://tour.golang.org`
 * Go Playground: `https://play.golang.org`
 * Head First Go: `https://headfirstgo.com`
+
+<!-- TODO link to https://golang.org/doc/code.html, https://blog.golang.org/ for Gophercon -->
