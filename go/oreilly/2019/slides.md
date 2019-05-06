@@ -1306,8 +1306,11 @@ Then visit `http://localhost:6060/pkg/`...
 
 ## Exercise: Using package documentation
 
+<!-- https://is.gd/goex_documentation -->
 
+<!-- https://play.golang.org/p/0IoS8oGzrnw -->
 
+<!-- ./solutions/documentation.go -->
 
 
 # Structs
@@ -1385,6 +1388,13 @@ func main() {
 ```
 
 ## Exercise: Struct types
+
+<!-- https://is.gd/goex_structs -->
+
+<!-- https://play.golang.org/p/6TXfzxpTiCj -->
+
+<!-- ./solutions/structs.go -->
+
 
 
 
@@ -1541,7 +1551,6 @@ func main() {
 }
 ```
 
-
 ## Promotion of embedded types' methods
 
 Methods for an embedded type get promoted too!
@@ -1587,6 +1596,11 @@ type Landmark struct {
 
 ## Exercise: Defined types
 
+<!-- https://is.gd/goex_defined_types -->
+
+<!-- https://play.golang.org/p/TeMJ9D6bBOz -->
+
+<!-- ./solutions/defined_types.go -->
 
 
 
@@ -1794,6 +1808,12 @@ Recording
 ```
 
 ## Exercise: Interfaces
+
+<!-- https://is.gd/goex_interfaces -->
+
+<!-- https://play.golang.org/p/6g4_wz89Jes -->
+
+<!-- ./solutions/interfaces.go -->
 
 
 
@@ -2031,6 +2051,13 @@ func awardPrize() {
 * Google "golang errors are values" (which should take you to `https://blog.golang.org/errors-are-values`) for some tips on making error handling more pleasant.
 
 ## Exercise: Handling errors
+
+<!-- https://is.gd/goex_recovery -->
+
+<!-- https://play.golang.org/p/I16x3MSub57 -->
+
+<!-- ./solutions/defer.go -->
+
 
 
 
