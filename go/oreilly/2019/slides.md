@@ -364,6 +364,62 @@ Compile error:
 prog.go:9:2: tax declared and not used
 ```
 
+## Type conversions
+
+``` go
+var length float64 = 1.2
+var width int = 2
+// Can't assign an `int` value
+// to a `float64` variable:
+length = width
+fmt.Println(length)
+```
+
+Compile error:
+
+```
+cannot use width (type int) as type float64 in assignment
+```
+
+## Type conversions
+
+``` go
+var length float64 = 1.2
+var width int = 2
+// But you can if you do a type
+// conversion!
+length = float64(width)
+fmt.Println(length) // => 2
+```
+
+## Type conversions
+
+``` go
+var length float64 = 1.2
+var width int = 2
+// Can't do a math operation with a float64 and an int:
+fmt.Println("Area is", length*width)
+// Or a comparison:
+fmt.Println("length > width?", length > width)
+```
+
+## Type conversions
+
+``` go
+var length float64 = 1.2
+var width int = 2
+// But you can if you do type conversions!
+fmt.Println("Area is", length*float64(width))
+fmt.Println("length > width?", length > float64(width))
+```
+
+Output:
+
+```
+Area is 2.4
+length > width? false
+```
+
 ## "if"
 
 ``` go
@@ -505,11 +561,11 @@ fmt.Println(status) // out of scope!
 And by "for" blocks:
 
 ``` go
-	for x := 1; x <= 3; x++ {
-		y := x + 1
-		fmt.Println(y)
-	}
-	fmt.Println(y) // out of scope!
+for x := 1; x <= 3; x++ {
+	y := x + 1
+	fmt.Println(y)
+}
+fmt.Println(y) // out of scope!
 ```
 
 ## Variable scope
@@ -528,7 +584,7 @@ fmt.Println(status) // still in scope
 
 ## Variable scope
 
-Same for loops:
+Same with loops:
 
 ``` go
 var y int // declare up here
@@ -656,6 +712,13 @@ Output:
 ```
 
 ## Exercise: Declaring Functions
+
+<!-- https://is.gd/goex_define_functions -->
+
+<!-- https://play.golang.org/p/Jih76DwKh4_s -->
+
+<!-- solutions/declaring_functions_extra_credit.go -->
+<!-- solutions/declaring_functions.go -->
 
 ## Pass-by-value
 
