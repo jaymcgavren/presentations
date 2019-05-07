@@ -471,7 +471,7 @@ x is now 6
 
 ## Exercise: Go syntax
 
-<!-- https://is.gd/goex_syntax -->
+`https://is.gd/goex_syntax`
 
 <!-- https://play.golang.org/p/x9BXw0z5LXT -->
 
@@ -713,7 +713,7 @@ Output:
 
 ## Exercise: Declaring Functions
 
-<!-- https://is.gd/goex_define_functions -->
+`https://is.gd/goex_define_functions`
 
 <!-- https://play.golang.org/p/Jih76DwKh4_s -->
 
@@ -848,7 +848,7 @@ func double(number *int) {
 
 ## Exercise: Passing pointers
 
-<!-- https://is.gd/goex_pointers -->
+`https://is.gd/goex_pointers`
 
 <!-- https://play.golang.org/p/wGKDcFH1Hr0 -->
 
@@ -1306,7 +1306,7 @@ Then visit `http://localhost:6060/pkg/`...
 
 ## Exercise: Using package documentation
 
-<!-- https://is.gd/goex_documentation -->
+`https://is.gd/goex_documentation`
 
 <!-- https://play.golang.org/p/0IoS8oGzrnw -->
 
@@ -1389,7 +1389,7 @@ func main() {
 
 ## Exercise: Struct types
 
-<!-- https://is.gd/goex_structs -->
+`https://is.gd/goex_structs`
 
 <!-- https://play.golang.org/p/6TXfzxpTiCj -->
 
@@ -1596,7 +1596,7 @@ type Landmark struct {
 
 ## Exercise: Defined types
 
-<!-- https://is.gd/goex_defined_types -->
+`https://is.gd/goex_defined_types`
 
 <!-- https://play.golang.org/p/TeMJ9D6bBOz -->
 
@@ -1809,7 +1809,7 @@ Recording
 
 ## Exercise: Interfaces
 
-<!-- https://is.gd/goex_interfaces -->
+`https://is.gd/goex_interfaces`
 
 <!-- https://play.golang.org/p/6g4_wz89Jes -->
 
@@ -2052,7 +2052,7 @@ func awardPrize() {
 
 ## Exercise: Handling errors
 
-<!-- https://is.gd/goex_recovery -->
+`https://is.gd/goex_recovery`
 
 <!-- https://play.golang.org/p/I16x3MSub57 -->
 
@@ -2190,7 +2190,7 @@ Getting https://example.com/
 
 ## Exercise: Goroutines and channels
 
-<!-- https://is.gd/goex_goroutines -->
+`https://is.gd/goex_goroutines`
 
 <!-- https://play.golang.org/p/mtfvNLts6Vm -->
 
