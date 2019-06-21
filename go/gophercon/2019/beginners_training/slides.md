@@ -815,6 +815,13 @@ func double(number int) {
 }
 ```
 
+## Pass-by-value
+
+* In a pass-by-value language like Go, functions alter the copy of the value they receive, not the original.
+* We'd like the option to mimic pass-by-reference languages, which modify the original value.
+
+[https://www.mathwarehouse.com/programming/gifs.php#pbv-pbr-code-gif](https://www.mathwarehouse.com/programming/gifs.php#pbv-pbr-code-gif)
+
 ## Pointers
 
 The `&` ("address of") operator gets a pointer to a value.
