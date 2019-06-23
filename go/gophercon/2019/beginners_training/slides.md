@@ -1403,21 +1403,70 @@ Then visit `http://localhost:6060/pkg/`...
 
 # Data Structures
 
+## Arrays
+
+``` go
+var primes [3]int
+primes[0] = 2
+primes[1] = 3
+fmt.Println(primes[0]) // => 2
+fmt.Println(primes[1]) // => 3
+```
+
+* Can't grow when needed
+* To me, they're just a foundation for slices
+
+## Slices
+
+``` go
+var primes []int
+primes = make([]int, 2)
+primes[0] = 2
+primes[1] = 3
+fmt.Println(primes[0])  // => 2
+fmt.Println(primes[1])  // => 3
+```
+
+## Slices and "append"
+
+``` go
+var primes []int
+primes = append(primes, 2)
+primes = append(primes, 3)
+fmt.Println(primes[0]) // => 2
+fmt.Println(primes[1]) // => 3
+fmt.Println(primes)    // => [2 3]
+primes = append(primes, 5)
+fmt.Println(primes)    // => [2 3 5]
+```
+
+## Maps
+
+``` go
+func main() {
+	ranks := make(map[string]int)
+	ranks["gold"] = 1
+	ranks["silver"] = 2
+	ranks["bronze"] = 3
+	fmt.Println(ranks["bronze"]) // => 3
+	fmt.Println(ranks["gold"])   // => 1
+}
+```
+
 TODO convert to slides
 
 * Arrays
-    * Fixed size
-    * Not often used; we just need to cover them to explain slices
     * Zero values
     * Array literals
+        * Preview slice/map/struct literals
     * `for ... range`
 * Slices
     * Versus arrays
     * Underlying arrays
     * `make`
     * Slice literals
+        * Contrast with array literals
     * Slice operator
-    * `append`
     * Slices and zero values
         * `nil` slices
         * Zero values in slice
@@ -1481,6 +1530,32 @@ func main() {
 }
 ```
 
+## Struct literals
+
+TODO compare/contrast with array/slice/map literals
+
+## Pass structs to functions
+
+TODO
+
+## Return structs from functions
+
+TODO
+
+## Structs are passed by value too
+
+* Need to pass a pointer if you want to alter the original struct
+
+TODO
+
+## Implicit dereference of struct pointers
+
+TODO
+
+## Exporting fields
+
+TODO
+
 ## Embedding structs is like inheriting fields
 
 ``` go
@@ -1524,7 +1599,7 @@ func main() {
 
 ## Underlying basic types
 
-A custom type can have an underlying basic type
+A custom type can have an underlying basic type, not just structs
 
 ``` go
 type Liters float64
@@ -1723,6 +1798,19 @@ type Landmark struct {
 <!-- https://play.golang.org/p/TeMJ9D6bBOz -->
 
 <!-- ./solutions/defined_types.go -->
+
+## Pointer receiver parameters
+
+TODO
+
+## Encapsulation
+
+TODO
+
+## Exercise
+
+TODO
+
 
 
 
@@ -1936,6 +2024,19 @@ Recording
 <!-- https://play.golang.org/p/6g4_wz89Jes -->
 
 <!-- ./solutions/interfaces.go -->
+
+## "error" interface
+
+TODO
+
+## "stringer" interface
+
+TODO
+
+## Empty interface
+
+TODO
+
 
 
 
@@ -2323,55 +2424,7 @@ Getting https://example.com/
 
 # Where to Go Next
 
-## Arrays
-
-``` go
-var primes [3]int
-primes[0] = 2
-primes[1] = 3
-fmt.Println(primes[0]) // => 2
-fmt.Println(primes[1]) // => 3
-```
-
-* Can't grow when needed
-* To me, they're just a foundation for slices
-
-## Slices
-
-``` go
-var primes []int
-primes = make([]int, 2)
-primes[0] = 2
-primes[1] = 3
-fmt.Println(primes[0])  // => 2
-fmt.Println(primes[1])  // => 3
-```
-
-## Slices and "append"
-
-``` go
-var primes []int
-primes = append(primes, 2)
-primes = append(primes, 3)
-fmt.Println(primes[0]) // => 2
-fmt.Println(primes[1]) // => 3
-fmt.Println(primes)    // => [2 3]
-primes = append(primes, 5)
-fmt.Println(primes)    // => [2 3 5]
-```
-
-## Maps
-
-``` go
-func main() {
-	ranks := make(map[string]int)
-	ranks["gold"] = 1
-	ranks["silver"] = 2
-	ranks["bronze"] = 3
-	fmt.Println(ranks["bronze"]) // => 3
-	fmt.Println(ranks["gold"])   // => 1
-}
-```
+## Buffered channels
 
 ## "go test"
 
@@ -2489,6 +2542,19 @@ func main() {
 
 ![](images/web_app.png)
 
+## Gorilla
+
+TODO
+
+## Buffalo
+
+TODO
+
+
+
+
+# Wrapping Up
+
 ## Go Gopher
 
 By Renee French, used under a CC-Attribution-3.0 license.
@@ -2499,6 +2565,17 @@ By Renee French, used under a CC-Attribution-3.0 license.
 
 * Go Tour: `https://tour.golang.org`
 * Go Playground: `https://play.golang.org`
-* Head First Go: `https://headfirstgo.com`
+* How to Write Go Code: `https://golang.org/doc/code.html`
+* Effective Go: `https://golang.org/doc/effective_go.html`
+* Standard Library Documentation: `https://golang.org/pkg/`
+* Official Go Blog: `https://blog.golang.org/`
 
-<!-- TODO link to https://golang.org/doc/code.html, https://blog.golang.org/ for Gophercon -->
+## Books
+
+Tutorial: Head First Go (by me)
+
+`https://headfirstgo.com`
+
+Reference: The Go Programming Language (by Alan Donovan and Brian Kernighan)
+
+`https://www.gopl.io/`
