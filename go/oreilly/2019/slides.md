@@ -1,11 +1,10 @@
 # Introduction to the Go Programming Language
 
-# Introduction
-
 ## About me
 
-* Author, _Head First Go_
-* Treehouse software development instructor
+* Author, _Head First Ruby_ and _Head First Go_
+* 4 years experience as online software development instructor
+* See my recent courses at `https://teamtreehouse.com`
 
 ## Where to Learn Go
 
