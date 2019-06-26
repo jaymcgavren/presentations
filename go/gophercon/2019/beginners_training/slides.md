@@ -1,23 +1,15 @@
 # Introduction to the Go Programming Language
 
-# Introduction
-
 ## About me
 
 * Author, _Head First Go_
-* Treehouse software development instructor
-
-## Where to Learn Go
-
-`https://tour.golang.org`
-
-![](images/go_tour.png)
-
-(We'll repeat that link at the end.)
-
-## Another humble recommendation
 
 ![](images/head_first_go_cover.png)
+
+## About me
+
+* Online software development instructor
+* See my courses at `https://teamtreehouse.com`
 
 
 
@@ -214,6 +206,20 @@ func main() {
 }
 ```
 
+## Calling Functions
+
+Prior program results in compile errors like this:
+
+``` go
+./prog.go:7:12: not enough arguments in call to math.Floor
+	have ()
+	want (float64)
+./prog.go:8:12: too many arguments in call to math.Floor
+	have (number, number)
+	want (float64)
+./prog.go:9:13: cannot use "a string" (type string) as type float64 in argument to math.Floor
+```
+
 ## Imports
 
 ``` go
@@ -308,14 +314,14 @@ After saving
 package main
 
 import (
-        "fmt"
-        "math"
-        "strings"
+	"fmt"
+	"math"
+	"strings"
 )
 
 func main() {
-        fmt.Println(math.Floor(2.75))
-        fmt.Println(strings.Title("head first go"))
+	fmt.Println(math.Floor(2.75))
+	fmt.Println(strings.Title("head first go"))
 }
 ```
 
@@ -357,13 +363,180 @@ Compile error:
 prog.go:9:2: tax declared and not used
 ```
 
-## Naming Conventions
+## Exercise: Go syntax
 
-* Same for functions, variables, types, everything
-* Exporting
-* Avoid shadowing
+`https://is.gd/goex_hello`
 
-TODO
+``` go
+// Replace the blanks ("____") in the below code so that it
+// compiles, runs, and prints the message "Hello, Gophers!".
+____ main
+
+____ "fmt"
+
+____ main() {
+	myString ____ "Hello, Gophers!"
+	fmt.Println(____)
+}
+```
+
+<!-- ./solutions/syntax.go -->
+
+## Naming requirements
+
+* Must begin with a letter
+* Can have any number of additional numbers and letters
+
+OK:
+
+* `i`
+* `length`
+* `sheetLength`
+* `stack2`
+
+Not OK:
+
+* `sheet length` (Can't have spaces!)
+* `2stack` (Can't start with a number!)
+
+## Naming requirements
+
+Can't use Go keywords as names
+
+```
+break        default      func         interface    select
+case         defer        go           map          struct
+chan         else         goto         package      switch
+const        fallthrough  if           range        type
+continue     for          import       return       var
+```
+
+## Naming requirements
+
+Can't use Go keywords as names
+
+``` go
+package main
+
+import "fmt"
+
+func main() {
+	var var string = "instant replay" // unexpected var, expecting name
+	var package string = "FedEx"      // unexpected package, expecting name
+	var import string = "BMW"         // unexpected import, expecting name
+	fmt.Println(var, package, import) // unexpected var, expecting expression
+}
+```
+
+## Naming conventions
+
+Use `camelCase` when there are multiple words
+
+OK:
+
+* `sheetLength`
+* `SheetLength`
+
+Not OK:
+
+* `sheetlength`
+* `sheet_length` (Underscores are legal, but frowned upon.)
+
+## Unexported variables
+
+`go/src/mypkg/mypkg.go`
+
+``` go
+package mypkg
+
+var packageVariable string // Name starts with lower-case letter, so it's unexported
+```
+
+`temp.go`
+
+``` go
+package main
+
+import(
+	"fmt"
+	"mypkg"
+)
+
+func main() {
+	mypkg.packageVariable = "a value"
+	fmt.Println(mypkg.packageVariable)
+}
+```
+
+Compile errors:
+
+```
+temp.go:9:2: cannot refer to unexported name mypkg.packageVariable
+temp.go:9:2: undefined: mypkg.packageVariable
+temp.go:10:14: cannot refer to unexported name mypkg.packageVariable
+temp.go:10:14: undefined: mypkg.packageVariable
+```
+
+## Exported variables
+
+`go/src/mypkg/mypkg.go`
+
+``` go
+package mypkg
+
+var PackageVariable string // Name capitalized, so it's exported
+```
+
+`temp.go`
+
+``` go
+package main
+
+import(
+	"fmt"
+	"mypkg"
+)
+
+func main() {
+	mypkg.PackageVariable = "a value"
+	fmt.Println(mypkg.PackageVariable) // => a value
+}
+```
+
+## Naming conventions
+
+Same for functions, types, struct fields, etc.
+
+``` go
+type myType struct {
+	field1 string
+	field2 float64
+}
+
+func myFunction(m myType) {
+	fmt.Println(m)
+}
+```
+
+## Avoid shadowing
+
+``` go
+func main() {
+	var int int = 12
+	var append string = "minutes of bonus footage"
+	var fmt string = "DVD"
+	var count int
+	var languages = append([]string{}, "Español")
+	fmt.Println(int, append, "on", fmt, languages)
+}
+```
+
+``` go
+imported and not used: "fmt"
+int is not a type
+cannot call non-function append (type string), declared at prog.go:7:6
+fmt.Println undefined (type string has no field or method Println)
+```
 
 ## Zero Values
 
@@ -394,7 +567,29 @@ fmt.Println(myBool)   // => false
 * The idea is to make it safe to operate on values that aren't explicitly initialized.
 
 ``` go
-TODO
+func main() {
+	var counter int // Zero value is 0
+	fmt.Println(counter) // => 0
+	counter++
+	fmt.Println(counter) // => 1
+	counter++
+	fmt.Println(counter) // => 2
+}
+```
+
+## Zero Values
+
+* The idea is to make it safe to operate on values that aren't explicitly initialized.
+
+``` go
+func main() {
+	var sentence string // Zero value is ""
+	sentence += "I "
+	sentence += "love "
+	sentence += "zero "
+	sentence += "values."
+	fmt.Println(sentence) // => I love zero values.
+}
 ```
 
 ## "fmt.Printf"
@@ -478,6 +673,10 @@ Area is 2.4
 length > width? false
 ```
 
+## Exercise: Type conversions
+
+TODO
+
 ## "if"
 
 ``` go
@@ -511,6 +710,158 @@ if (1 < 2)
 }
 ```
 
+## Comparison operators
+
+``` go
+if 1 == 1 {
+	fmt.Println("I'll be printed!")
+}
+if 1 > 2 {
+	fmt.Println("I won't!")
+}
+if 1 < 2 {
+	fmt.Println("I'll be printed!")
+}
+```
+
+## Comparison operators
+
+``` go
+if 1 >= 2 {
+	fmt.Println("I won't!")
+}
+if 2 <= 2 {
+	fmt.Println("I'll be printed!")
+}
+if 2 != 2 {
+	fmt.Println("I won't!")
+}
+```
+
+## Boolean negation operator
+
+``` go
+if !true {
+	fmt.Println("I won't be printed!")
+}
+if !false {
+	fmt.Println("I will!")
+}
+```
+
+## Boolean "and"
+
+``` go
+if true && true {
+	fmt.Println("I'll be printed!")
+}
+if true && false {
+	fmt.Println("I won't!")
+}
+```
+
+## Boolean "or"
+
+``` go
+if false || true {
+	fmt.Println("I'll be printed!")
+}
+if false || false {
+	fmt.Println("I won't!")
+}
+```
+
+## "else"
+
+``` go
+i := 52
+if i%2 == 0 {
+	fmt.Println("i is even")
+} else {
+	fmt.Println("i is odd")
+}
+```
+
+Output:
+
+``` go
+i is even
+```
+
+## "else"
+
+``` go
+i := 51
+if i%2 == 0 {
+	fmt.Println("i is even")
+} else {
+	fmt.Println("i is odd")
+}
+```
+
+Output:
+
+``` go
+i is odd
+```
+
+## "else if"
+
+``` go
+grade := 100
+if grade == 100 {
+	fmt.Println("Perfect!")
+} else if grade >= 60 {
+	fmt.Println("You pass.")
+} else {
+	fmt.Println("You fail!")
+}
+```
+
+Output:
+
+``` go
+Perfect!
+```
+
+## "else if"
+
+``` go
+grade := 65
+if grade == 100 {
+	fmt.Println("Perfect!")
+} else if grade >= 60 {
+	fmt.Println("You pass.")
+} else {
+	fmt.Println("You fail!")
+}
+```
+
+Output:
+
+``` go
+You pass.
+```
+
+## "else if"
+
+``` go
+grade := 54
+if grade == 100 {
+	fmt.Println("Perfect!")
+} else if grade >= 60 {
+	fmt.Println("You pass.")
+} else {
+	fmt.Println("You fail!")
+}
+```
+
+Output:
+
+``` go
+You fail!
+```
+
 ## "for"
 
 * Initialization statement
@@ -535,19 +886,87 @@ x is now 6
 
 * Init and post statements optional
 
-TODO
+``` go
+x := 4
+for x <= 6 {
+    fmt.Println(x)
+    x++
+}
+```
+
+Output:
+
+``` go
+4
+5
+6
+```
 
 ## "if" Initialization Statement
 
-TODO
+``` go
+if err := os.Chmod("log.txt", 0644); err != nil {
+	log.Fatal(err)
+}
+```
 
-## Exercise: Go syntax
+``` go
+2019/06/26 04:09:34 chmod log.txt: no such file or directory
+exit status 1
+```
 
-`https://is.gd/goex_hello`
+## Exercise: "if" and "for"
 
-<!-- https://play.golang.org/p/jOoLaFeAexR -->
+[https://is.gd/goex_fizzbuzz](https://is.gd/goex_fizzbuzz)
 
-<!-- ./solutions/syntax.go -->
+<!-- https://play.golang.org/p/mdCEglCzJEH -->
+
+``` go
+// Write a program that prints the integers from 1 to 100.
+// But for multiples of 3, print "Fizz" instead of the number.
+// And for multiples of 5, print "Buzz" instead of the number.
+// For multiples of both 3 and 5, print "FizzBuzz" instead of the number.
+// Hint: i%3 == 0 will be true if i is a multiple of 3.
+// Hint: i%5 == 0 will be true if i is a multiple of 5.
+package main
+
+import "fmt"
+
+func main() {
+
+}
+```
+
+## Exercise: "if" and "for" solution
+
+``` go
+// Write a program that prints the integers from 1 to 100.
+// But for multiples of 3, print "Fizz" instead of the number.
+// And for multiples of 5, print "Buzz" instead of the number.
+// For multiples of both 3 and 5, print "FizzBuzz" instead of the number.
+// Hint: i%3 == 0 will be true if i is a multiple of 3.
+// Hint: i%5 == 0 will be true if i is a multiple of 5.
+package main
+
+import "fmt"
+
+func main() {
+	for i := 1; i <= 100; i++ {
+		var s string
+		if i%3 == 0 {
+			s += "Fizz"
+		}
+		if i%5 == 0 {
+			s += "Buzz"
+		}
+		if s == "" {
+			fmt.Println(i)
+		} else {
+			fmt.Println(s)
+		}
+	}
+}
+```
 
 
 
@@ -667,9 +1086,13 @@ for x := 1; x <= 3; x++ {
 fmt.Println(y) // still in scope
 ```
 
+## Package variables
+
+TODO
+
 ## Function return values
 
-So how do we get a value from a function to its caller?
+What's the best way to get a value from a function to its caller?
 
 ``` go
 func myFunction() {
@@ -2569,6 +2992,10 @@ By Renee French, used under a CC-Attribution-3.0 license.
 * Effective Go: `https://golang.org/doc/effective_go.html`
 * Standard Library Documentation: `https://golang.org/pkg/`
 * Official Go Blog: `https://blog.golang.org/`
+
+## Community
+
+* Gophers Slack: `https://invite.slack.golangbridge.org/`
 
 ## Books
 
