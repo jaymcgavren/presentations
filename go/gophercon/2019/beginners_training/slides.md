@@ -1,4 +1,4 @@
-# Introduction to the Go Programming Language
+ Introduction to the Go Programming Language
 
 ## About me
 
@@ -544,6 +544,18 @@ Not OK:
 
 * `sheetlength`
 * `sheet_length` (Underscores are legal, but frowned upon.)
+
+## Unexported variables
+
+This is a package variable. It's a variable that's in scope anywhere within a package. We'll talk more about these in a bit, so just bear with us for now.
+
+`go/src/mypkg/mypkg.go`
+
+``` go
+package mypkg
+
+var packageVariable string
+```
 
 ## Unexported variables
 
@@ -1197,11 +1209,26 @@ fmt.Println(y) // still in scope
 ``` go
 package main
 
+import "fmt"
+
+// Declare a package variable.
 var myPackageVariable string
+
+func otherFunction() {
+	// Still in scope here!
+	fmt.Println(myPackageVariable) // => contents of package variable
+}
+
+func main() {
+	// Notice we're assigning, not declaring
+	myPackageVariable = "contents of package variable"
+	otherFunction()
+}
 ```
 
+## Exercise: variable scope
 
-
+TODO
 
 ## Function return values
 
