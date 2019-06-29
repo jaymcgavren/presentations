@@ -1929,9 +1929,39 @@ func main() {
 }
 ```
 
+## Exercise: "go get"
+
+[https://github.com/jaymcgavren/car/blob/master/car.go](https://github.com/jaymcgavren/car/blob/master/car.go)
+
+* Use `go get` to install the `github.com/jaymcgavren/car` package. Create a program that calls the `car` package's `OpenDoor` function.
+* The `github.com/jaymcgavren/car/headlights` package should have been installed along with the previous `go get` command. Add a call to the `headlights` package's `TurnOn` function.
+
+(The Go Playground now also supports third party packages. Try `go get` on your computer first, but if it won't work for some reason, just write your solution at `https://play.golang.org`. The Playground should automatically install the packages and run your code. It may take a little longer than usual to run, since it has to download the packages first.)
+
+## Exercise: "go get" solution
+
+`$ go get github.com/jaymcgavren/car`
+
+``` go
+package main
+
+import (
+	"github.com/jaymcgavren/car"
+	"github.com/jaymcgavren/car/headlights"
+)
+
+func main() {
+	car.OpenDoor()
+	headlights.TurnOn()
+}
+```
+
 ## Package Naming Conventions
 
-TODO
+* All lower-case.
+* Abbreviate if the meaning is fairly obvious (e.g. `fmt`).
+* Use one word if possible, but if you need two words, don't use underscores or capitalization (e.g. `strconv`).
+* Package names can conflict with variable names. Don't use a name your users are going to want to use for variables. (E.g. `total` or `tax` would be bad package names.)
 
 ## "go doc"
 
@@ -2013,7 +2043,7 @@ Then visit `http://localhost:6060/pkg/`...
 ## Web documentation
 
 * Other servers like `godoc.org` make package documentation available on the web.
-* For example, `https://godoc.org/github.com/headfirstgo/greeting` got created automatically for the `greeting` package.
+* For example, [https://godoc.org/github.com/headfirstgo/greeting](https://godoc.org/github.com/headfirstgo/greeting) got created automatically for the `greeting` package.
 
 ![](images/godog.org.png)
 
