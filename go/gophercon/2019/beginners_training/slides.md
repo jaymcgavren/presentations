@@ -11,6 +11,19 @@
 * Online software development instructor
 * See my courses at `https://teamtreehouse.com`
 
+## Talk overview
+
+TODO
+
+## Talk overview
+
+You can review these slides at:
+
+`https://github.com/jaymcgavren/presentations`
+
+We'll show that URL again at the end.
+
+
 
 
 
@@ -73,6 +86,82 @@ https://www.slideshare.net/jpetazzo/docker-and-go-why-did-we-decide-to-write-doc
 * You visit it and follow the instructions there (add code, fill in blanks, etc.)
 
 
+
+
+
+# A Sneak Peek
+
+## Sneak peek: Hello, world
+
+``` go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Hello, world!")
+}
+```
+
+## Sneak peek: A tiny web app
+
+``` go
+package main
+
+import (
+	"log"
+	"net/http"
+)
+
+func helloHandler(writer http.ResponseWriter, request *http.Request) {
+	writer.Write([]byte("<h1>Hello, web!</h1>"))
+}
+
+func main() {
+	http.HandleFunc("/hello", helloHandler)
+	err := http.ListenAndServe("localhost:8080", nil)
+	log.Fatal(err)
+}
+```
+
+## Sneak peek: goroutines and channels
+
+``` go
+package main
+
+import (
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"time"
+)
+
+func responseSize(url string, channel chan int) {
+	fmt.Println("Getting", url)
+	response, _ := http.Get(url)
+	defer response.Body.Close()
+	body, _ := ioutil.ReadAll(response.Body)
+	channel <- len(body)
+}
+```
+
+## Sneak peek: goroutines and channels
+
+``` go
+func main() {
+	sizes := make(chan int)
+	go responseSize("https://example.com/", sizes)
+	go responseSize("https://golang.org/", sizes)
+	go responseSize("https://golang.org/doc", sizes)
+	fmt.Println(<-sizes)
+	fmt.Println(<-sizes)
+	fmt.Println(<-sizes)
+}
+```
+
+## Sneak peek
+
+We'll take a more detailed look at each of these programs later.
 
 
 
@@ -987,12 +1076,12 @@ func main() {
 
 ## Function names
 
-* Use `CamelCase`: capitalize each word after the first.
-* If the first letter of a function name is `Capitalized`, it's considered __exported__: it can be used from other packages.
-* If the first letter of a function name is `uncapitalized`, it's considered __unexported__: it can only be used _within_ its package.
-* This is why all the names of standard library functions we've been calling are capitalized. (E.g. `fmt.Println`, `math.Floor`, etc.)
+Same rules as variable names:
 
-More on exported/unexported later.
+* Use `CamelCase`: capitalize each word after the first.
+* If the first letter of a function name is `Capitalized`, it's considered exported.
+* If the first letter of a function name is `uncapitalized`, it's considered unexported.
+* This is why all the names of standard library functions we've been calling are capitalized. (E.g. `fmt.Println`, `math.Floor`, etc.)
 
 ## Parameters
 
@@ -1088,7 +1177,17 @@ fmt.Println(y) // still in scope
 
 ## Package variables
 
-TODO
+* Package variables are declared outside of any function.
+* In scope for an entire package's code.
+
+``` go
+package main
+
+var myPackageVariable string
+```
+
+
+
 
 ## Function return values
 
@@ -2986,23 +3085,16 @@ By Renee French, used under a CC-Attribution-3.0 license.
 
 ## Other resources
 
-* Go Tour: `https://tour.golang.org`
-* Go Playground: `https://play.golang.org`
-* How to Write Go Code: `https://golang.org/doc/code.html`
-* Effective Go: `https://golang.org/doc/effective_go.html`
-* Standard Library Documentation: `https://golang.org/pkg/`
-* Official Go Blog: `https://blog.golang.org/`
-
-## Community
-
-* Gophers Slack: `https://invite.slack.golangbridge.org/`
-
-## Books
-
-Tutorial: Head First Go (by me)
-
-`https://headfirstgo.com`
-
-Reference: The Go Programming Language (by Alan Donovan and Brian Kernighan)
-
-`https://www.gopl.io/`
+* Other resources
+    * Go Tour: `https://tour.golang.org`
+    * Go Playground: `https://play.golang.org`
+    * How to Write Go Code: `https://golang.org/doc/code.html`
+    * Effective Go: `https://golang.org/doc/effective_go.html`
+    * Standard Library Documentation: `https://golang.org/pkg/`
+    * Official Go Blog: `https://blog.golang.org/`
+    * This presentation: `https://is.gd/gophercon_beginners`
+* Community
+    * Gophers Slack: `https://invite.slack.golangbridge.org/`
+* Books
+    * Tutorial: Head First Go (by me): `https://headfirstgo.com`
+    * Reference: The Go Programming Language (by Alan Donovan and Brian Kernighan): `https://www.gopl.io/`
