@@ -99,7 +99,7 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("Hello, world!")
+	fmt.Println("Hello, world!") // => Hello, world!
 }
 ```
 
@@ -153,9 +153,9 @@ func main() {
 	go responseSize("https://example.com/", sizes)
 	go responseSize("https://golang.org/", sizes)
 	go responseSize("https://golang.org/doc", sizes)
-	fmt.Println(<-sizes)
-	fmt.Println(<-sizes)
-	fmt.Println(<-sizes)
+	fmt.Println(<-sizes) // => 1270
+	fmt.Println(<-sizes) // => 8158
+	fmt.Println(<-sizes) // => 12558
 }
 ```
 
@@ -165,23 +165,7 @@ We'll take a more detailed look at each of these programs later.
 
 
 
-# Syntax
-
-## Go file layout
-
-* Package clause
-* Imports
-* Code
-
-``` go
-package main
-
-import "fmt"
-
-func main() {
-	fmt.Println("Hello, Go!")
-}
-```
+# Tools Included with Go
 
 ## "go fmt"
 
@@ -263,7 +247,54 @@ hello
 hello
 ```
 
+## Cross-compilation
+
+TODO `$GOOS`, `$GOARCH`
+
+
+
+
+
+
+# Writing Go Programs
+
+## Go file layout
+
+* Package clause
+* Imports
+* Code
+
+``` go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Hello, Go!")
+}
+```
+
+## The "main" package
+
+* The `main` package defines an executable program rather than a library.
+* When the program runs, Go will look for a function (also) named `main` and call that first.
+* The `main` function body needs to call any other functions needed by the program.
+
+``` go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Hello, Go!")
+}
+```
+
 ## Calling Functions
+
+* If the function's in another package, write the package name followed by a dot.
+* Write the function name.
+* Write a pair of parentheses containing arguments to the function (if any).
 
 ``` go
 package main
@@ -310,6 +341,8 @@ Prior program results in compile errors like this:
 ```
 
 ## Imports
+
+Other packages have to be imported before you can call their functions.
 
 ``` go
 package main
@@ -414,7 +447,43 @@ func main() {
 }
 ```
 
+## Exercise: A short program
+
+`https://is.gd/goex_short`
+
+## Exercise: A short program
+
+``` go
+// Replace the blanks ("____") in the below code so that it
+// compiles, runs, and prints the message "Hello, Gophers!".
+____ main
+
+____ "fmt"
+
+____ main() {
+	fmt.Println____"Hello, Gophers!"____
+}
+```
+
+## Exercise: A short program solution
+
+``` go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Hello, Gophers!")
+}
+```
+
 ## Variables
+
+* Variables need to be declared.
+    * Write the `var` keyword.
+    * Write a variable name.
+    * Write the variable type.
+* Then you can assign values to a variable using `=`.
 
 ``` go
 var myInteger int
@@ -428,6 +497,8 @@ fmt.Println(reflect.TypeOf(myFloat))   // => float64
 ```
 
 ## Short Variable Declarations
+
+If you're assigning an initial value, you can let Go derive the variable's type from the value being assigned with a short variable declaration (`:=`).
 
 ``` go
 myInteger := 1
@@ -451,39 +522,6 @@ Compile error:
 ```
 prog.go:9:2: tax declared and not used
 ```
-
-## Exercise: Go syntax
-
-`https://is.gd/goex_hello`
-
-## Exercise: Go syntax
-
-``` go
-// Replace the blanks ("____") in the below code so that it
-// compiles, runs, and prints the message "Hello, Gophers!".
-____ main
-
-____ "fmt"
-
-____ main() {
-	myString ____ "Hello, Gophers!"
-	fmt.Println(____)
-}
-```
-
-## Exercise: Go syntax solution
-
-``` go
-package main
-
-import "fmt"
-
-func main() {
-	myString := "Hello, Gophers!"
-	fmt.Println(myString)
-}
-```
-
 
 ## Naming requirements
 
@@ -545,6 +583,10 @@ Not OK:
 * `sheetlength`
 * `sheet_length` (Underscores are legal, but frowned upon.)
 
+## Exercise: Variables
+
+TODO
+
 ## Unexported variables
 
 This is a package variable. It's a variable that's in scope anywhere within a package. We'll talk more about these in a bit, so just bear with us for now.
@@ -564,7 +606,8 @@ var packageVariable string
 ``` go
 package mypkg
 
-var packageVariable string // Name starts with lower-case letter, so it's unexported
+// Name starts with lower-case letter, so it's unexported
+var packageVariable string
 ```
 
 `temp.go`
@@ -599,7 +642,8 @@ temp.go:10:14: undefined: mypkg.packageVariable
 ``` go
 package mypkg
 
-var PackageVariable string // Name capitalized, so it's exported
+// Name capitalized, so it's exported
+var PackageVariable string
 ```
 
 `temp.go`
@@ -709,26 +753,61 @@ func main() {
 
 ## "fmt.Printf"
 
-* Sometimes the default formatting for a value isn't what you need.
-* Remember this?
+Sometimes the default formatting for a value isn't what you need. Remember this?
 
 ``` go
 var myString string
 fmt.Println(myString) // => 
 ```
 
-Or what about this?
+And here's a number formatted with way too many decimal places of precision:
 
 ``` go
-fmt.Println(10.0 / 3.0) // => 3.3333333333333335
+fmt.Println(1.0 / 3.0) // => 0.3333333333333333
 ```
 
 ## "fmt.Printf"
+
+The `fmt` package's `Printf` function can help us with both of these issues and more:
+
+``` go
+package main
+
+import "fmt"
+
+func main() {
+	var myString string
+	fmt.Printf("A string variable: %#v\n", myString) // => A string variable: ""
+	fmt.Printf("One-third: %0.3f\n", 1.0/3.0)        // => One-third: 0.333
+}
+```
+
+## "fmt.Printf"
+
+`Printf` stands for "print, with formatting". It takes a string and inserts one or more values into it, formatted in specific ways. Then it prints the resulting string.
+
+``` go
+fmt.Printf("An integer: %d, a floating-point number: %f, and a string: %s\n", 42, 1.23, "hi")
+```
+
+Output:
+
+```
+An integer: 42, a floating-point number: 1.230000, and a string: hi
+```
 
 * Common verbs
 * `"%#v"`
 * `"%#T"`
 * `fmt.Sprintf`
+
+TODO
+
+## "fmt.Printf" field widths
+
+TODO
+
+## "fmt.Sprintf"
 
 TODO
 
@@ -977,6 +1056,33 @@ Output:
 You fail!
 ```
 
+## "if" and variable scope
+
+A variable declared within an `if` block is in scope only within that block.
+
+``` go
+if grade >= 60 {
+	status := "passing"
+} else {
+	status := "failing"
+}
+fmt.Println(status) // out of scope!
+```
+
+## "if" and variable scope
+
+Solution is to declare variable _before_ the `if` block:
+
+``` go
+var status string // declare up here
+if grade >= 60 {
+	status = "passing" // still in scope
+} else {
+	status = "failing" // still in scope
+}
+fmt.Println(status) // still in scope
+```
+
 ## "for"
 
 * Initialization statement
@@ -1015,6 +1121,31 @@ Output:
 4
 5
 6
+```
+
+## "for" and variable scope
+
+As with `if`, a variable declared within a `for` block is in scope only within that block.
+
+``` go
+for x := 1; x <= 3; x++ {
+	y := x + 1
+	fmt.Println(y)
+}
+fmt.Println(y) // undefined: y
+```
+
+## "for" and variable scope
+
+As with `if`, solution is to declare variable _before_ the `for` block:
+
+``` go
+var y int // declare up here
+for x := 1; x <= 3; x++ {
+	y = x + 1 // still in scope
+	fmt.Println(y)
+}
+fmt.Println(y) // still in scope
 ```
 
 ## "if" Initialization Statement
@@ -1149,58 +1280,6 @@ Compile error:
 prog.go:11:14: undefined: myVariable
 ```
 
-## Variable scope
-
-By the way, variable scope also limited by "if" blocks:
-
-``` go
-if grade >= 60 {
-	status := "passing"
-} else {
-	status := "failing"
-}
-fmt.Println(status) // out of scope!
-```
-
-## Variable scope
-
-And by "for" blocks:
-
-``` go
-for x := 1; x <= 3; x++ {
-	y := x + 1
-	fmt.Println(y)
-}
-fmt.Println(y) // out of scope!
-```
-
-## Variable scope
-
-Solution is to declare variable _before_ block:
-
-``` go
-var status string // declare up here
-if grade >= 60 {
-	status = "passing" // still in scope
-} else {
-	status = "failing" // still in scope
-}
-fmt.Println(status) // still in scope
-```
-
-## Variable scope
-
-Same with loops:
-
-``` go
-var y int // declare up here
-for x := 1; x <= 3; x++ {
-	y = x + 1 // still in scope
-	fmt.Println(y)
-}
-fmt.Println(y) // still in scope
-```
-
 ## Package variables
 
 * Package variables are declared outside of any function.
@@ -1265,12 +1344,12 @@ func main() {
 
 ## Multiple return values
 
+* The `strconv` package's `ParseBool` function converts a `string` to a `bool` value.
+* But this code won't compile:
+
 ``` go
-func main() {
-	flag := strconv.ParseBool("true")
-	flag = strconv.ParseBool("foobar")
-	fmt.Println(flag)
-}
+flag := strconv.ParseBool("true")
+fmt.Println(flag)
 ```
 
 Compile error:
@@ -1282,25 +1361,57 @@ prog.go:10:7: assignment mismatch: 1 variable but strconv.ParseBool returns 2 va
 
 ## Multiple return values
 
+* Why? Because `ParseBool` returns *two* values, not just one:
+    * The `bool` value converted from the string...
+    * ...and a second value with the type `error`.
+* `ParseBool` needs to be able to indicate an error because it might be passed a value that can't be converted to a `bool`, e.g. `strconv.ParseBool("foobar")`.
+
+## Multiple return values
+
+We need to provide a second variable for the `error` value.
+
 ``` go
-func main() {
-	flag, err := strconv.ParseBool("true")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(flag)
-	flag, err = strconv.ParseBool("foobar")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(flag)
+flag, err := strconv.ParseBool("true")
+fmt.Println(flag)
+```
+
+But of course we can't just declare a variable, we have to use it:
+
+``` go
+./prog.go:11:8: err declared and not used
+```
+
+## Multiple return values
+
+* For valid values, `err` will be `nil`.
+* So we add an `if` block that logs `err` and exits if it _isn't_ nil.
+* That way we only handle the `flag` value if it's valid.
+
+``` go
+flag, err := strconv.ParseBool("true")
+if err != nil {
+	log.Fatal(err)
 }
+fmt.Println(flag) // => true
+```
+
+## Multiple return values
+
+* For invalid values, `err` will _not_ be `nil`.
+* `flag` will have a value, but it will be meaningless and unusable. We need to ignore it.
+* In this case, we just print out `err` and exit the program, though you can handle errors any way you want.
+
+``` go
+flag, err := strconv.ParseBool("foobar")
+if err != nil {
+	log.Fatal(err)
+}
+fmt.Println(flag)
 ```
 
 Output:
 
 ```
-true
 2009/11/10 23:00:00 strconv.ParseBool: parsing "foobar": invalid syntax
 ```
 
@@ -1310,124 +1421,79 @@ true
 
 -Andrew Gerrand, https://blog.golang.org/error-handling-and-go
 
-## Writing functions with multiple return values
-
-``` go
-func parseBools(values []string) ([]bool, error) {
-	var bools []bool
-	for i, value := range values {
-		parsed, err := strconv.ParseBool(value)
-		if err != nil {
-			return nil, fmt.Errorf(
-                "invalid value %s at index %d", value, i)
-		}
-		bools = append(bools, parsed)
-	}
-	return bools, nil
-}
-```
+* You're required to provide a variable to hold error values.
+* You're required to do something with that error value.
+* Your functions _could_ just return the error to their callers, but it's often best to just handle the error on the spot.
 
 ## Writing functions with multiple return values
 
-``` go
-func main() {
-	bools, err := parseBools(
-		[]string{"true", "false", "foobar"})
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(bools)
-}
-```
-
-Output:
-
-```
-2009/11/10 23:00:00 invalid value foobar at index 2
-```
-
-## Exercise: Declaring functions
-
-[https://is.gd/goex_define_functions](https://is.gd/goex_define_functions)
-
-<!-- https://play.golang.org/p/Jih76DwKh4_s -->
-
-<!-- solutions/declaring_functions_extra_credit.go -->
-<!-- solutions/declaring_functions.go -->
-
-## Exercise: Declaring functions
+Here we have a `divide` function. It's possible to divide by `0`, which we don't want. Let's set it up to return an `error` in that event.
 
 ``` go
-package main
-
-import (
-	"fmt"
-)
-
-// YOUR CODE HERE:
-// Declare a "divide" function such that the call in the
-// "main" function will compile and return 2.8.
-// "divide" should accept two float64 values as parameters,
-// and return a single float64 value that represents the
-// first parameter divided by the second.
-// EXTRA CREDIT:
-// Have "divide" return TWO values, a float64 and an error.
-// If the second parameter is 0, return an error value
-// with the message "can't divide by 0". Otherwise, return
-// nil for the error value. You can use the fmt.Errorf
-// function to generate an error value. You'll also need
-// to update the code in "main" to handle the error value.
-
-func main() {
-	quotient := divide(5.6, 2)
-	fmt.Printf("%0.2f\n", quotient) // => 2.80
-}
-```
-
-## Exercise: Declaring functions solution
-
-``` go
-package main
-
-import (
-	"fmt"
-)
-
 func divide(dividend float64, divisor float64) float64 {
 	return dividend / divisor
 }
 
 func main() {
-	quotient := divide(5.6, 2)
-	fmt.Printf("%0.2f\n", quotient)
+	quotient := divide(5.6, 0.0)
+	fmt.Printf("%0.2f\n", quotient) // => +Inf
 }
 ```
 
-## Exercise: Declaring functions extra credit
+## Writing functions with multiple return values
+
+* Types for multiple return values specified in second set of parentheses.
+* `fmt.Errorf` function is one common way to make an error value.
+* If there is an error, still have to return a primary value, but callers should know to ignore it.
+* If there is _no_ error, convention is to return `nil` for error value.
 
 ``` go
-package main
-
-import (
-	"fmt"
-)
-
 func divide(dividend float64, divisor float64) (float64, error) {
 	if divisor == 0.0 {
 		return 0, fmt.Errorf("can't divide by 0")
 	}
 	return dividend / divisor, nil
 }
+```
 
+## Writing functions with multiple return values
+
+* If a function provides multiple return values, callers have to accept them all.
+* If `err` is `nil`, caller can use primary value.
+
+``` go
 func main() {
-	quotient, err := divide(5.6, 0.0)
+	quotient, err := divide(5.6, 1.2)
 	if err != nil {
 		fmt.Println(err)
+	} else {
+		fmt.Printf("%0.2f\n", quotient) // => 4.67
+	}
+}
+```
+
+## Writing functions with multiple return values
+
+* If `err` is _not_ `nil`, caller should ignore primary value and handle error.
+
+``` go
+func main() {
+	quotient, err := divide(5.6, 0)
+	if err != nil {
+		fmt.Println(err) // => can't divide by 0
 	} else {
 		fmt.Printf("%0.2f\n", quotient)
 	}
 }
 ```
+
+## Exercise: Declaring functions
+
+TODO
+
+## Exercise: Declaring functions extra credit
+
+TODO return error
 
 ## Pass-by-value
 
@@ -1566,9 +1632,64 @@ func double(number *int) {
 
 `https://is.gd/goex_pointers`
 
+## Exercise: Passing pointers
+
+``` go
+// Update this program as described below.
+
+package main
+
+import "fmt"
+
+// negate takes a boolean value and returns its
+// opposite. E.g.: negate(false) returns true.
+// But we WANT this function to accept a POINTER
+// to a boolean value, and update the value at
+// the pointer to its opposite. Once this change
+// is made, the function doesn't need to return
+// anything.
+func negate(myBoolean bool) bool {
+	return !myBoolean
+}
+
+func main() {
+	truth := true
+	// Change this to pass a pointer.
+	negate(truth)
+	// Prints "true", but we want "false".
+	fmt.Println(truth)
+	lies := false
+	// Change this to pass a pointer.
+	negate(lies)
+	// Prints "false", but we want "true".
+	fmt.Println(lies)
+}
+```
+
 <!-- https://play.golang.org/p/wGKDcFH1Hr0 -->
 
 <!-- ./solutions/pointers.go -->
+
+## Exercise: Passing pointers solution
+
+``` go
+package main
+
+import "fmt"
+
+func negate(myBoolean *bool) {
+	*myBoolean = !*myBoolean
+}
+
+func main() {
+	truth := true
+	negate(&truth)
+	fmt.Println(truth) // => false
+	lies := false
+	negate(&lies)
+	fmt.Println(lies) // => true
+}
+```
 
 
 
@@ -2064,7 +2185,73 @@ Then visit `http://localhost:6060/pkg/`...
 
 <!-- https://play.golang.org/p/0IoS8oGzrnw -->
 
+## Exercise: Using package documentation
+
+``` go
+package main
+
+import (
+	"fmt"
+	"log"
+)
+
+func main() {
+	string1 := "12.345"
+	string2 := "1.234"
+	
+	// YOUR CODE HERE:
+	// Look up documentation for the "strconv" package's
+	// ParseFloat function. (You can use either "go doc"
+	// or a search engine.) Use ParseFloat to convert
+	// string1 to a float64 value. Assign the converted
+	// number to the variable number1, and any error value
+	// to the variable err. Use the integer 64 for
+	// ParseFloat's bitSize argument.
+	
+	if err != nil {
+		log.Fatal("Could not parse string")
+	}
+	
+	// YOUR CODE HERE:
+	// Use ParseFloat to convert string2 to a float64
+	// value. Assign the converted number to the variable
+	// number2, and any error value to the variable err.
+	
+	if err != nil {
+		log.Fatal("Could not parse string")
+	}
+	
+	fmt.Println(number1 - number2)
+}
+```
+
+## Exercise: Using package documentation solution
+
 <!-- ./solutions/documentation.go -->
+
+``` go
+package main
+
+import (
+	"fmt"
+	"log"
+	"strconv"
+)
+
+func main() {
+	string1 := "12.345"
+	string2 := "1.234"
+	number1, err := strconv.ParseFloat(string1, 64)
+	if err != nil {
+		log.Fatal("Could not parse string")
+	}
+	number2, err := strconv.ParseFloat(string2, 64)
+	if err != nil {
+		log.Fatal("Could not parse string")
+	}
+	fmt.Println(number1 - number2)
+}
+```
 
 
 
@@ -2253,11 +2440,89 @@ func main() {
 
 ## Exercise: Struct types
 
-`https://is.gd/goex_structs`
+[https://is.gd/goex_structs](https://is.gd/goex_structs)
+
+## Exercise: Struct types
+
+``` go
+package main
+
+import (
+	"fmt"
+)
+
+type Subscriber struct {
+	Name   string
+	Rate   float64
+	Active bool
+}
+
+type Employee struct {
+	Name   string
+	Salary float64
+}
+
+// YOUR CODE HERE:
+// Define a struct type named Address that has Street, City, State,
+// and PostalCode fields, each with a type of "string".
+// Then embed the Address type within the Subscriber and Employee
+// types using anonymous fields, so that the code in "main" will
+// compile, run, and produce the output shown.
+
+func main() {
+	var subscriber Subscriber
+	subscriber.Name = "Aman Singh"
+	subscriber.Street = "123 Oak St"
+	subscriber.City = "Omaha"
+	subscriber.State = "NE"
+	subscriber.PostalCode = "68111"
+	fmt.Println("Name:", subscriber.Name)              // => Name: Aman Singh
+	fmt.Println("Street:", subscriber.Street)          // => Street: 123 Oak St
+	fmt.Println("City:", subscriber.City)              // => City: Omaha
+	fmt.Println("State:", subscriber.State)            // => State: NE
+	fmt.Println("Postal Code:", subscriber.PostalCode) // => Postal Code: 68111
+
+	var employee Employee
+	employee.Name = "Joy Carr"
+	employee.Street = "456 Elm St"
+	employee.City = "Portland"
+	employee.State = "OR"
+	employee.PostalCode = "97222"
+	fmt.Println("Name:", employee.Name)              // => Name: Joy Carr
+	fmt.Println("Street:", employee.Street)          // => Street: 456 Elm St
+	fmt.Println("City:", employee.City)              // => City: Portland
+	fmt.Println("State:", employee.State)            // => State: OR
+	fmt.Println("Postal Code:", employee.PostalCode) // => Postal Code: 97222
+}
+```
 
 <!-- https://play.golang.org/p/6TXfzxpTiCj -->
 
+## Exercise: Struct types solution
+
 <!-- ./solutions/structs.go -->
+
+``` go
+type Subscriber struct {
+	Name   string
+	Rate   float64
+	Active bool
+	Address
+}
+
+type Employee struct {
+	Name   string
+	Salary float64
+	Address
+}
+
+type Address struct {
+	Street     string
+	City       string
+	State      string
+	PostalCode string
+}
+```
 
 
 
@@ -2462,7 +2727,72 @@ type Landmark struct {
 
 `https://is.gd/goex_defined_types`
 
+## Exercise: Defined types
+
+``` go
+package main
+
+import "fmt"
+
+// YOUR CODE HERE:
+// Define a Rectangle struct type with Length and Width
+// fields, each of which has a type of float64.
+
+// YOUR CODE HERE:
+// Define an Area method on the Rectangle type. It should
+// accept no parameters (other than the receiver parameter).
+// It should return a float64 value calculated by multiplying
+// the receiver's Length by its Width.
+
+// YOUR CODE HERE:
+// Define a Perimeter method on the Rectangle type. It should
+// accept no parameters. It should return a float64 value
+// representing the receiver's perimeter (2 times its Length
+// plus 2 times its Width).
+
+func main() {
+	// Once you've defined the above code correctly,
+	// this code should compile and run.
+	var myRectangle Rectangle
+	myRectangle.Length = 2
+	myRectangle.Width = 3
+	fmt.Println("Area:", myRectangle.Area())           // => Area: 6
+	fmt.Println("Perimeter:", myRectangle.Perimeter()) // => Perimeter: 10
+}
+```
+
 <!-- https://play.golang.org/p/TeMJ9D6bBOz -->
+
+## Exercise: Defined types solution
+
+``` go
+package main
+
+import (
+	"fmt"
+)
+
+type Rectangle struct {
+	Length float64
+	Width  float64
+}
+
+func (r Rectangle) Area() float64 {
+	return r.Length * r.Width
+}
+
+func (r Rectangle) Perimeter() float64 {
+	return (2 * r.Length) + (2 * r.Width)
+}
+
+func main() {
+	var myRectangle Rectangle
+	myRectangle.Length = 2
+	myRectangle.Width = 3
+	fmt.Println("Area:", myRectangle.Area())
+	fmt.Println("Perimeter:", myRectangle.Perimeter())
+}
+```
 
 <!-- ./solutions/defined_types.go -->
 
@@ -2686,9 +3016,98 @@ Recording
 
 ## Exercise: Interfaces
 
-`https://is.gd/goex_interfaces`
+[https://is.gd/goex_interfaces](https://is.gd/goex_interfaces)
+
+## Exercise: Interfaces
+
+``` go
+package main
+
+import "fmt"
+
+type Whistle string
+func (w Whistle) MakeSound() {
+	fmt.Println("Tweet!")
+}
+
+type Horn string
+func (h Horn) MakeSound() {
+	fmt.Println("Honk!")
+}
+
+type Robot string
+func (r Robot) MakeSound() {
+	fmt.Println("Beep Boop")
+}
+func (r Robot) Walk() {
+	fmt.Println("Powering legs")
+}
+
+// YOUR CODE HERE:
+// Define a NoiseMaker interface type, which the above
+// Whistle, Horn, and Robot types will all satisfy.
+// It should require one method, MakeSound, which has
+// no parameters and no return values.
+
+// YOUR CODE HERE:
+// Define a Play function that accepts a parameter with
+// the NoiseMaker interface. Play should call MakeSound
+// on the parameter it receives.
+
+func main() {
+	// When the above code has been implemented
+	// correctly, this code should run and produce
+	// the output shown.
+	Play(Whistle("Toyco Canary")) // => Tweet!
+	Play(Horn("Toyco Blaster"))   // => Honk!
+	Play(Robot("Botco Ambler"))   // => Beep Boop
+}
+```
 
 <!-- https://play.golang.org/p/6g4_wz89Jes -->
+
+## Exercise: Interfaces solution
+
+``` go
+package main
+
+import "fmt"
+
+type Whistle string
+
+func (w Whistle) MakeSound() {
+	fmt.Println("Tweet!")
+}
+
+type Horn string
+
+func (h Horn) MakeSound() {
+	fmt.Println("Honk!")
+}
+
+type Robot string
+
+func (r Robot) MakeSound() {
+	fmt.Println("Beep Boop")
+}
+func (r Robot) Walk() {
+	fmt.Println("Powering legs")
+}
+
+type NoiseMaker interface {
+	MakeSound()
+}
+
+func play(n NoiseMaker) {
+	n.MakeSound()
+}
+
+func main() {
+	play(Whistle("Toyco Canary")) // => Tweet!
+	play(Horn("Toyco Blaster"))   // => Honk!
+	play(Robot("Botco Ambler"))   // => Beep Boop
+}
+```
 
 <!-- ./solutions/interfaces.go -->
 
@@ -2942,9 +3361,112 @@ func awardPrize() {
 
 ## Exercise: Handling errors
 
-`https://is.gd/goex_recovery`
+[https://is.gd/goex_recovery](https://is.gd/goex_recovery)
+
+## Exercise: Handling errors
+
+``` go
+package main
+
+import "fmt"
+
+type Refrigerator struct {
+	Brand string
+}
+
+type Food string
+
+func (r Refrigerator) Open() {
+	fmt.Println("Opening refrigerator")
+}
+func (r Refrigerator) Close() {
+	fmt.Println("Closing refrigerator")
+}
+func (r Refrigerator) FindFood(food string) (Food, error) {
+	// Food storage not implemented yet; always return error!
+	// Note: don't change FindFood as part of this exercise!
+	return Food(""), fmt.Errorf("%s not found", food)
+}
+
+// YOUR CODE HERE:
+// Modify the code in the Eat function so that fridge.Close will
+// always be called at the end, even if fridge.FindFood returns
+// an error. Once you've figured the solution out, your changes
+// will actually be quite small! Note: it wouldn't be appropriate
+// to use either "panic" or "recover" in this exercise; we won't
+// be using either one.
+func Eat(fridge Refrigerator) error {
+	fridge.Open()
+	food, err := fridge.FindFood("bananas")
+	if err != nil {
+		return err
+	}
+	fmt.Println("Eating", food)
+	fridge.Close()
+	return nil
+}
+
+// CURRENT OUTPUT:
+// Opening refrigerator
+// bananas not found
+// DESIRED OUTPUT:
+// Opening refrigerator
+// Closing refrigerator
+// bananas not found
+func main() {
+	var fridge Refrigerator
+	err := Eat(fridge)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+```
 
 <!-- https://play.golang.org/p/I16x3MSub57 -->
+
+## Exercise: Handling errors solution
+
+``` go
+package main
+
+import "fmt"
+
+type Refrigerator struct {
+	Brand string
+}
+
+type Food string
+
+func (r Refrigerator) Open() {
+	fmt.Println("Opening refrigerator")
+}
+func (r Refrigerator) Close() {
+	fmt.Println("Closing refrigerator")
+}
+func (r Refrigerator) FindFood(food string) (Food, error) {
+	// Food storage not implemented yet; always return error!
+	return Food(""), fmt.Errorf("%s not found", food)
+}
+
+func Eat(fridge Refrigerator) error {
+	fridge.Open()
+	defer fridge.Close()
+	food, err := fridge.FindFood("bananas")
+	if err != nil {
+		return err
+	}
+	fmt.Println("Eating", food)
+	return nil
+}
+
+func main() {
+	var fridge Refrigerator
+	err := Eat(fridge)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+```
 
 <!-- ./solutions/defer.go -->
 
@@ -3080,9 +3602,71 @@ Getting https://example.com/
 
 ## Exercise: Goroutines and channels
 
-`https://is.gd/goex_goroutines`
+[https://is.gd/goex_goroutines](https://is.gd/goex_goroutines)
+
+## Exercise: Goroutines and channels
+
+``` go
+// This program should call the "repeat" function twice, using two
+// separate goroutines. The first goroutine should print the string
+// "x" repeatedly, and the second goroutine should print "y"
+// repeatedly. You'll also need to create a channel that carries
+// boolean values to pass to "repeat", so the goroutine can signal
+// when it's done.
+// 
+// Output will vary, but here's one possible result:
+// yyyyyyyyyyyyyyyyyyyyxxxxxxxxxxxxxxxxxxxxxyyyyyyyyyxxxxxxxxxy
+// 
+// Replace the blanks ("____") in the code so the program will
+// compile and run.
+package main
+
+import (
+	"fmt"
+)
+
+// repeat prints a string multiple times, then writes "true" to the
+// provided channel to signal it's done.
+func repeat(s string, channel ____ bool) {
+	for i := 0; i < 30; i++ {
+		fmt.Print(s)
+	}
+	channel ____ true
+}
+
+func main() {
+	channel := ____(chan bool)
+	____ repeat("x", channel)
+	____ repeat("y", channel)
+	<-channel
+	<-channel
+}
+```
 
 <!-- https://play.golang.org/p/mtfvNLts6Vm -->
+
+## Exercise: Goroutines and channels
+
+``` go
+package main
+
+import "fmt"
+
+func repeat(s string, channel chan bool) {
+	for i := 0; i < 30; i++ {
+		fmt.Print(s)
+	}
+	channel <- true
+}
+
+func main() {
+	channel := make(chan bool)
+	go repeat("x", channel)
+	go repeat("y", channel)
+	<-channel
+	<-channel
+}
+```
 
 <!-- solutions/goroutines.go -->
 
