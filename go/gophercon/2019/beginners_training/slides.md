@@ -1,4 +1,15 @@
- Introduction to the Go Programming Language
+## Get set up
+
+* Please sit as close as possible (I don't bite)!
+* Introduce yourself to your neighbors - we're counting on you to help each other out!
+* We'll be using the Go Playground website (`play.golang.org`) a lot, so get connected to conference WiFi - see me or a TA if you're having trouble.
+* Hopefully you already have the Go compiler installed. If not, please see me or a TA ASAP!
+
+
+
+
+
+# Introduction to the Go Programming Language
 
 ## About me
 
@@ -1508,7 +1519,7 @@ func main() {
 	amount := 6
 	// We want to set "amount" to 12
 	double(amount)
-	fmt.Println(amount) // But this prints "6"!
+	fmt.Println(amount) // But this prints 6!
 }
 
 // double is SUPPOSED to take a value and double it
@@ -1553,14 +1564,12 @@ fmt.Println(&myBool)  // => 0x1040a148
 A pointer to an `int` is written `*int`, a pointer to a `bool` as `*bool`, and so on.
 
 ``` go
-func main() {
-	var myInt int
-	fmt.Println(reflect.TypeOf(&myInt))   // => *int
-	var myFloat float64
-	fmt.Println(reflect.TypeOf(&myFloat)) // => *float64
-	var myBool bool
-	fmt.Println(reflect.TypeOf(&myBool))  // => *bool
-}
+var myInt int
+fmt.Println(reflect.TypeOf(&myInt))   // => *int
+var myFloat float64
+fmt.Println(reflect.TypeOf(&myFloat)) // => *float64
+var myBool bool
+fmt.Println(reflect.TypeOf(&myBool))  // => *bool
 ```
 
 ## Pointers
@@ -1706,19 +1715,19 @@ package main
 import "fmt"
 
 func Hello() {
-        fmt.Println("Hello!")
+	fmt.Println("Hello!")
 }
 func Hi() {
-        fmt.Println("Hi!")
+	fmt.Println("Hi!")
 }
 func main() {
-    Hello()
+	Hello()
 }
 ```
 
 ## The "main" package
 
-But sticking everything in one package will only get you so far...
+But putting thousands of lines of code in one package will get hard to maintain...
 
 ## The Go workspace
 
@@ -1747,11 +1756,11 @@ package greeting
 import "fmt"
 
 func Hello() {
-        fmt.Println("Hello!")
+	fmt.Println("Hello!")
 }
 
 func Hi() {
-        fmt.Println("Hi!")
+	fmt.Println("Hi!")
 }
 ```
 
@@ -1765,8 +1774,8 @@ package main
 import "greeting"
 
 func main() {
-        greeting.Hello()
-        greeting.Hi()
+	greeting.Hello()
+	greeting.Hi()
 }
 ```
 
@@ -1788,8 +1797,8 @@ package main
 import "greeting"
 
 func main() {
-        greeting.Hello()
-        greeting.Hi()
+	greeting.Hello()
+	greeting.Hi()
 }
 ```
 
@@ -1860,11 +1869,11 @@ package greeting
 import "fmt"
 
 func hello() {
-        fmt.Println("Hello!")
+	fmt.Println("Hello!")
 }
 
 func hi() {
-        fmt.Println("Hi!")
+	fmt.Println("Hi!")
 }
 ```
 
@@ -1880,8 +1889,8 @@ package main
 import "greeting"
 
 func main() {
-        greeting.hello()
-        greeting.hi()
+	greeting.hello()
+	greeting.hi()
 }
 ```
 
@@ -2325,6 +2334,7 @@ TODO convert to slides
         * `nil` slices
         * Zero values in slice
     * `os.Args`
+    * Variadic functions
 * Maps
     * `make`
     * Map literals
@@ -3495,12 +3505,12 @@ func responseSize(url string) {
 
 ``` go
 func main() {
-    // Note the time we started.
+	// Note the time we started.
 	start := time.Now()
 	responseSize("https://example.com/")
 	responseSize("https://golang.org/")
 	responseSize("https://golang.org/doc")
-    // Print how long everything took.
+	// Print how long everything took.
 	fmt.Println(time.Since(start).Seconds(), "seconds")
 }
 ```
@@ -3559,7 +3569,7 @@ func responseSize(url string, channel chan int) {
 	response, _ := http.Get(url)             // Unchanged
 	defer response.Body.Close()              // Unchanged
 	body, _ := ioutil.ReadAll(response.Body) // Unchanged
-    // Send body length value via channel.
+	// Send body length value via channel.
 	channel <- len(body)
 }
 ```
@@ -3599,6 +3609,10 @@ Getting https://example.com/
 * The channel accomplishes two things:
     * Channel reads cause `main` goroutine to block until `responseSize` goroutines send, so they have time to finish before program ends.
     * The channel transmits data from the `responseSize` goroutines back to the `main` goroutine.
+
+## Channels carrying structs
+
+TODO page sizes printed in whatever order the servers responded. Implement struct that pairs URL with response size and have channel carry that.
 
 ## Exercise: Goroutines and channels
 
