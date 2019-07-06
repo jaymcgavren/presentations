@@ -8,9 +8,9 @@
 
 [https://dev.to/samjulien/speaker-stuff-no-one-tells-you-about-applying-to-conferences-l3n](https://dev.to/samjulien/speaker-stuff-no-one-tells-you-about-applying-to-conferences-l3n)
 
-## _Do_ Repeat Yourself
-
 ## Minimize Page Flipping
+
+## _Do_ Repeat Yourself
 
 ## Limit "Trivia"
 
