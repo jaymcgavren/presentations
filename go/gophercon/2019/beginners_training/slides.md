@@ -249,7 +249,6 @@ hello
 ``` go
 $ go build repeat.go
 $ ls -l
-total 2064
 -rwxr-xr-x 1 jay staff 2106512 May  1 21:13 repeat
 -rw-r--r-- 1 jay staff     166 May  1 21:13 repeat.go
 $ ./repeat
@@ -260,7 +259,27 @@ hello
 
 ## Cross-compilation
 
-TODO `$GOOS`, `$GOARCH`
+Compile for Windows from Mac:
+
+```
+$ env GOOS=windows ENV=amd64 go build repeat.go
+$ ls -l
+-rwxr-xr-x 1 jay staff 2065920 May  1 21:13 repeat.exe
+-rw-r--r-- 1 jay staff     166 May  1 21:13 repeat.go
+```
+
+## Cross-compilation
+
+Compile for Mac from Windows:
+
+```
+C:\work> set GOOS=darwin
+C:\work> set ENV=amd64
+C:\work> go build repeat.go
+```
+
+* Also supports Linux, and more!
+* Google "golang goos" to learn the various options.
 
 
 
