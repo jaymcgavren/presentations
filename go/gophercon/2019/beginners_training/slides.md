@@ -889,10 +889,20 @@ Output:
 An integer: 42, a floating-point number: 1.230000, and a string: hi
 ```
 
-* Common verbs
-* `"%#v"`
-* `"%#T"`
-* `fmt.Sprintf`
+## "fmt.Printf" common verbs
+
+| Verb | Output |
+| ---- | ------ |
+| `%f` | Floating-point number |
+| `%d` | Decimal integer |
+| `%s` | String |
+| `%t` | Boolean (`true` or `false`) |
+
+## "%v"
+
+TODO
+
+## "%T"
 
 TODO
 
