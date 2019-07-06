@@ -615,7 +615,70 @@ Not OK:
 
 ## Exercise: Variables
 
+`https://is.gd/goex_variables`
+
+<!-- https://play.golang.org/p/R6SSSyc-uai -->
+
+## Exercise: Variables
+
+``` go
+package main
+
+import "fmt"
+
+func main() {
+	// YOUR CODE HERE:
+	// Declare originalCount and eatenCount variables
+	// and assign them values so that the code below
+	// will compile and produce the output shown.
+	// Do "var" declarations first. Once you've run
+	// your code and confirmed it's working, convert
+	// the "var" declarations to short declarations.
+
+	fmt.Println("I started with", originalCount, "apples.")            // => I started with 10 apples.
+	fmt.Println("Some jerk ate", eatenCount, "apples.")                // => Some jerk ate 4 apples.
+	fmt.Println("There are", originalCount-eatenCount, "apples left.") // => There are 6 apples left.
+}
+```
+
+## Exercise: Variables cheat sheet
+
 TODO
+
+## Exercise: Variables solution ("var" declarations)
+
+``` go
+package main
+
+import "fmt"
+
+func main() {
+	var originalCount int = 10
+	var eatenCount int = 4
+
+	fmt.Println("I started with", originalCount, "apples.")
+	fmt.Println("Some jerk ate", eatenCount, "apples.")
+	fmt.Println("There are", originalCount-eatenCount, "apples left.")
+}
+
+```
+
+## Exercise: Variables solution (short declarations)
+
+``` go
+package main
+
+import "fmt"
+
+func main() {
+	originalCount := 10
+	eatenCount := 4
+
+	fmt.Println("I started with", originalCount, "apples.")
+	fmt.Println("Some jerk ate", eatenCount, "apples.")
+	fmt.Println("There are", originalCount-eatenCount, "apples left.")
+}
+```
 
 ## Unexported variables
 
