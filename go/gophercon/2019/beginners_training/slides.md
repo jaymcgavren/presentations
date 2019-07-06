@@ -898,6 +898,13 @@ An integer: 42, a floating-point number: 1.230000, and a string: hi
 | `%s` | String |
 | `%t` | Boolean (`true` or `false`) |
 
+``` go
+fmt.Printf("%f\n", 1.234)      // => 1.234000
+fmt.Printf("%d\n", 1)          // => 1
+fmt.Printf("%s\n", "a string") // => "a string"
+fmt.Printf("%t\n", true)       // => true
+```
+
 ## "%v"
 
 TODO

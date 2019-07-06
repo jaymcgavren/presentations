@@ -8,6 +8,42 @@
 
 [https://dev.to/samjulien/speaker-stuff-no-one-tells-you-about-applying-to-conferences-l3n](https://dev.to/samjulien/speaker-stuff-no-one-tells-you-about-applying-to-conferences-l3n)
 
+## Avoid Split Attention
+
+<!-- Efficiency in Learning p. 84 -->
+
+### Replace:
+
+| Verb | Output |
+| ---- | ------ |
+| `%f` | Floating-point number |
+| `%d` | Decimal integer |
+| `%s` | String |
+| `%t` | Boolean (`true` or `false`) |
+
+``` go
+fmt.Printf("%f\n", 1.234)      // => 1.234000
+fmt.Printf("%d\n", 1)          // => 1
+fmt.Printf("%s\n", "a string") // => a string
+fmt.Printf("%t\n", true)       // => true
+```
+
+Output:
+
+``` go
+1.234000
+1
+a string
+true
+```
+
+### With:
+
+fmt.Printf("Floating-point number: %f\n", 1.234)      // => Floating-point number: 1.234000
+fmt.Printf("Decimal integer:       %d\n", 1)          // => Decimal integer:       1
+fmt.Printf("String:                %s\n", "a string") // => String:                a string
+fmt.Printf("Boolean value:         %t\n", true)       // => Boolean value:         true
+
 ## Minimize Page Flipping
 
 ## _Do_ Repeat Yourself
