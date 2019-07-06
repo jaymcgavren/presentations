@@ -10,6 +10,8 @@
 
 ## _Do_ Repeat Yourself
 
+## Minimize Page Flipping
+
 ## Limit "Trivia"
 
 * Bad: Who created the Go Language?
