@@ -1,8 +1,38 @@
+# Crafting Effective Technical Tutorials
+
+## About Me
+
+* Name: Jay McGavren
+* Author of Head First Ruby and Head First Go
+* Total 4 years creating training for Code School, then Treehouse
+
+![](images/head_first_go_cover.png)
+
+## Why Listen To Me?
+
+I dunno, I don't *feel* like my content should be that extraordinary...
+
+## Head First Ruby Amazon Reviews
+
+![](images/head_first_ruby_amazon_reviews.png)
+
+(The 2-star guy is mad the book isn't on Kindle Cloud Reader.)
+
+## Head First Go Amazon Reviews
+
+![](images/head_first_go_amazon_reviews.png)
+
+## A Tweet About Head First Go
+
+![](images/head_first_go_tweet.png)
+
+# The Science (and pseudoscience) I Use
+
 ## Impress them Early
 
 ## Tell a Story
 
-"If I stood up and read the entire ECMAScript spec to you, I’d be technically sophisticated but a terrible speaker."
+"If I stood up and read the entire ECMAScript spec to you, I'd be technically sophisticated but a terrible speaker."
 
 "The truth is that humans are story-driven. Good talks focus on solving problems. Great talks tell stories that change perspectives."
 
@@ -11,6 +41,8 @@
 ## Avoid Split Attention
 
 <!-- Efficiency in Learning p. 84 -->
+
+Don't make readers look all over the page to assimilate information. Put related information together!
 
 ### Replace:
 
@@ -22,10 +54,10 @@
 | `%t` | Boolean (`true` or `false`) |
 
 ``` go
-fmt.Printf("%f\n", 1.234)      // => 1.234000
-fmt.Printf("%d\n", 1)          // => 1
-fmt.Printf("%s\n", "a string") // => a string
-fmt.Printf("%t\n", true)       // => true
+fmt.Printf("%f\n", 1.234)
+fmt.Printf("%d\n", 1)
+fmt.Printf("%s\n", "a string")
+fmt.Printf("%t\n", true)
 ```
 
 Output:
@@ -39,10 +71,16 @@ true
 
 ### With:
 
-fmt.Printf("Floating-point number: %f\n", 1.234)      // => Floating-point number: 1.234000
-fmt.Printf("Decimal integer:       %d\n", 1)          // => Decimal integer:       1
-fmt.Printf("String:                %s\n", "a string") // => String:                a string
-fmt.Printf("Boolean value:         %t\n", true)       // => Boolean value:         true
+``` go
+// Floating point numbers: %f
+fmt.Printf("%f\n", 1.234)      // => 1.234000
+// Decimal integers:       %d
+fmt.Printf("%d\n", 1)          // => 1
+// Strings:                %s
+fmt.Printf("%s\n", "a string") // => a string
+// Boolean values:         %t
+fmt.Printf("%t\n", true)       // => true
+```
 
 ## Minimize Page Flipping
 
@@ -119,6 +157,9 @@ TODO
 * __Efficiency in Learning__, Clarke et al.
 * __Memory and the Human Lifespan__, Steve Joordens, Ph.D.: `https://www.thegreatcourses.com/courses/memory-and-the-human-lifespan.html`
 * "A Guide to Better Technical Writing", Wade Christensen: `https://astuteape.com/writing/a-guide-to-better-technical-writing/`
+* My book!
+
+![](images/head_first_go_cover.png)
 
 ## Review These Slides
 
