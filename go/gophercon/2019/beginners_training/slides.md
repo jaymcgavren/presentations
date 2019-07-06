@@ -3232,6 +3232,24 @@ TODO
 
 ## "defer"
 
+TODO consider replacing below slides with this example
+
+```go
+func Camp() error {
+	var fire Fire
+	fire.Light()
+	// All you have to do is defer a call to Extinguish
+	// right after you make a call to Light! Extinguish
+	// will be called when Camp exits, whether Camp does
+	// so normally or due to an error.
+	defer fire.Extinguish()
+	return fmt.Errorf("spotted a bear")
+	fmt.Println("Toasting marshmallows")
+	return nil
+}
+```
+
+
 It's usually polite to end conversations with "goodbye":
 
 ``` go
