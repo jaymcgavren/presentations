@@ -61,10 +61,10 @@ TODO
 
 ## Further Reading
 
-__Efficiency in Learning__, Clarke et al.
-
-Wade Christensen, "A Guide to Better Technical Writing": [https://astuteape.com/writing/a-guide-to-better-technical-writing/](https://astuteape.com/writing/a-guide-to-better-technical-writing/)
+* __Efficiency in Learning__, Clarke et al.
+* __Memory and the Human Lifespan__, Steve Joordens, Ph.D.: `https://www.thegreatcourses.com/courses/memory-and-the-human-lifespan.html`
+* "A Guide to Better Technical Writing", Wade Christensen: `https://astuteape.com/writing/a-guide-to-better-technical-writing/`
 
 ## Review These Slides
 
-TODO
+TODO set up link from jay.mcgavren.com
