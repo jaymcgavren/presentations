@@ -1,6 +1,6 @@
 ## Get set up
 
-* Please sit as close as possible (I don't bite)!
+* Please sit as close as possible - some slides have small print!
 * Introduce yourself to your neighbors - we're counting on you to help each other out!
 * We'll be using the Go Playground website (`play.golang.org`) a lot, so get connected to conference WiFi - see me or a TA if you're having trouble.
 * Hopefully you already have the Go compiler installed. If not, please see me or a TA ASAP!
