@@ -160,6 +160,52 @@ Prerequisite knowledge _has_ to be taught, or readers will be confused.
 * Try to fit it in at the time you're teaching similar concepts.
 * But if you have to, introduce it as an aside/detour.
 
+## Anticipate Viewer Questions
+
+### Original slide:
+
+So, remember this excessively precise fractional number from before?
+
+``` go
+fmt.Println(1.0 / 3.0) // => 0.3333333333333333
+```
+
+`fmt.Printf` can help us round it off!
+
+``` go
+fmt.Printf("%0.3f\n", 1.0/3.0) // => 0.333
+```
+
+## Anticipate Viewer Questions
+
+"But wait, what about `2.0 / 3.0`, which would be `0.6666666666666666`? Will `Printf` round the last decimal place up or just truncate it to `0.666`?"
+
+* Leaving questions like this unanswered is worse than just leaving a gap in the viewer's knowledge.
+* Not knowing distracts them from what you want to teach them next.
+* Anticipating and answering questions instills faith in the technology ("oh, good, they thought of that") _and_ you, the teacher ("oh, good, the teacher thought of that").
+
+## Anticipate Viewer Questions
+
+### Updated slide:
+
+So, remember this excessively precise fractional number from before?
+
+``` go
+fmt.Println(1.0 / 3.0) // => 0.3333333333333333
+```
+
+`fmt.Printf` can help us round it off!
+
+``` go
+fmt.Printf("%0.3f\n", 1.0/3.0) // => 0.333
+```
+
+Rounds last decimal up if appropriate:
+
+``` go
+fmt.Printf("%0.3f\n", 2.0/3.0) // => 0.667
+```
+
 ## Avoid Ambiguous Pronouns
 
 Bad:
