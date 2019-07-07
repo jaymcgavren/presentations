@@ -38,6 +38,14 @@ I dunno, I don't _feel_ like my content should be that extraordinary...
 
 [https://dev.to/samjulien/speaker-stuff-no-one-tells-you-about-applying-to-conferences-l3n](https://dev.to/samjulien/speaker-stuff-no-one-tells-you-about-applying-to-conferences-l3n)
 
+## Tell a Story
+
+A story format gives viewers context for what you're teaching.
+
+* What kind problem does this knowledge help solve?
+* Have we learned everything we need to yet? ("No, look, there's this bug over here!")
+* Gives a sense of closure at end of lesson.
+
 ## Avoid Split Attention
 
 <!-- Efficiency in Learning p. 84 -->
