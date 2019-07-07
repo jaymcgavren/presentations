@@ -10,7 +10,7 @@
 
 ## Why Listen To Me?
 
-I dunno, I don't *feel* like my content should be that extraordinary...
+I dunno, I don't _feel_ like my content should be that extraordinary...
 
 ## Head First Ruby Amazon Reviews
 
@@ -90,6 +90,12 @@ fmt.Printf("%t\n", true)       // => true
 
 * Bad: Who created the Go Language?
 * Good: Is Go compiled or interpreted?
+
+## Pick and Choose Topics
+
+* Attention is a finite resource!
+* What is _your_ target audience ready to learn? (Not "able", "ready"!)
+* What does _your_ target audience need to know?
 
 ## Use Clear Motivating Examples
 
