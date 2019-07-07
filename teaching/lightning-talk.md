@@ -110,6 +110,42 @@ func Camp() error {
 }
 ```
 
+## Manage Knowledge Dependencies
+
+![](images/endings_are_hard_tweet.png)
+
+## Manage Knowledge Dependencies
+
+Simple example: I realized I needed `%%` when demonstrating `Printf` format widths:
+
+``` go
+fmt.Printf("%%7.3f: %7.3f\n", 12.3456) // => %7.3f:  12.346
+fmt.Printf("%%7.2f: %7.2f\n", 12.3456) // => %7.2f:   12.35
+fmt.Printf("%%7.1f: %7.1f\n", 12.3456) // => %7.1f:    12.3
+fmt.Printf("%%.1f: %.1f\n", 12.3456)   // => %.1f: 12.3
+fmt.Printf("%%.2f: %.2f\n", 12.3456)   // => %.2f: 12.35
+```
+
+## Manage Knowledge Dependencies
+
+...So I just went back and added it to the other verbs.
+
+``` go
+...
+fmt.Printf("%s\n", "a string") // => a string
+// Boolean values:         %t
+fmt.Printf("%t\n", true)       // => true
+// Literal % sign:         %%
+fmt.Printf("%%\n")             // => %
+```
+
+## Manage Knowledge Dependencies
+
+Prerequisite knowledge _has_ to be taught, or readers will be confused.
+
+* Try to fit it in at the time you're teaching similar concepts.
+* But if you have to, introduce it as an aside/detour.
+
 ## Avoid Ambiguous Pronouns
 
 Bad:
