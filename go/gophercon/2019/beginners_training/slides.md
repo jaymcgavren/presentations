@@ -891,33 +891,144 @@ An integer: 42, a floating-point number: 1.230000, and a string: hi
 
 ## "fmt.Printf" common verbs
 
-| Verb | Output |
-| ---- | ------ |
-| `%f` | Floating-point number |
-| `%d` | Decimal integer |
-| `%s` | String |
-| `%t` | Boolean (`true` or `false`) |
-
 ``` go
+// Floating point numbers: %f
 fmt.Printf("%f\n", 1.234)      // => 1.234000
+// Decimal integers:       %d
 fmt.Printf("%d\n", 1)          // => 1
-fmt.Printf("%s\n", "a string") // => "a string"
+// Strings:                %s
+fmt.Printf("%s\n", "a string") // => a string
+// Boolean values:         %t
 fmt.Printf("%t\n", true)       // => true
+// Literal % sign:         %%
+fmt.Printf("%%\n")             // => %
 ```
 
-## "%v"
+## Some Go-specific verbs
 
-TODO
-
-## "%T"
-
-TODO
+``` go
+// Any value:     %v
+fmt.Printf("%v\n", 1.234)      // => 1.234
+fmt.Printf("%v\n", 1)          // => 1
+fmt.Printf("%v\n", "a string") // => a string
+fmt.Printf("%v\n", true)       // => true
+// Type of value: %T
+fmt.Printf("%T\n", 1.234)      // => float64
+fmt.Printf("%T\n", 1)          // => int
+fmt.Printf("%T\n", "a string") // => string
+fmt.Printf("%T\n", true)       // => bool
+```
 
 ## "fmt.Printf" field widths
 
-TODO
+``` go
+fmt.Printf("%12s | %s\n", "Product", "Cost in Cents")
+fmt.Println("-----------------------------")
+fmt.Printf("%12s | %2d\n", "Stamps", 50)
+fmt.Printf("%12s | %2d\n", "Paper Clips", 5)
+fmt.Printf("%12s | %2d\n", "Tape", 99)
+```
+
+Output:
+
+```
+     Product | Cost in Cents
+----------------------------
+      Stamps | 50
+ Paper Clips |  5
+        Tape | 99
+```
+
+## "fmt.Printf" decimal precision
+
+``` go
+fmt.Printf("%%7.3f: %7.3f\n", 12.3456) // => %7.3f:  12.346
+fmt.Printf("%%7.2f: %7.2f\n", 12.3456) // => %7.2f:   12.35
+fmt.Printf("%%7.1f: %7.1f\n", 12.3456) // => %7.1f:    12.3
+fmt.Printf("%%.1f: %.1f\n", 12.3456)   // => %.1f: 12.3
+fmt.Printf("%%.2f: %.2f\n", 12.3456)   // => %.2f: 12.35
+```
+
+## "fmt.Printf" decimal precision
+
+So, remember this excessively precise fractional number from before?
+
+``` go
+fmt.Println(1.0 / 3.0) // => 0.3333333333333333
+```
+
+`fmt.Printf` can help us round it off!
+
+``` go
+fmt.Printf("%0.3f\n", 1.0/3.0) // => 0.333
+```
+
+Rounds last decimal up if appropriate:
+
+``` go
+fmt.Printf("%0.3f\n", 2.0/3.0) // => 0.667
+```
+
+## "%#v" verb
+
+What about this variable with an empty string we can't see? How can `Printf` help with that?
+
+```
+var myString string
+fmt.Println(myString) // => 
+```
+
+## "%#v" verb
+
+The `%v` verb formats any value:
+
+``` go
+fmt.Printf("%v %v %v\n", 1, true, "hi")    // => 1 true hi
+```
+
+But the `%#v` verb is an alternate format; it formats any value _as it would appear in Go code_:
+
+``` go
+fmt.Printf("%#v %#v %#v\n", 1, true, "hi") // => 1 true "hi"
+```
+
+## "%#v" verb
+
+`%#v` is really useful for debugging!
+
+``` go
+// Println won't show you the difference between an empty string, a space, and a tab:
+fmt.Println("", " ", "\t")                                          // =>
+// But fmt.Printf("%#v") will!
+fmt.Printf("%#v %#v %#v\n", "", " ", "\t")                          // => "" " " "\t"
+// Println won't show you what's in a slice:
+fmt.Println([]string{"a", "b", "c"}, []string{"a b c"})             // => [a b c] [a b c]
+// But fmt.Printf("%#v") will!
+fmt.Printf("%#v %#v\n", []string{"a", "b", "c"}, []string{"a b c"}) // => []string{"a", "b", "c"} []string{"abc"}
+```
+
+## "%#v" verb
+
+With `%#v`, seeing empty strings is easy!
+
+```
+var myString string
+fmt.Println(myString)         // =>
+fmt.Printf("%#v\n", myString) // => ""
+```
 
 ## "fmt.Sprintf"
+
+Need to store a string instead of printing? Just call `fmt.Sprintf` instead of `fmt.Printf`!
+
+``` go
+string1 := fmt.Sprintf("An integer: %d, a floating-point number: %f, and a string: %s\n", 42, 1.23, "hi")
+string2 := fmt.Sprintf("%12s | %2d\n", "Stamps", 50)
+fmt.Print(string1) // => An integer: 42, a floating-point number: 1.230000, and a string: hi
+fmt.Print(string2) // =>       Stamps | 50
+```
+
+## Exercise: "fmt.Printf"
 
 TODO
 
