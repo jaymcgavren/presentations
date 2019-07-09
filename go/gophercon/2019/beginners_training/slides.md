@@ -1646,6 +1646,18 @@ Output:
 * You're required to do something with that error value.
 * Your functions _could_ just return the error to their callers, but it's often best to just handle the error on the spot.
 
+## Blank identifier
+
+* If you _really_ want to ignore a return value, you can use the blank identifier, `_`.
+* Just write `_` in place of a variable to discard that value.
+
+``` go
+// Discard the second return value.
+flag, _ := strconv.ParseBool("foobar")
+// The boolean value is invalid!
+fmt.Println(flag)
+```
+
 ## Writing functions with multiple return values
 
 Here we have a `divide` function. It's possible to divide by `0`, which we don't want. Let's set it up to return an `error` in that event.
@@ -2479,39 +2491,334 @@ func main() {
 ## Arrays
 
 ``` go
+// Array type written as [size]ContainedType
 var primes [3]int
+// Array indices start at 0
 primes[0] = 2
 primes[1] = 3
 fmt.Println(primes[0]) // => 2
 fmt.Println(primes[1]) // => 3
 ```
 
-* Can't grow when needed
-* To me, they're just a foundation for slices
+## Arrays
+
+Arrays can hold any type
+
+``` go
+var flags [2]bool
+flags[0] = true
+flags[1] = false
+fmt.Println(flags) // => [true false]
+var names [5]string
+names[0] = "Tracy"
+names[2] = "Gerard"
+fmt.Println(names) // => [Tracy  Gerard  ]
+```
+
+## Arrays and "fmt.Printf"
+
+Hmm, spacing on that last one is weird...
+
+``` go
+var names [5]string
+names[0] = "Tracy"
+names[2] = "Gerard"
+fmt.Println(names) // => [Tracy  Gerard  ]
+```
+
+Let's look at it with `fmt.Printf("%#v")`:
+
+``` go
+fmt.Printf("%#v\n", names) // => [5]string{"Tracy", "", "Gerard", "", ""}
+```
+
+## Arrays and zero values
+
+Unless otherwise assigned, array elements hold the zero values for their type.
+
+``` go
+var primes [3]int
+fmt.Printf("%#v\n", primes) // => [3]int{0, 0, 0}
+var flags [2]bool
+fmt.Printf("%#v\n", flags)  // => [2]bool{false, false}
+var names [5]string
+fmt.Printf("%#v\n", names)  // => [5]string{"", "", "", "", ""}
+```
+
+## Array literals
+
+* Remember `fmt.Printf("%#v")` prints values as they would appear in Go code.
+
+``` go
+var names [5]string
+names[0] = "Tracy"
+names[2] = "Gerard"
+fmt.Printf("%#v\n", names) // => [5]string{"Tracy", "", "Gerard", "", ""}
+```
+
+* That syntax is an array __literal__.
+
+## Array literals
+
+Use array literals to create an array and initialize its elements all at once.
+
+``` go
+names := [5]string{"Tracy", "", "Gerard", "", ""}
+fmt.Println(names[0]) // => Tracy
+fmt.Println(names[1]) // => 
+fmt.Println(names[2]) // => Gerard
+fmt.Println(names[3]) // => 
+fmt.Println(names[4]) // => 
+```
+
+## Array literals
+
+Slices and maps have a similar literal syntax; we'll get to those in a bit.
+
+``` go
+myArray := [3]string{"Amy", "Jose", "Ben"}
+mySlice := []string{"Amy", "Jose", "Ben"}
+myMap := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
+```
+
+## Arrays and loops
+
+Array elements can be accessed using a loop.
+
+``` go
+names := [3]string{"Amy", "Jose", "Ben"}
+for i := 0; i < len(names); i++ {
+	fmt.Println(names[i])
+}
+```
+
+Output:
+
+``` go
+Amy
+Jose
+Ben
+```
+
+## Arrays and loops
+
+Don't access/assign outside array bounds; program will panic (a runtime error that crashes the program).
+
+``` go
+names := [3]string{"Amy", "Jose", "Ben"}
+for i := 0; i <= len(names); i++ {
+	fmt.Println("index", i, names[i])
+}
+```
+
+```
+index 0 Amy
+index 1 Jose
+index 2 Ben
+panic: runtime error: index out of range
+
+goroutine 1 [running]:
+main.main()
+	/tmp/sandbox741567581/prog.go:10 +0x180
+```
+
+## "for ... range" loops
+
+It's safer to use a `for ... range` loop:
+
+``` go
+names := [3]string{"Amy", "Jose", "Ben"}
+for index, name := range names {
+	fmt.Println(index, name)
+}
+```
+
+## "for ... range" loops and blank identifier
+
+Don't want the index, or don't want the element? Assign it to the blank identifier.
+
+``` go
+names := [3]string{"Amy", "Jose", "Ben"}
+for _, name := range names {
+	fmt.Println(name)
+}
+for index, _ := range names {
+	fmt.Println(index)
+}
+```
+
+Output:
+
+```
+Amy
+Jose
+Ben
+0
+1
+2
+```
+
+## "for ... range" loops and other types
+
+`for ... range` also available with slices...
+
+``` go
+mySlice := []string{"Amy", "Jose", "Ben"}
+for index, name := range mySlice {
+	fmt.Println(index, name)
+}
+```
+
+Output:
+
+``` go
+0 Amy
+1 Jose
+2 Ben
+```
+
+## "for ... range" loops and other types
+
+`for ... range` also available with maps.
+
+``` go
+myMap := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
+for name, score := range myMap {
+	fmt.Println(name, score)
+}
+```
+
+Output:
+
+``` go
+Amy 84
+Jose 96
+Ben 78
+```
+
+More on these later.
+
+## Limitations of arrays
+
+* Arrays are fixed size - can't grow when needed.
+* To me, they're only useful as a basis for slices.
 
 ## Slices
 
+Slice type is written just like array type, but with nothing between the `[]`.
+
 ``` go
-var primes []int
-primes = make([]int, 2)
+var myArray [3]int
+var mySlice []int
+```
+
+## Zero value for slices
+
+Unlike with arrays, the zero value for a slice is `nil`.
+
+``` go
+var mySlice []int
+if mySlice == nil {
+	fmt.Println("mySlice is nil") // => mySlice is nil
+}
+```
+
+## Slices and "make()"
+
+Make a new slice with the built-in `make` function.
+
+``` go
+var mySlice []int
+mySlice = make([]int, 3)
+if mySlice == nil {
+	fmt.Println("mySlice is nil") // doesn't run
+}
+fmt.Println(len(mySlice))  // => 3
+fmt.Printf("%#v\n", mySlice) // => []int{0, 0, 0}
+```
+
+## Slices and "make()"
+
+Could rewrite that using a short variable declaration:
+
+``` go
+mySlice := make([]int, 3)
+if mySlice == nil {
+	fmt.Println("mySlice is nil") // doesn't run
+}
+fmt.Println(len(mySlice))  // => 3
+fmt.Printf("%#v\n", mySlice) // => []int{0, 0, 0}
+```
+
+## Zero values of slice elements
+
+Just like with arrays, the zero value of each slice element is the zero value for the type the slice holds.
+
+``` go
+myFloats := make([]float64, 2)
+fmt.Printf("%#v\n", myFloats) // => []float64{0, 0}
+myStrings := make([]string, 4)
+fmt.Printf("%#v\n", myStrings) // => []string{"", "", "", ""}
+```
+
+## Slices
+
+Use slices just like an array!
+
+``` go
+primes := make([]int, 2)
 primes[0] = 2
 primes[1] = 3
-fmt.Println(primes[0])  // => 2
-fmt.Println(primes[1])  // => 3
+fmt.Println(primes[0])      // => 2
+fmt.Println(primes[1])      // => 3
+fmt.Printf("%#v\n", primes) // => []int{2, 3}
 ```
 
 ## Slices and "append"
 
+Need to add more items? Use the built-in `append` function!
+
 ``` go
-var primes []int
-primes = append(primes, 2)
-primes = append(primes, 3)
+primes := make([]int, 2)
+primes[0] = 2
+primes[1] = 3
+fmt.Println(len(primes))    // => 2
+fmt.Printf("%#v\n", primes) // => []int{2, 3}
+primes = append(primes, 5)
+fmt.Println(len(primes))    // => 3
+fmt.Printf("%#v\n", primes) // => []int{2, 3, 5}
+```
+
+## Slice literals
+
+A slice literal looks just like an array literal, except the `[]` is empty:
+
+``` go
+primes := []int{2, 3, 5}
 fmt.Println(primes[0]) // => 2
 fmt.Println(primes[1]) // => 3
-fmt.Println(primes)    // => [2 3]
-primes = append(primes, 5)
-fmt.Println(primes)    // => [2 3 5]
+fmt.Println(primes[2]) // => 5
 ```
+
+## Exercise: Slices
+
+TODO
+
+## Slice operator
+
+TODO
+
+## Underlying arrays
+
+TODO
+
+## "os.Args"
+
+TODO
+
+## Variadic functions
+
+TODO
 
 ## Maps
 
@@ -2528,23 +2835,6 @@ func main() {
 
 TODO convert to slides
 
-* Arrays
-    * Zero values
-    * Array literals
-        * Preview slice/map/struct literals
-    * `for ... range`
-* Slices
-    * Versus arrays
-    * Underlying arrays
-    * `make`
-    * Slice literals
-        * Contrast with array literals
-    * Slice operator
-    * Slices and zero values
-        * `nil` slices
-        * Zero values in slice
-    * `os.Args`
-    * Variadic functions
 * Maps
     * `make`
     * Map literals
