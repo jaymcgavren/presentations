@@ -3435,7 +3435,22 @@ TODO
 
 ## Structs
 
-Anonymous struct types...
+* Arrays, slices, and maps only hold values of _one_ type.
+* __Structs__ are built out of multiple values of _different_ types.
+* Values structs hold are called __fields__
+* A struct type is written like this:
+
+``` go
+struct {
+	firstField  float64
+	secondField string
+	thirdField  bool
+}
+```
+
+## Anonymous struct types
+
+You can declare a variable that holds a struct:
 
 ``` go
 var bucket struct {
@@ -3451,9 +3466,27 @@ fmt.Println(bucket.word)   // => pie
 fmt.Println(bucket.toggle) // => true
 ```
 
+## Anonymous struct types
+
+Using anonymous struct types everywhere would require you to repeat yourself a lot...
+
+``` go
+var bucket struct {
+	number float64
+	word   string
+	toggle bool
+}
+var bucket2 struct {
+	number float64
+	word   string
+	toggle bool
+}
+```
+
 ## Custom types
 
-`type myType` followed by an underlying type declares a new type.
+* So you can declare a type and give it a name you can use everywhere.
+* `type myType` followed by an underlying type declares a new type.
 
 ``` go
 type myType struct {
@@ -3464,6 +3497,8 @@ type myType struct {
 ```
 
 ## Custom types
+
+Then just use the type name when defining variables, function return values, etc.
 
 ``` go
 func main() {
@@ -3477,27 +3512,181 @@ func main() {
 }
 ```
 
+## Custom types
+
+(It's most common to use structs as an underlying type but you _can_ use other types. We'll look at custom types more soon.)
+
 ## Struct literals
 
-TODO compare/contrast with array/slice/map literals
+`fmt.Printf("%#v")` with a struct prints a __struct literal__:
+
+``` go
+var bucket myType
+bucket.number = 3.14
+bucket.word = "pie"
+bucket.toggle = true
+fmt.Printf("%#v\n", bucket)
+// => myType{number:3.14, word:"pie", toggle:true}
+```
+
+## Struct literals
+
+* Struct literals look similar to map literals.
+    * The type followed by curly braces
+    * `fieldName: "field value"`
+
+``` go
+myArray  := [3]string{"Amy", "Jose", "Ben"}
+mySlice  := []string{"Amy", "Jose", "Ben"}
+myMap    := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
+myStruct := myType{number: 3.14, word: "pie", toggle: true}
+```
 
 ## Pass structs to functions
 
-TODO
+Use struct types as function parameters:
+
+``` go
+func main() {
+	bucket := myType{number: 3.14, word: "pie", toggle: true}
+	showInfo(bucket)
+}
+
+func showInfo(myStruct myType) {
+	fmt.Println("number:", myStruct.number) // => number: 3.14
+	fmt.Println("word:", myStruct.word)     // => word: pie
+	fmt.Println("toggle:", myStruct.toggle) // => toggle: true
+}
+```
 
 ## Return structs from functions
 
-TODO
+``` go
+func newBucket() myType {
+	var bucket myType
+	bucket.word = "pie"
+	return bucket
+}
+
+func main() {
+	bucket := newBucket()
+	fmt.Printf("%#v", bucket)
+	// => myType{number:0, word:"pie", toggle:false}
+}
+```
+
+## Zero values for structs
+
+The zero value for a struct type isn't `nil`, it's a struct with all its fields set to the zero values for that type.
+
+``` go
+func main() {
+	var bucket myType
+	fmt.Printf("%#v", bucket)
+	// => myType{number:0, word:"", toggle:false}
+}
+```
 
 ## Structs are passed by value too
 
-* Need to pass a pointer if you want to alter the original struct
+Here's a struct representing a magazine subscriber:
 
-TODO
+``` go
+type subscriber struct {
+	name   string
+	rate   float64 // Amount they're charged monthly
+	active bool    // If false, subscription cancelled
+}
+```
+
+## Structs are passed by value too
+
+Here's a function that's _supposed_ to set a `subcriber`'s `rate` to `4.99`:
+
+``` go
+func applyDiscount(s subscriber) {
+	s.rate = 4.99
+}
+
+func main() {
+	s := subscriber{name: "Aman Singh", rate: 6.99}
+	// Attempt to set s.rate to 4.99
+	applyDiscount(s)
+	fmt.Println(s.rate) // => 6.99
+}
+```
+
+## Structs are passed by value too
+
+But structs are passed by value too, so functions get a _copy_ of the original struct.
+
+``` go
+// Get a copy of the subscriber.
+func applyDiscount(s subscriber) {
+    // Modifies a field on the copy, not the original!
+	s.rate = 4.99
+}
+
+func main() {
+	s := subscriber{name: "Aman Singh", rate: 6.99}
+	applyDiscount(s)
+	fmt.Println(s.rate) // => 6.99
+}
+```
+
+## Structs are passed by value too
+
+Need to pass a pointer if you want to alter the original struct:
+
+``` go
+// Accept a pointer to a struct instead.
+func applyDiscount(s *subscriber) {
+	s.rate = 4.99
+}
+
+func main() {
+	s := subscriber{name: "Aman Singh", rate: 6.99}
+	// Pass a pointer instead of the struct itself.
+	applyDiscount(&s)
+	fmt.Println(s.rate) // => 4.99
+}
+```
 
 ## Implicit dereference of struct pointers
 
-TODO
+Now you might be wondering why we didn't have to deference the pointer:
+
+``` go
+func applyDiscount(s *subscriber) {
+	*s.rate = 4.99
+}
+```
+
+But this actually gives a compile error because Go thinks you're trying to dereference a pointer in `s.rate`:
+
+``` go
+invalid indirect of s.rate (type float64)
+```
+
+## Implicit dereference of struct pointers
+
+Instead, we'd have to write this:
+
+``` go
+func applyDiscount(s *subscriber) {
+	(*s).rate = 4.99
+}
+```
+
+## Implicit dereference of struct pointers
+
+So Go just implicitly dereferences struct pointers for you when you access a field.
+
+``` go
+func applyDiscount(s *subscriber) {
+	s.rate = 4.99
+}
+```
 
 ## Exporting fields
 
