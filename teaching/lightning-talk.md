@@ -206,6 +206,74 @@ Rounds last decimal up if appropriate:
 fmt.Printf("%0.3f\n", 2.0/3.0) // => 0.667
 ```
 
+## Reduce Extraneous Cognitive Load
+
+* Here's a demonstration of underlying arrays for slices.
+* Audience can figure out easily enough that `myArray[2]` changes the third element of `myArray`.
+
+``` go
+myArray := [5]string{"a", "b", "c", "d", "e"}
+slice1 := myArray[0:3]
+slice2 := myArray[2:5]
+// Change an element of the underlying array!
+myArray[2] = "X"
+// Apparent contents of both slices change!
+fmt.Printf("%#v\n", slice1) // => []string{"a", "b", "X"}
+fmt.Printf("%#v\n", slice2) // => []string{"X", "d", "e"}
+```
+
+## Reduce Extraneous Cognitive Load
+
+* But why impose that extra bit of mental effort? Just add one `Printf` call and _show_ them the effect on `myArray`.
+* Then they can instead focus their attention on how the elements of `myArray` appear through the slices!
+
+``` go
+myArray := [5]string{"a", "b", "c", "d", "e"}
+slice1 := myArray[0:3]
+slice2 := myArray[2:5]
+// Change an element of the underlying array!
+myArray[2] = "X"
+fmt.Printf("%#v\n", myArray) // => [5]string{"a", "b", "X", "d", "e"}
+// Apparent contents of both slices change!
+fmt.Printf("%#v\n", slice1) // => []string{"a", "b", "X"}
+fmt.Printf("%#v\n", slice2) // => []string{"X", "d", "e"}
+```
+
+## Reduce Extraneous Cognitive Load
+
+Let's go meta! The slide two slides back originally looked like this:
+
+* Audience can figure out easily enough that `myArray[2]` changes the third element of `myArray`.
+
+``` go
+myArray := [5]string{"a", "b", "c", "d", "e"}
+slice1 := myArray[0:3]
+slice2 := myArray[2:5]
+// Change an element of the underlying array!
+myArray[2] = "X"
+// Apparent contents of both slices change!
+fmt.Printf("%#v\n", slice1) // => []string{"a", "b", "X"}
+fmt.Printf("%#v\n", slice2) // => []string{"X", "d", "e"}
+```
+
+## Reduce Extraneous Cognitive Load
+
+But why make _you_ figure out that it's a demonstration of underlying arrays for slices? I just added a bullet explaining what it was so we could focus on the concept of extraneous cognitive load.
+
+* __Here's a demonstration of underlying arrays for slices.__
+* Audience can figure out easily enough that `myArray[2]` changes the third element of `myArray`.
+
+``` go
+myArray := [5]string{"a", "b", "c", "d", "e"}
+slice1 := myArray[0:3]
+slice2 := myArray[2:5]
+// Change an element of the underlying array!
+myArray[2] = "X"
+// Apparent contents of both slices change!
+fmt.Printf("%#v\n", slice1) // => []string{"a", "b", "X"}
+fmt.Printf("%#v\n", slice2) // => []string{"X", "d", "e"}
+```
+
 ## Avoid Ambiguous Pronouns
 
 Bad:
