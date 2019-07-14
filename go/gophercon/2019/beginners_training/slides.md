@@ -3688,9 +3688,120 @@ func applyDiscount(s *subscriber) {
 }
 ```
 
+## Exporting custom types
+
+* Naming rule is the same for custom types as for variables and functions: Capitalized is exported, uncapitalized is unexported.
+* Let's say I tried moving `subscriber` to another package:
+
+`$GOPATH/src/magazine/subscriber.go`
+
+``` go
+package magazine
+
+type subscriber struct {
+	name   string
+	rate   float64
+	active bool
+}
+```
+
+## Exporting custom types
+
+`subscriber` isn't capitalized, so it's unexported:
+
+``` go
+package main
+
+import(
+	"fmt"
+	"magazine"
+)
+
+func main() {
+	var s magazine.subscriber
+    // cannot refer to unexported name magazine.subscriber
+}
+```
+
+## Exporting custom types
+
+All I have to do is capitalize it to export it:
+
+``` go
+package magazine
+
+type Subscriber struct {
+	name   string
+	rate   float64
+	active bool
+}
+```
+
+## Exporting custom types
+
+Once the type is exported from the `magazine` package, I can use it from other packages.
+
+``` go
+package main
+
+import(
+	"fmt"
+	"magazine"
+)
+
+func main() {
+	var s magazine.Subscriber
+    fmt.Printf("%#v", s)
+    // => magazine.Subscriber{name:"", rate:0, active:false}
+}
+```
+
 ## Exporting fields
 
-TODO
+But then I can't assign or access the fields of a `Subscriber`!
+
+``` go
+func main() {
+	var s magazine.Subscriber
+    s.name = "Beth Ryan"
+    fmt.Println(s.name)
+}
+```
+
+Compile errors:
+
+```
+s.name undefined (cannot refer to unexported field or method name)
+s.name undefined (cannot refer to unexported field or method name)
+```
+
+## Exporting fields
+
+In addition to the type name, names of fields must also be capitalized to be exported.
+
+``` go
+package magazine
+
+type Subscriber struct {
+	Name   string
+	Rate   float64
+	Active bool
+}
+```
+
+## Exporting fields
+
+Any exported field can be assigned or accessed from other packages.
+
+``` go
+func main() {
+	var s magazine.Subscriber
+    s.Name = "Beth Ryan"
+    s.Rate = 6.99
+    s.Active = true
+    fmt.Println(s.Name, s.Rate, s.Active) // => Beth Ryan 6.99 true
+}
+```
 
 ## Embedding structs is like inheriting fields
 
