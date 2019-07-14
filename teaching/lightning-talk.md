@@ -312,6 +312,66 @@ func Camp() error {
 }
 ```
 
+## Leverage Existing Knowledge
+
+* Save viewers mental effort by basing new learning on concepts they already know about.
+
+    Heard of "dictionaries" or "hashes"? Maps are Go's equivalent.
+
+* Make sure they know about the concepts you're basing new learning on.
+* Compare _and_ contrast; let them know where the metaphor breaks down.
+
+## Leverage Existing Knowledge
+
+* What about viewers who've never heard of "dictionaries" or "hashes"?
+* Find something they _do_ know about!
+* This is from Head First Go:
+
+![Slices/Maps Metaphor](images/leverage_existing_knowledge_metaphor.jpg)
+
+## Leverage Existing Knowledge
+
+For this week's training, I used similar formats for the slices and maps sections, to stress their similarities:
+
+### Maps
+
+* Though maps work differently than slices, the syntax is similar.
+* You're going to get some deja vu from the slices section.
+
+TODO list of slices slide titles, map slide titles
+
+## Keep it Concrete
+
+Which is better, this wall of text:
+
+## Keep it Concrete
+
+* Heard of "dictionaries" or "hashes"? Maps are Go's equivalent.
+* Like arrays and slices, maps store a collection of values.
+* But arrays and slices use indexes to access their elements. Indexes can only be sequential integers.
+* Maps use keys to store values under. A map's keys can be _any_ type you want!
+
+## Keep it Concrete
+
+...Or this wall of text with a code sample?
+
+## Keep it Concrete
+
+* Heard of "dictionaries" or "hashes"? Maps are Go's equivalent.
+* Like arrays and slices, maps store a collection of values.
+* But arrays and slices use indexes to access their elements. Indexes can only be sequential integers.
+* Maps use keys to store values under. A map's keys can be _any_ type you want!
+
+``` go
+ranks := make(map[string]int)
+ranks["gold"] = 1
+ranks["silver"] = 2
+ranks["bronze"] = 3
+fmt.Println(ranks["gold"], ranks["bronze"]) // => 1 3
+```
+
+
+
 ## Offer Practice
 
 TODO
@@ -328,3 +388,5 @@ TODO
 ## Review These Slides
 
 TODO set up link from jay.mcgavren.com
+
+TODO blockquote or add "torn paper" to differentiate samples from other talks with content of THIS talk
