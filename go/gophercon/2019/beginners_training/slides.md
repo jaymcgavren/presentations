@@ -4088,10 +4088,8 @@ func main() {
 	l.Name = "The Googleplex"
 	l.Latitude = 37.42
 	l.Longitude = -122.08
-	// Methods from embedded type are
-	// promoted to outer type
-	fmt.Println(l.Location())
-	// => (37.42, -122.08)
+	// Methods from embedded type are promoted to outer type
+	fmt.Println(l.Location()) // => (37.42, -122.08)
 }
 ```
 
@@ -4191,15 +4189,172 @@ func main() {
 
 ## Pointer receiver parameters
 
-TODO
+To protect privacy, we've added an `Obfuscate` method to `Coordinates`. But it's not working!
 
-## Encapsulation
+``` go
+func (c Coordinates) Obfuscate() {
+	c.Latitude = math.Round(c.Latitude)
+	c.Longitude = math.Round(c.Longitude)
+}
 
-TODO
+func main() {
+	c := Coordinates{Latitude: 37.42, Longitude: -122.08}
+	c.Obfuscate()
+	fmt.Println(c.Latitude, c.Longitude) // => 37.42 -122.08
+}
+```
+
+## Pointer receiver parameters
+
+* This is the same old pass-by-value issue.
+* Receiver parameters get a copy of the original value (the receiver).
+* Modify the receiver parameter, and you're only modifying the copy.
+
+``` go
+func (c Coordinates) Obfuscate() {
+	c.Latitude = math.Round(c.Latitude)
+	c.Longitude = math.Round(c.Longitude)
+}
+
+func main() {
+	c := Coordinates{Latitude: 37.42, Longitude: -122.08}
+	c.Obfuscate()
+	fmt.Println(c.Latitude, c.Longitude) // => 37.42 -122.08
+}
+```
+
+## Pointer receiver parameters
+
+* To fix it, change the type of the receiver parameter to a pointer.
+* The method will be defined on the `Coordinates` type just like before.
+* And the `Obfuscate` method will modify the value at the pointer.
+
+``` go
+func (c *Coordinates) Obfuscate() {
+	c.Latitude = math.Round(c.Latitude)
+	c.Longitude = math.Round(c.Longitude)
+}
+
+func main() {
+	c := Coordinates{Latitude: 37.42, Longitude: -122.08}
+	c.Obfuscate()
+	fmt.Println(c.Latitude, c.Longitude) // => 37 -122
+}
+```
+
+## Pointer receiver parameters
+
+Wait - you just have to change the receiver to a pointer?? (Yes!)
+
+``` go
+func (c *Coordinates) Obfuscate() {
+    // Pointer is automatically dereferenced in these lines.
+	c.Latitude = math.Round(c.Latitude)
+	c.Longitude = math.Round(c.Longitude)
+}
+
+func main() {
+	c := Coordinates{Latitude: 37.42, Longitude: -122.08}
+    // Go automatically converts method recievers
+    // to pointers, if needed.
+	c.Obfuscate()
+	fmt.Println(c.Latitude, c.Longitude) // => 37 -122
+}
+```
 
 ## Exercise
 
-TODO
+TODO update Rectangle with Scale(factor float64) method that modifies Length and Width
+
+## Encapsulation
+
+* Latitude is supposed to be between -90 and 90.
+* Longitude is supposed to be between -180 and 180.
+* But there's nothing preventing someone from setting a `Coordinates` value's fields to invalid values:
+
+``` go
+var c Coordinates
+c.Latitude = 999.99
+c.Longitude = 999999.9
+```
+
+## Encapsulation
+
+Let's control access to the field with a new `SetLatitude` method.
+
+``` go
+// Don't forget to make the receiver parameter a pointer!
+func (c *Coordinates) SetLatitude(latitude float64) error {
+	// Return an error if the new value is invalid.
+	if latitude < -90 || latitude > 90 {
+		return errors.New("invalid latitude")
+	}
+	// Otherwise, set the field...
+	c.Latitude = latitude
+	// And return nil for the error.
+	return nil
+}
+```
+
+## Encapsulation
+
+* Now, when we want to set the field, we call `SetLatitude`.
+* Invalid values return an `error`:
+
+``` go
+func main() {
+	var c Coordinates
+	err := c.SetLatitude(999.99)
+	if err != nil {
+		log.Fatal(err) // => 2009/11/10 23:00:00 invalid latitude
+	}
+	fmt.Println("Latitude:", c.Latitude) // Doesn't run
+}
+```
+
+## Encapsulation
+
+* But valid values cause the field to be set.
+* Return value is `nil` in this case.
+
+``` go
+func main() {
+	var c Coordinates
+	err := c.SetLatitude(37.42)
+	if err != nil {
+		log.Fatal(err) // Doesn't run
+	}
+	fmt.Println("Latitude:", c.Latitude) // => Latitude: 37.42
+}
+```
+
+## Encapsulation
+
+TODO But we can still set `Latitude` directly
+
+## Encapsulation
+
+TODO unexport
+
+## Encapsulation
+
+TODO but now we can't access the field
+
+## Encapsulation
+
+TODO add getter method
+
+## Encapsulation
+
+TODO works good
+
+## Encapsulation
+
+TODO Let's do the same for Longitude
+
+## Exercise
+
+TODO update Rectangle with setter methods that prevent negative Width/Height.
 
 
 
