@@ -4330,27 +4330,180 @@ func main() {
 
 ## Encapsulation
 
-TODO But we can still set `Latitude` directly
+But `Latitude` field can still be set to invalid values directly!
+
+``` go
+func main() {
+	var c Coordinates
+	c.Latitude = 999.9
+	fmt.Println("Latitude:", c.Latitude) // => Latitude: 999.9
+}
+```
 
 ## Encapsulation
 
-TODO unexport
+Let's move `Coordinates` to another package.
+
+`$GOPATH/src/geo/coordinates.go`
+
+``` go
+package geo
+
+import "errors"
+
+// Ensure type is exported.
+type Coordinates struct {
+	// Ensure fields are unexported.
+	latitude  float64
+	longitude float64
+}
+
+// Method definitions have to be moved to this package.
+func (c *Coordinates) SetLatitude(latitude float64) error {
+	if latitude < -90 || latitude > 90 {
+		return errors.New("invalid latitude")
+	}
+	// Change the field name to lower case.
+	c.latitude = latitude
+	return nil
+}
+```
 
 ## Encapsulation
 
-TODO but now we can't access the field
+We can use `SetLatitude` just like before.
+
+``` go
+package main
+
+import(
+	"geo" // Add this import.
+	"log"
+)
+
+func main() {
+    // Don't forget to qualify the package name.
+	var c geo.Coordinates
+	err := c.SetLatitude(37.42)
+	if err != nil {
+		log.Fatal(err) // Doesn't run
+	}
+}
+```
 
 ## Encapsulation
 
-TODO add getter method
+But setting it directly isn't allowed. No more invalid values!
+
+``` go
+func main() {
+	var c geo.Coordinates
+	c.latitude = 999.99
+}
+```
 
 ## Encapsulation
 
-TODO works good
+Unfortunately, now we can't _get_ the field value directly, either!
+
+``` go
+func main() {
+	var c geo.Coordinates
+	err := c.SetLatitude(37.42)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Latitude:", c.latitude)
+}
+```
+
+Compile error:
+
+``` go
+c.latitude undefined (cannot refer to unexported field or method latitude)
+```
 
 ## Encapsulation
 
-TODO Let's do the same for Longitude
+We'll need to add a getter method to `Coordinates` as well.
+
+* Setter method for `X` is usually named `SetX`, but getter method is named just `X`.
+* We'll make the getter method receiver parameter a pointer for consistency with the setter method (even though it would work without a pointer).
+
+`$GOPATH/src/geo/coordinates.go`
+
+``` go
+// Per convention we'll name it just "Latitude", not "GetLatitude".
+func (c *Coordinates) Latitude() float64 {
+	// Simply return the field value.
+	return c.latitude
+}
+```
+
+## Encapsulation
+
+If we change the main program to use the getter method, everything works!
+
+``` go
+func main() {
+	var c geo.Coordinates
+	err := c.SetLatitude(37.42)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Latitude:", c.Latitude()) // => Latitude: 37.42
+}
+```
+
+## Encapsulation
+
+Let's set up setter and getter methods for longitude:
+
+`$GOPATH/src/geo/coordinates.go`
+
+``` go
+func (c *Coordinates) SetLongitude(longitude float64) error {
+	if longitude < -180 || longitude > 180 {
+		return errors.New("invalid longitude")
+	}
+	c.longitude = longitude
+	return nil
+}
+
+func (c *Coordinates) Longitude() float64 {
+	return c.longitude
+}
+```
+
+## Encapsulation
+
+Now we can set and get longitude as well.
+
+``` go
+func main() {
+	var c geo.Coordinates
+	err := c.SetLongitude(-122.08)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Longitude:", c.Longitude()) // => Longitude: -122.08
+}
+```
+
+## Encapsulation
+
+And if we use an invalid value, the program will tell us!
+
+``` go
+func main() {
+	var c geo.Coordinates
+	err := c.SetLongitude(99999.99)
+	if err != nil {
+		log.Fatal(err) // => 2019/07/16 22:45:07 invalid longitude
+	}
+	fmt.Println("Longitude:", c.Longitude())
+}
+```
 
 ## Exercise
 
