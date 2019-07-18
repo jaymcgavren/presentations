@@ -4968,21 +4968,38 @@ func Println(a ...interface{}) (n int, err error)
     Println formats using the default formats for its operands and writes to
 ```
 
-* We know the `...` means the function is variadic: it can take a varying number of arguments.
+We've seen that the `...` means the function is variadic: it can take a varying number of arguments...
 
 ## Empty interface
 
-## Empty interface
+* But what's the `interface{}` mean? It represents the __empty interface__.
+* It's used to accept values of _any_ type.
+* The empty interface doesn't have any methods that are required to satisfy it, and so _every_ type satisfies it.
 
 ## Empty interface
 
-## Empty interface
+If you use `interface{}` as the type for a function parameter, you can pass the function values of any type:
+
+``` go
+func AcceptAnything(thing interface{}) {
+	fmt.Println(thing)
+}
+
+func main() {
+	AcceptAnything(3.1415)     // => 3.1415
+	AcceptAnything("a string") // => a string
+	AcceptAnything(false)      // => false
+	c := Coordinates{Latitude: 37.42, Longitude: -122.08}
+	AcceptAnything(c)          // => {37.42 -122.08}
+}
+```
 
 ## Empty interface
 
-## Empty interface
-
-TODO
+* Of course, you can't _do_ much with `interface{}` values, other than pass them to functions from `fmt`.
+* To call any methods from the original type, you'd need to do a type assertion.
+* And by that point, you may as well write a function that accepts that type specifically.
+* But now, next time you see `interface{}` in a function's documentation, you'll know that it means the function can accept any type.
 
 
 
