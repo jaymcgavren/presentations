@@ -90,6 +90,8 @@ fmt.Printf("%s\n", "a string") // => a string
 fmt.Printf("%t\n", true)       // => true
 ```
 
+## Break Topics Down
+
 ## Minimize Page Flipping
 
 ## _Do_ Repeat Yourself
