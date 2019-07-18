@@ -4814,11 +4814,171 @@ func main() {
 
 ## "error" interface
 
-TODO
+Remember the `error` type that functions return to indicate an error?
+
+``` go
+func divide(dividend float64, divisor float64) (float64, error) {
+	if divisor == 0.0 {
+		return 0, fmt.Errorf("can't divide by 0")
+	}
+	return dividend / divisor, nil
+}
+```
+
+## "error" interface
+
+It's actually an interface type! The definition is something like this:
+
+``` go
+type error interface {
+    Error() string
+}
+```
+
+So _any_ type with an `Error()` method that returns a `string` satisfies the `error` interface.
+
+## "error" interface
+
+* That makes it easy to create your own error types.
+* This is useful if you need a type that conveys additional information.
+
+``` go
+type OverheatError float64
+// Satisfy the "error" interface
+func (o OverheatError) Error() string {
+    return fmt.Sprintf("Overheating by %0.2f degrees", o)
+}
+```
+
+## "error" interface
+
+* Here's a `checkTemperature` function that returns an `OverheatError` if the temperature exceeds 100 degrees.
+* But we can make the return type `error` because `OverheatError` satisfies `error`.
+
+``` go
+func checkTemperature(degrees float64) error {
+	excess := degrees - 100
+	if excess > 0 {
+		return OverheatError(excess)
+	}
+	return nil
+}
+```
+
+## "error" interface
+
+The `OverheatError` records not just the fact that there was an error, but also the severity of the overheat.
+
+``` go
+func main() {
+	err := checkTemperature(121.379)
+	if err != nil {
+		log.Fatal(err)
+        // => 2009/11/10 23:00:00 Overheating by 21.38 degrees
+	}
+}
+```
 
 ## "stringer" interface
 
-TODO
+* Remember the `Liters` and `Gallons` types we showed you earlier?
+* 12.09 liters and 12.09 gallons are two very different amounts, but it can be hard to tell them apart:
+
+``` go
+type Liters float64
+type Gallons float64
+
+func main() {
+	carFuel := Gallons(12.09248342)
+	busFuel := Liters(12.09248342)
+	fmt.Println(carFuel) // => 12.09248342
+	fmt.Println(busFuel) // => 12.09248342
+}
+```
+
+## "stringer" interface
+
+* Let's add a `String()` method to `Liters` that formats the number and adds the "L" abbreviation, to clearly indicate the value is in liters.
+* We'll also add a `String()` method to `Gallons` that adds the "gal" abbreviation.
+
+``` go
+func (l Liters) String() string {
+	return fmt.Sprintf("%0.2f L", l)
+}
+
+func (g Gallons) String() string {
+	return fmt.Sprintf("%0.2f gal", g)
+}
+```
+
+## "stringer" interface
+
+Using the `String()` methods makes it easy to tell `Gallons` and `Liters` values apart.
+
+``` go
+func main() {
+	carFuel := Gallons(12.09248342)
+	busFuel := Liters(12.09248342)
+	fmt.Println(carFuel.String()) // => 12.09 gal
+	fmt.Println(busFuel.String()) // => 12.09 L
+}
+```
+
+## "stringer" interface
+
+But here's the cool part: the `fmt` package includes the `Stringer` interface. It looks something like this:
+
+``` go
+type Stringer interface {
+    String() string
+}
+```
+
+## "stringer" interface
+
+* Many functions in `fmt` test whether values passed to them satisfy `Stringer`.
+* That is, do they have a `String()` method?
+* If they do, they'll call `String()` on the values before printing/processing them.
+* So we don't need to explicitly call `String()`. We can just define it (for _any_ type) and the `fmt` package will automatically use it.
+
+``` go
+func main() {
+	carFuel := Gallons(12.09248342)
+	busFuel := Liters(12.09248342)
+	fmt.Println(carFuel) // => 12.09 gal
+	fmt.Println(busFuel) // => 12.09 L
+}
+```
+
+## Empty interface
+
+Some `fmt` functions like `Println` can take values of _any_ type:
+
+``` go
+fmt.Println(3.1415, "a string", false) // => 3.1415 a string false
+```
+
+## Empty interface
+
+If we look at the documentation for `fmt.Println`, we'll see this:
+
+``` go
+$ go doc fmt Println
+func Println(a ...interface{}) (n int, err error)
+    Println formats using the default formats for its operands and writes to
+```
+
+* We know the `...` means the function is variadic: it can take a varying number of arguments.
+
+## Empty interface
+
+## Empty interface
+
+## Empty interface
+
+## Empty interface
+
+## Empty interface
 
 ## Empty interface
 
