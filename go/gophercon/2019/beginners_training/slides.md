@@ -1147,7 +1147,66 @@ length > width? false
 
 ## Exercise: Type conversions
 
-TODO
+``` go
+// We've written the Go code below to calculate a total
+// price with tax and determine if we have enough funds to
+// make a purchase. But we're getting errors when we try to
+// include it in a full program!
+// 
+// Fix the errors so the program produces this output:
+// 
+// Price is 100 dollars.
+// Tax is 8 dollars.
+// Total cost is 108 dollars.
+// 120 dollars available.
+// Within budget? true
+
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	var price int = 100
+	fmt.Println("Price is", price, "dollars.")
+
+	var taxRate float64 = 0.08
+	var tax float64 = price * taxRate
+	fmt.Println("Tax is", tax, "dollars.")
+
+	var total float64 = price + tax
+	fmt.Println("Total cost is", total, "dollars.")
+
+	var availableFunds int = 120
+	fmt.Println(availableFunds, "dollars available.")
+	fmt.Println("Within budget?", total <= availableFunds)
+}
+```
+
+``` go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	var price int = 100
+	fmt.Println("Price is", price, "dollars.")
+
+	var taxRate float64 = 0.08
+	var tax float64 = float64(price) * taxRate
+	fmt.Println("Tax is", tax, "dollars.")
+
+	var total float64 = float64(price) + tax
+	fmt.Println("Total cost is", total, "dollars.")
+
+	var availableFunds int = 120
+	fmt.Println(availableFunds, "dollars available.")
+	fmt.Println("Within budget?", total <= float64(availableFunds))
+}
+```
 
 ## "if"
 
@@ -1583,10 +1642,6 @@ func main() {
 }
 ```
 
-## Exercise: variable scope
-
-TODO
-
 ## Function return values
 
 What's the best way to get a value from a function to its caller?
@@ -1779,11 +1834,65 @@ func main() {
 
 ## Exercise: Declaring functions
 
-TODO
 
-## Exercise: Declaring functions extra credit
+``` go
+// Here's a squareRoot function that takes a float64 value and
+// returns its square root. But currently, we can pass a
+// negative value to squareRoot. If we do so, we get the value
+// NaN back (meaning "not a number").
+// 
+// Update the squareRoot function to return a value of type
+// "error" in addition to the current float64 value.
+// * If the number passed in is less than 0, return a value of
+//   0 (which should be ignored) and an error value with the
+//   message "can't get square root of negative number".
+// * Otherwise, return the square root and an error value of nil.
+// * You'll also need to update the code in "main" to use the
+//   "error" return value.
+// * If the error value is not nil, pass it to fmt.Println.
+// * Otherwise, print the square root returned from squareRoot.
 
-TODO return error
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+func squareRoot(number float64) float64 {
+	return math.Sqrt(number)
+}
+
+func main() {
+	root := squareRoot(-9.3)
+	fmt.Printf("%0.3f\n", root) => NaN
+}
+```
+
+``` go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+func squareRoot(number float64) (float64, error) {
+	if number < 0 {
+		return 0, fmt.Errorf("can't get square root of negative number")
+	}
+	return math.Sqrt(number), nil
+}
+
+func main() {
+	root, err := squareRoot(-9.3)
+	if err != nil {
+		fmt.Println(err) // => can't get square root of negative number
+	} else {
+		fmt.Printf("%0.3f", root)
+	}
+}
+```
 
 ## Pass-by-value
 
@@ -2113,8 +2222,6 @@ Hi!
 ```
 
 TODO demo
-
-TODO Exercise: Create `$GOPATH/src/hi/main.go`, `go install hi`, `hi`
 
 ## Exported
 
@@ -5065,7 +5172,7 @@ func main() {
 
 ## "defer"
 
-TODO consider replacing below slides with this example
+TODO consider replacing Socialize examples with this example
 
 ```go
 func Camp() error {
@@ -5629,6 +5736,8 @@ func main() {
 
 
 # Local development
+
+TODO Exercise: Create `$GOPATH/src/hi/main.go`, `go install hi`, `hi`
 
 ## Exercise: "os.Args"
 
