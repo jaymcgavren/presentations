@@ -1037,7 +1037,57 @@ fmt.Print(string2) // =>       Stamps | 50
 
 ## Exercise: "fmt.Printf"
 
-TODO
+TODO Update package import path
+
+``` go
+// We've imported a package with 4 functions, A, B, C, and D.
+// We've been told that each of these functions returns a
+// string. But the author hasn't documented the package
+// properly (what a jerk). We can't tell exactly what
+// strings they're returning, and calling fmt.Println on the
+// return values isn't helping.
+// Use the fmt.Printf function to determine exactly what's in
+// the strings being returned by the functions.
+package main
+
+import (
+	"fmt"
+
+	"github.com/jaymcgavren/b/printf"
+)
+
+func main() {
+	fmt.Println(printf.A())
+	fmt.Println(printf.B())
+	fmt.Println(printf.C())
+	fmt.Println(printf.D())
+}
+```
+
+``` go
+// We've imported a package with 4 functions, A, B, C, and D.
+// We've been told that each of these functions returns a
+// string. But the author hasn't documented the package
+// properly (what a jerk). We can't tell exactly what
+// strings they're returning, and calling fmt.Println on the
+// return values isn't helping.
+// Use the fmt.Printf function to determine exactly what's in
+// the strings being returned by the functions.
+package main
+
+import (
+	"fmt"
+
+	"github.com/jaymcgavren/b/printf"
+)
+
+func main() {
+	fmt.Printf("%#v\n", printf.A())
+	fmt.Printf("%#v\n", printf.B())
+	fmt.Printf("%#v\n", printf.C())
+	fmt.Printf("%#v\n", printf.D())
+}
+```
 
 ## Type conversions
 
