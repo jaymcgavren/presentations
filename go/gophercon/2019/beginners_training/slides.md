@@ -22,9 +22,16 @@
 * Online software development instructor
 * See my courses at `https://teamtreehouse.com`
 
-## Talk overview
+## Training overview
 
-TODO
+* Introduction (you are here)
+* The basics (Go tools, syntax, functions)
+* Declaring packages (libraries)
+* Data structures (arrays, slices, maps, structs)
+* Defined types, interfaces
+* Handling errors (defer, panic, recover)
+* Concurrency (goroutines, channels)
+* Next steps (further resources)
 
 ## Talk overview
 
