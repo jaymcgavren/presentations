@@ -3477,7 +3477,7 @@ fmt.Println(value, ok) // => 0 false
 ## The "comma ok" idiom
 
 * By convention that second value is usually assigned to a variable named `ok`, so this is usually called the "comma ok idiom".
-* A similar idiom is used with type assertions, as we'll see later.
+* A similar idiom is used with type assertions.
 
 ``` go
 value, ok = counters["a"]
@@ -3663,7 +3663,75 @@ TODO
 
 ## Exercise: Maps
 
-TODO
+``` go
+// Fill in the blanks so this program compiles and produces
+// the output shown.
+package main
+
+import "fmt"
+
+func main() {
+	// Declare a variable that holds a map with strings for keys
+	// and booleans for values.
+	var isVowel ____
+	// Call make to create the map.
+	isVowel = ____
+	// Assign true to the key "a", and false to the keys "b" and "c".
+	____ = true
+	____ = false
+	____ = false
+	fmt.Printf("%#v\n", isVowel) // => map[string]bool{"a":true, "b":false, "c":false}
+
+
+	// Make a map with ints as keys and strings as values. The 1 key
+	// should have the value "H", 2 should have the value "He", and
+	// 3 should have the value "Li".
+	elements := ____
+	// Print all the keys and corresponding values in the slice.
+	// Order doesn't matter.
+	for ____ := range elements {
+		fmt.Println(atomicNumber, symbol)
+	}
+	// => 3 Li
+	// => 1 H
+	// => 2 He
+}
+```
+
+``` go
+// Fill in the blanks so this program compiles and produces
+// the output shown.
+package main
+
+import "fmt"
+
+func main() {
+	// Declare a variable that holds a map with strings for keys
+	// and booleans for values.
+	var isVowel map[string]bool
+	// Call make to create the map.
+	isVowel = make(map[string]bool)
+	// Assign true to the key "a", and false to the keys "b" and "c".
+	isVowel["a"] = true
+	isVowel["b"] = false
+	isVowel["c"] = false
+	fmt.Printf("%#v\n", isVowel) // => map[string]bool{"a":true, "b":false, "c":false}
+
+
+	// Make a map with ints as keys and strings as values. The 1 key
+	// should have the value "H", 2 should have the value "He", and
+	// 3 should have the value "Li".
+	elements := map[int]string{1: "H", 2: "He", 3: "Li"}
+	// Print all the keys and corresponding values in the slice.
+	// Order doesn't matter.
+	for atomicNumber, symbol := range elements {
+		fmt.Println(atomicNumber, symbol)
+	}
+	// => 3 Li
+	// => 1 H
+	// => 2 He
+}
+```
 
 
 
