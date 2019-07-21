@@ -5523,16 +5523,126 @@ func main() {
 
 ## "defer"
 
-TODO consider replacing Socialize examples with this example
+Suppose we have this type that simulates a campfire:
 
-```go
+``` go
+type Fire struct {
+	lit bool
+}
+func (f *Fire) Light() {
+	fmt.Println("lighting fire")
+	f.lit = true
+}
+func (f *Fire) Extinguish() {
+	fmt.Println("dousing fire")
+	f.lit = true
+}
+```
+
+## "defer"
+
+* And suppose we have this function that uses a `Fire`.
+* We need to be sure to call `Extinguish` when we're done.
+
+``` go
+func Camp() error {
+	var fire Fire
+	fire.Light()                         // => lighting fire
+	fmt.Println("Toasting marshmallows") // => Toasting marshmallows
+	fire.Extinguish()                    // => dousing fire
+	return nil
+}
+```
+
+## "defer"
+
+We call `Camp` like this, logging any errors:
+
+``` go
+func main() {
+	err := Camp()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+## "defer"
+
+Now suppose we had to exit `Camp` early, due to an error.
+
+``` go
 func Camp() error {
 	var fire Fire
 	fire.Light()
-	// All you have to do is defer a call to Extinguish
-	// right after you make a call to Light! Extinguish
-	// will be called when Camp exits, whether Camp does
-	// so normally or due to an error.
+	return fmt.Errorf("spotted a bear")
+	fmt.Println("Toasting marshmallows")
+	fire.Extinguish()
+	return nil
+}
+```
+
+## "defer"
+
+Because the error causes `Camp` to return early, we never get to toast marshmallows. But more importantly, we never call `fire.Extinguish`! This isn't good!
+
+``` go
+lighting fire
+2009/11/10 23:00:00 spotted a bear
+```
+
+## "defer"
+
+Go includes the `defer` keyword. Add `defer` before any function/method call, and it will be deferred until the enclosing function exits.
+
+``` go
+package main
+
+import "fmt"
+
+func main() {
+	defer fmt.Println("This call made after main exits!")
+	fmt.Println("This call made first!")
+}
+```
+
+Output:
+
+```
+This call made first!
+This call made after main exits!
+```
+
+## "defer"
+
+Deferred function calls get made when the enclosing function exits _no matter what_, even if it encounters an error or returns early.
+
+``` go
+func myFunc() string {
+	defer fmt.Println("deferred print")
+	return "returning early"
+	fmt.Println("I won't be run!")
+	return "Me either!"
+}
+
+func main() {
+	myFunc()
+}
+```
+
+``` go
+deferred print
+```
+
+## "defer"
+
+We can fix our campfire example by deferring a call to `Extinguish` right after we make the call to `Light`.
+
+``` go
+func Camp() error {
+	var fire Fire
+	fire.Light()
+	// Move call to Extinguish here.
 	defer fire.Extinguish()
 	return fmt.Errorf("spotted a bear")
 	fmt.Println("Toasting marshmallows")
@@ -5540,81 +5650,10 @@ func Camp() error {
 }
 ```
 
-
-It's usually polite to end conversations with "goodbye":
-
-``` go
-func Socialize() {
-	fmt.Println("Hello!")
-	fmt.Println("Nice weather, eh?")
-	fmt.Println("Goodbye!")
-}
-
-func main() {
-	Socialize()
-}
 ```
-
-Output:
-
-```
-Goodbye!
-Hello!
-Nice weather, eh?
-```
-
-## "defer"
-
-Write `defer` before a function call, and it will be "deferred" until enclosing function ends.
-
-``` go
-func Socialize() {
-	// This call will be made when Socialize ends.
-	defer fmt.Println("Goodbye!")
-	fmt.Println("Hello!")
-	fmt.Println("Nice weather, eh?")
-}
-```
-
-Output:
-
-```
-Hello!
-Nice weather, eh?
-Goodbye!
-```
-
-## "defer" calls made no matter what
-
-``` go
-func Socialize() error {
-	// Deferred call is made even if Socialize
-	// exits early (say, due to an error).
-	defer fmt.Println("Goodbye!")
-	fmt.Println("Hello!")
-	return fmt.Errorf("I don't want to talk.")
-	// The below code won't be run!
-	fmt.Println("Nice weather, eh?")
-	return nil
-}
-
-func main() {
-	err := Socialize()
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-```
-
-## "defer" calls made no matter what
-
-Output:
-
-```
-Hello!
-Goodbye!
-2019/04/22 11:22:29 I don't want to talk.
-exit status 1
+lighting fire
+dousing fire
+2009/11/10 23:00:00 spotted a bear
 ```
 
 ## A (somewhat) more realistic example
@@ -5654,12 +5693,12 @@ func main() {
 * This example is just to show its mechanics.
 
 ``` go
-func Socialize() {
-	fmt.Println("Hello!")
-	panic("I need to get out of here!")
-	// The below code won't be run!
-	fmt.Println("Nice weather, eh?")
-	fmt.Println("Goodbye!")
+func Camp() error {
+	var fire Fire
+	fire.Light()
+	panic("spotted a bear")
+	fmt.Println("Toasting marshmallows")
+	return nil
 }
 ```
 
@@ -5667,27 +5706,29 @@ func Socialize() {
 
 Output:
 
-``` go
-Hello!
-panic: I need to get out of here.
+```
+lighting fire
+panic: spotted a bear
 
 goroutine 1 [running]:
-main.Socialize()
-        /Users/jay/socialize4_panic.go:9 +0x79
+main.Camp(0x0, 0x40c120)
+	/tmp/sandbox790323757/prog.go:24 +0xa0
 main.main()
-        /Users/jay/socialize4_panic.go:16 +0x20
-exit status 2
+	/tmp/sandbox790323757/prog.go:30 +0x20
 ```
 
 ## "panic" and "defer"
 
+Deferred function calls are made even in the event of a panic:
+
 ``` go
-func Socialize() {
-	defer fmt.Println("Goodbye!")
-	fmt.Println("Hello!")
-	panic("I need to get out of here!")
-	// The below code won't be run!
-	fmt.Println("Nice weather, eh?")
+func Camp() error {
+	var fire Fire
+	fire.Light()
+	defer fire.Extinguish()
+	panic("spotted a bear")
+	fmt.Println("Toasting marshmallows")
+	return nil
 }
 ```
 
@@ -5696,19 +5737,20 @@ func Socialize() {
 Output:
 
 ```
-Hello!
-Goodbye!
-panic: I need to get out of here!
+lighting fire
+dousing fire
+panic: spotted a bear
 
 goroutine 1 [running]:
-main.Socialize()
-        /Users/jay/socialize5_panic_defer.go:10 +0xd5
+main.Camp(0x0, 0x0)
+	/tmp/sandbox835001239/prog.go:25 +0xe0
 main.main()
-        /Users/jay/socialize5_panic_defer.go:16 +0x20
-exit status 2
+	/tmp/sandbox835001239/prog.go:31 +0x20
 ```
 
 ## "recover"
+
+Call the built-in `recover` function from a deferred function to halt a panic.
 
 ``` go
 func CalmDown() {
@@ -5718,13 +5760,14 @@ func CalmDown() {
 	fmt.Println(panicValue)
 }
 
-func Socialize() {
-	defer fmt.Println("Goodbye!")
+func Camp() error {
 	defer CalmDown()
-	fmt.Println("Hello!")
-	panic("I need to get out of here!")
-	// The below code won't be run!
-	fmt.Println("Nice weather, eh?")
+	var fire Fire
+	fire.Light()
+	defer fire.Extinguish()
+	panic("spotted a bear")
+	fmt.Println("Toasting marshmallows")
+	return nil
 }
 ```
 
@@ -5733,13 +5776,13 @@ func Socialize() {
 Output:
 
 ```
-Hello!
-I need to get out of here!
-Goodbye!
+lighting fire
+dousing fire
+spotted a bear
 ```
 
+* Deferred `fire.Extinguish` puts the fire out.
 * Deferred `CalmDown` prints the `panic` value.
-* Deferred `Println` prints "Goodbye!".
 
 ## "panic" should not be used like an exception
 
