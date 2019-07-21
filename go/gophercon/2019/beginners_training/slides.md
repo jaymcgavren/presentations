@@ -4569,8 +4569,6 @@ func main() {
 
 ## Exercise
 
-TODO update Rectangle with Scale(factor float64) method that modifies Length and Width
-
 ``` go
 // Here's our version of the Rectangle type from a prior exercise. Add a
 // Scale method that accepts a float64 value representing the factor to
@@ -4901,7 +4899,140 @@ func main() {
 
 ## Exercise
 
-TODO update Rectangle with setter methods that prevent negative Width/Height.
+``` go
+// Right now it's possible to set the length and width fields
+// for a Rectangle to negative values, which we don't want.
+// We can't truly encapsulate the fields unless we move
+// Rectangle to another package, but since we can't do that
+// on the Go Playground, let's simulate encapsulation as best
+// we can. Make the length and width fields unexported, and
+// then add setter and getter methods for both. See below
+// for details.
+package main
+
+import (
+	"fmt"
+	"errors"
+	"log"
+)
+
+// YOUR CODE HERE: make the field names lower-case so they're
+// unexported.
+type Rectangle struct {
+	Length float64
+	Width  float64
+}
+
+// YOUR CODE HERE: Add a setter method for the length field.
+// It should accept a float64 value to set the field to, and
+// return a single value of type "error". If the given length
+// is less than zero, return an error with a message of
+// "invalid length". Otherwise, set the length field and
+// return a nil error.
+
+// YOUR CODE HERE: Add a getter method for the length field.
+
+// YOUR CODE HERE: Add a setter method for the width field.
+// It should work just like the setter method for the length.
+
+// YOUR CODE HERE: Add a getter method for the width field.
+
+// When you're done, the code in the "main" function should
+// compile, run, and produce the output shown.
+func main() {
+	var myRectangle Rectangle
+	err := myRectangle.SetLength(2)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = myRectangle.SetWidth(3)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(myRectangle.Length(), myRectangle.Width()) // => 2 3
+	err = myRectangle.SetLength(-99.9)
+	if err != nil {
+		log.Fatal(err) // => 2009/11/10 23:00:00 invalid length
+	}
+}
+```
+
+``` go
+// Right now it's possible to set the length and width fields
+// for a Rectangle to negative values, which we don't want.
+// We can't truly encapsulate the fields unless we move
+// Rectangle to another package, but since we can't do that
+// on the Go Playground, let's simulate encapsulation as best
+// we can. Make the length and width fields unexported, and
+// then add setter and getter methods for both. See below
+// for details. When you're done, the code in the "main"
+// function should compile, run, and produce the output shown.
+package main
+
+import (
+	"fmt"
+	"errors"
+	"log"
+)
+
+// YOUR CODE HERE: make the field names lower-case so they're
+// unexported.
+type Rectangle struct {
+	length float64
+	width  float64
+}
+
+// YOUR CODE HERE: Add a setter method for the length field.
+// It should accept a float64 value to set the field to, and
+// return a single value of type "error". If the given length
+// is less than zero, return an error with a message of
+// "invalid length". Otherwise, set the length field and
+// return a nil error.
+func (r *Rectangle) SetLength(length float64) error {
+	if length < 0 {
+		return errors.New("invalid length")
+	}
+	r.length = length
+	return nil
+}
+
+// YOUR CODE HERE: Add a getter method for the length field.
+func (r *Rectangle) Length() float64 {
+	return r.length
+}
+
+// YOUR CODE HERE: Add a setter method for the width field.
+// It should work just like the setter method for the length.
+func (r *Rectangle) SetWidth(width float64) error {
+	if width < 0 {
+		return errors.New("invalid width")
+	}
+	r.width = width
+	return nil
+}
+
+// YOUR CODE HERE: Add a getter method for the width field.
+func (r *Rectangle) Width() float64 {
+	return r.width
+}
+
+func main() {
+	var myRectangle Rectangle
+	err := myRectangle.SetLength(2)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = myRectangle.SetWidth(3)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(myRectangle.Length(), myRectangle.Width()) // => 2 3
+	err = myRectangle.SetLength(-99.9)
+	if err != nil {
+		log.Fatal(err) // => 2009/11/10 23:00:00 invalid length
+	}
+}
+```
 
 
 
