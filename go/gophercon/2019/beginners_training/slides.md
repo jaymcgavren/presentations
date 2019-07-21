@@ -4571,6 +4571,86 @@ func main() {
 
 TODO update Rectangle with Scale(factor float64) method that modifies Length and Width
 
+``` go
+// Here's our version of the Rectangle type from a prior exercise. Add a
+// Scale method that accepts a float64 value representing the factor to
+// scale the rectangle by. It should multiply the Length field by the 
+// given factor, then assign the result back to the Length field.
+// Then it should do the same for the Width field. When you're done,
+// the code in the "main" function should compile, run, and produce
+// the output shown.
+package main
+
+import "fmt"
+
+type Rectangle struct {
+	Length float64
+	Width  float64
+}
+
+func (r Rectangle) Area() float64 {
+	return r.Length * r.Width
+}
+func (r Rectangle) Perimeter() float64 {
+	return (2 * r.Length) + (2 * r.Width)
+}
+
+// YOUR CODE HERE: Define a Scale method.
+
+func main() {
+	var myRectangle Rectangle
+	myRectangle.Length = 2
+	myRectangle.Width = 3
+	fmt.Printf("%#v\n", myRectangle) // => main.Rectangle{Length:2, Width:3}
+	myRectangle.Scale(2)
+	fmt.Printf("%#v\n", myRectangle) // => main.Rectangle{Length:4, Width:6}
+	myRectangle.Scale(0.75)
+	fmt.Printf("%#v\n", myRectangle) // => main.Rectangle{Length:3, Width:4.5}
+}
+```
+
+``` go
+package main
+
+import "fmt"
+
+type Rectangle struct {
+	Length float64
+	Width  float64
+}
+
+// All of a type's methods should use pointer receivers,
+// if any of them do.
+func (r *Rectangle) Area() float64 {
+	return r.Length * r.Width
+}
+func (r *Rectangle) Perimeter() float64 {
+	return (2 * r.Length) + (2 * r.Width)
+}
+
+// Make sure to use a pointer receiver, so you're modifying
+// the receiver itself and not a copy of it.
+func (r *Rectangle) Scale(factor float64) {
+	// The receiver pointer is automatically dereferenced when accessing
+	// the struct fields below.
+	// Multiply Length by "factor" and assign the result back to the field.
+	r.Length *= factor
+	// Multiply Width by "factor" and assign the result back to the field.
+	r.Width *= factor
+}
+
+func main() {
+	var myRectangle Rectangle
+	myRectangle.Length = 2
+	myRectangle.Width = 3
+	fmt.Printf("%#v\n", myRectangle) // => main.Rectangle{Length:2, Width:3}
+	myRectangle.Scale(2)
+	fmt.Printf("%#v\n", myRectangle) // => main.Rectangle{Length:4, Width:6}
+	myRectangle.Scale(0.75)
+	fmt.Printf("%#v\n", myRectangle) // => main.Rectangle{Length:3, Width:4.5}
+}
+```
+
 ## Encapsulation
 
 * Latitude is supposed to be between -90 and 90.
