@@ -4665,6 +4665,15 @@ c.Longitude = 999999.9
 
 ## Encapsulation
 
+* The practice of hiding data in one part of a program from code in another part of the program is known as __encapsulation__.
+* It can be used to protect against invalid data, like the invalid fields in `Coordinates`.
+* It's also safer to change the format of encapsulated data. You don't have to worry about breaking code that accesses the data, because no other code is allowed to access it directly.
+* Many programming languages support encapsulation:
+    * Most other languages use classes.
+    * Go, however, uses packages with unexported variables, struct fields, functions, and methods.
+
+## Encapsulation
+
 Let's control access to the field with a new `SetLatitude` method.
 
 ``` go
