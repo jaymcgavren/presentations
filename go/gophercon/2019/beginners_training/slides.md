@@ -2992,10 +2992,83 @@ Output:
 2 Ben
 ```
 
-
 ## Exercise: Slices
 
-TODO
+``` go
+// Fill in the blanks so this program compiles and produces
+// the output shown.
+package main
+
+import "fmt"
+
+func main() {
+	// Declare a variable that holds a slice of ints.
+	var wholeNumbers ____
+	// Create a new slice of 5 elements and assign it to the variable.
+	wholeNumbers = ____
+	// Assign 42 to the second element.
+	wholeNumbers[____] = 42
+	fmt.Printf("%#v\n", wholeNumbers) // => []int{0, 42, 0, 0, 0}
+
+	// Make a 1-element slice of booleans.
+	flags := ____
+	// Set the first and only element to true.
+	flags[0] = true
+	// Append the value false to the slice.
+	flags = ____
+	// Append the value true to the slice.
+	flags = ____
+	fmt.Printf("%#v\n", flags) // => []bool{true, false, true}
+
+	// Create a slice with the strings "cat", "bat", and "rat".
+	words := ____
+    // For each element of the slice, print its index and value.
+	for ____ := ____ words {
+		fmt.Println(i, word)
+	}
+	// => 0 cat
+	// => 1 bat
+	// => 2 rat
+}
+```
+
+``` go
+// Fill in the blanks so this program compiles and produces
+// the output shown.
+package main
+
+import "fmt"
+
+func main() {
+	// Declare a variable that holds a slice of ints.
+	var wholeNumbers []int
+	// Create a new slice of 5 elements and assign it to the variable.
+	wholeNumbers = make([]int, 5)
+	// Assign 42 to the second element.
+	wholeNumbers[1] = 42
+	fmt.Printf("%#v\n", wholeNumbers) // => []int{0, 42, 0, 0, 0}
+
+	// Make a 1-element slice of booleans.
+	flags := make([]bool, 1)
+	// Set the first and only element to true.
+	flags[0] = true
+	// Append the value false to the slice.
+	flags = append(flags, false)
+	// Append the value true to the slice.
+	flags = append(flags, true)
+	fmt.Printf("%#v\n", flags) // => []bool{true, false, true}
+
+	// Create a slice with the strings "cat", "bat", and "rat".
+	words := []string{"cat", "bat", "rat"}
+    // For each element of the slice, print its index and value.
+	for i, word := range words {
+		fmt.Println(i, word)
+	}
+	// => 0 cat
+	// => 1 bat
+	// => 2 rat
+}
+```
 
 ## Slice operator
 
