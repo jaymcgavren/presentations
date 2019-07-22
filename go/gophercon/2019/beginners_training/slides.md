@@ -2332,7 +2332,7 @@ Hello!
 Hi!
 ```
 
-TODO demo
+## Demo (?)
 
 ## Exported
 
@@ -3815,10 +3815,6 @@ Amy 84
 Ben 78
 Jose 96
 ```
-
-## Arrays/slices/maps compared
-
-TODO
 
 <!-- ******************EXERCISE****************** -->
 <%
@@ -5527,10 +5523,6 @@ EOD
 
 
 
-## Type assertions and "comma ok"
-
-TODO
-
 ## "error" interface
 
 Remember the `error` type that functions return to indicate an error?
@@ -6261,10 +6253,6 @@ Getting https://example.com/
     * Channel reads cause `main` goroutine to block until `responseSize` goroutines send, so they have time to finish before program ends.
     * The channel transmits data from the `responseSize` goroutines back to the `main` goroutine.
 
-## Channels carrying structs
-
-TODO page sizes printed in whatever order the servers responded. Implement struct that pairs URL with response size and have channel carry that.
-
 <!-- ******************EXERCISE****************** -->
 <%
 @title = <<-'EOD'.chomp
@@ -6496,13 +6484,6 @@ func main() {
 
 ![](images/web_app.png)
 
-## Gorilla
-
-TODO
-
-## Buffalo
-
-TODO
 
 
 
