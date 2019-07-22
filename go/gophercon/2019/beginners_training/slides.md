@@ -1,9 +1,42 @@
+<%
+def exercise(title:, short_url:, start_code:, cheat_sheet:, solution:, long_url: nil)
+    <<-EOD.chomp
+## Exercise: #{title}
+
+`#{short_url}`
+
+<!-- #{long_url} -->
+
+## Exercise: #{title}
+
+``` go
+#{start_code}
+```
+
+## Exercise: #{title} cheat sheet
+
+#{cheat_sheet}
+
+`#{short_url}`
+
+## Exercise: #{title} solution
+
+``` go
+#{solution}
+```
+    EOD
+end
+%>
+
+
+
+
 ## Get set up
 
 * Please sit as close as possible - some slides have small print!
 * Introduce yourself to your neighbors - we're counting on you to help each other out!
-* We'll be using the Go Playground website (`play.golang.org`) a lot, so get connected to conference WiFi - see me or a TA if you're having trouble.
-* Hopefully you already have the Go compiler installed. If not, please see me or a TA ASAP!
+* We'll be using the Go Playground website (`play.golang.org`) a lot, so get connected to conference WiFi - see me or a TA ASAP if you're having trouble.
+* If you haven't been able to install the Go compiler successfully, please see me or a TA.
 
 
 
@@ -484,13 +517,14 @@ func main() {
 }
 ```
 
-## Exercise: A short program
+<%
+@title = <<-'EOD'.chomp
+A short program
+EOD
 
-`https://is.gd/goex_short`
+@short_url = "https://is.gd/goex_short"
 
-## Exercise: A short program
-
-``` go
+@start_code = <<-'EOD'.chomp
 // Replace the blanks ("____") in the below code so that it
 // compiles, runs, and prints the message "Hello, Gophers!".
 ____ main
@@ -500,11 +534,17 @@ ____ "fmt"
 ____ main() {
 	fmt.Println____"Hello, Gophers!"____
 }
-```
+EOD
 
-## Exercise: A short program solution
+@cheat_sheet = <<-'EOD'.chomp
+* Every Go source file is part of a __package__.
+* To use code from other packages, you have to __import__ them.
+* The `main` function is called when a program first starts.
+* Functions are declared using the `func` keyword.
+* A function call needs parentheses following the function name: `mypackage.MyFunction("my argument")`
+EOD
 
-``` go
+@solution = <<-'EOD'.chomp
 package main
 
 import "fmt"
@@ -512,7 +552,9 @@ import "fmt"
 func main() {
 	fmt.Println("Hello, Gophers!")
 }
-```
+EOD
+%>
+<%= exercise(title: @title, short_url: @short_url, start_code: @start_code, cheat_sheet: @cheat_sheet, solution: @solution, long_url: nil) %>
 
 ## Variables
 
@@ -620,15 +662,15 @@ Not OK:
 * `sheetlength`
 * `sheet_length` (Underscores are legal, but frowned upon.)
 
-## Exercise: Variables
+<!-- ******************EXERCISE****************** -->
+<%
+@title = <<-'EOD'.chomp
+Variables
+EOD
+@short_url = "https://is.gd/goex_variables"
+@long_url = "https://play.golang.org/p/R6SSSyc-uai"
 
-`https://is.gd/goex_variables`
-
-<!-- https://play.golang.org/p/R6SSSyc-uai -->
-
-## Exercise: Variables
-
-``` go
+@start_code = <<-'EOD'.chomp
 package main
 
 import "fmt"
@@ -646,15 +688,9 @@ func main() {
 	fmt.Println("Some jerk ate", eatenCount, "apples.")                // => Some jerk ate 4 apples.
 	fmt.Println("There are", originalCount-eatenCount, "apples left.") // => There are 6 apples left.
 }
-```
+EOD
 
-## Exercise: Variables cheat sheet
-
-TODO
-
-## Exercise: Variables solution ("var" declarations)
-
-``` go
+@solution = <<-'EOD'.chomp
 package main
 
 import "fmt"
@@ -667,8 +703,9 @@ func main() {
 	fmt.Println("Some jerk ate", eatenCount, "apples.")
 	fmt.Println("There are", originalCount-eatenCount, "apples left.")
 }
-
-```
+EOD
+%>
+<%= exercise(title: @title, short_url: @short_url, start_code: @start_code, cheat_sheet: @cheat_sheet, solution: @solution, long_url: @long_url) %>
 
 ## Exercise: Variables solution (short declarations)
 
@@ -1035,9 +1072,15 @@ fmt.Print(string1) // => An integer: 42, a floating-point number: 1.230000, and 
 fmt.Print(string2) // =>       Stamps | 50
 ```
 
-## Exercise: "fmt.Printf"
+<!-- ******************EXERCISE****************** -->
+<%
+@title = <<-'EOD'.chomp
+"fmt.Printf"
+EOD
+@short_url = "https://is.gd/goex_printf"
+@long_url = "https://play.golang.org/p/jIcGomTqrn7"
 
-``` go
+@start_code = <<-'EOD'.chomp
 // We've imported a package with 4 functions: A, B, C, and D.
 // We've been told that each of these functions returns a
 // string. But the author hasn't documented the package
@@ -1060,9 +1103,20 @@ func main() {
 	fmt.Println(tryprintf.C())
 	fmt.Println(tryprintf.D())
 }
-```
+EOD
 
-``` go
+@cheat_sheet = <<-'EOD'.chomp
+* `fmt.Printf` is called like this: `fmt.Printf(formatString, value1, value2, etc)`.
+* Common verbs for the format string:
+    * `%f`: a floating-point number
+    * `%d`: a decimal integer
+    * `%s`: a string
+    * `%v`: any value
+    * `%#v`: any value, formatted as it would appear in Go code.
+* Don't forget to end your format strings with the `\n` escape sequence, to skip to the next line.
+EOD
+
+@solution = <<-'EOD'.chomp
 package main
 
 import (
@@ -1077,7 +1131,9 @@ func main() {
 	fmt.Printf("%#v\n", tryprintf.C()) // => ""
 	fmt.Printf("%#v\n", tryprintf.D()) // => " "
 }
-```
+EOD
+%>
+<%= exercise(title: @title, short_url: @short_url, start_code: @start_code, cheat_sheet: @cheat_sheet, solution: @solution, long_url: @long_url) %>
 
 ## Type conversions
 
@@ -1135,9 +1191,15 @@ Area is 2.4
 length > width? false
 ```
 
-## Exercise: Type conversions
+<!-- ******************EXERCISE****************** -->
+<%
+@title = <<-'EOD'.chomp
+Type conversions
+EOD
+@short_url = "https://is.gd/goex_typeconv"
+@long_url = "https://play.golang.org/p/-PerC8Tr1v-"
 
-``` go
+@start_code = <<-'EOD'.chomp
 // We've written the Go code below to calculate a total
 // price with tax and determine if we have enough funds to
 // make a purchase. But we're getting errors when we try to
@@ -1172,9 +1234,15 @@ func main() {
 	fmt.Println(availableFunds, "dollars available.")
 	fmt.Println("Within budget?", total <= availableFunds)
 }
-```
+EOD
 
-``` go
+@cheat_sheet = <<-'EOD'.chomp
+* You can't do math operations or comparisons between values of two different types.
+* But you can convert values from one type to another using __conversions__.
+* A conversion takes the form `targetType(valueToConvert)`.
+EOD
+
+@solution = <<-'EOD'.chomp
 package main
 
 import (
@@ -1196,7 +1264,9 @@ func main() {
 	fmt.Println(availableFunds, "dollars available.")
 	fmt.Println("Within budget?", total <= float64(availableFunds))
 }
-```
+EOD
+%>
+<%= exercise(title: @title, short_url: @short_url, start_code: @start_code, cheat_sheet: @cheat_sheet, solution: @solution, long_url: @long_url) %>
 
 ## "if"
 
@@ -1488,13 +1558,15 @@ if err := os.Chmod("log.txt", 0644); err != nil {
 exit status 1
 ```
 
-## Exercise: "if" and "for"
+<!-- ******************EXERCISE****************** -->
+<%
+@title = <<-'EOD'.chomp
+"if" and "for"
+EOD
+@short_url = "https://is.gd/goex_fizzbuzz"
+@long_url = "https://play.golang.org/p/mdCEglCzJEH"
 
-[https://is.gd/goex_fizzbuzz](https://is.gd/goex_fizzbuzz)
-
-<!-- https://play.golang.org/p/mdCEglCzJEH -->
-
-``` go
+@start_code = <<-'EOD'.chomp
 // Write a program that prints the integers from 1 to 100.
 // But for multiples of 3, print "Fizz" instead of the number.
 // And for multiples of 5, print "Buzz" instead of the number.
@@ -1508,17 +1580,27 @@ import "fmt"
 func main() {
 
 }
+EOD
+
+@cheat_sheet = <<-'EOD'.chomp
+``` go
+// Example "if" statement
+if 1 < 2 {
+    fmt.Println("I'll be printed!")
+}
+// Example "for" statement
+for i := 3; i >= 1; i-- {
+    fmt.Println(i)
+}
+fmt.Println("Blastoff!")
 ```
 
-## Exercise: "if" and "for" solution
+* `9%3 == 0` would be `true`.
+* `20%5 == 0` would be `true`.
+* `22%5 == 0` would be `false`.
+EOD
 
-``` go
-// Write a program that prints the integers from 1 to 100.
-// But for multiples of 3, print "Fizz" instead of the number.
-// And for multiples of 5, print "Buzz" instead of the number.
-// For multiples of both 3 and 5, print "FizzBuzz" instead of the number.
-// Hint: i%3 == 0 will be true if i is a multiple of 3.
-// Hint: i%5 == 0 will be true if i is a multiple of 5.
+@solution = <<-'EOD'.chomp
 package main
 
 import "fmt"
@@ -1539,7 +1621,10 @@ func main() {
 		}
 	}
 }
-```
+EOD
+%>
+<%= exercise(title: @title, short_url: @short_url, start_code: @start_code, cheat_sheet: @cheat_sheet, solution: @solution, long_url: @long_url) %>
+
 
 
 
@@ -1822,10 +1907,15 @@ func main() {
 }
 ```
 
-## Exercise: Declaring functions
+<!-- ******************EXERCISE****************** -->
+<%
+@title = <<-'EOD'.chomp
+Declaring functions
+EOD
+@short_url = "https://is.gd/goex_declare_func"
+@long_url = "https://play.golang.org/p/Areg54Gr5XJ"
 
-
-``` go
+@start_code = <<-'EOD'.chomp
 // Here's a squareRoot function that takes a float64 value and
 // returns its square root. But currently, we can pass a
 // negative value to squareRoot. If we do so, we get the value
@@ -1855,11 +1945,32 @@ func squareRoot(number float64) float64 {
 
 func main() {
 	root := squareRoot(-9.3)
-	fmt.Printf("%0.3f\n", root) => NaN
+	fmt.Printf("%0.3f\n", root) // => NaN
+}
+EOD
+
+@cheat_sheet = <<-'EOD'.chomp
+``` go
+// Sample function declaration
+func myFunc(myParam paramType) (returnType1, returnType2) {
+    if thereIsAProblem {
+        return unusableValue, fmt.Errorf("error message")
+    }
+    // If we get here, everything worked correctly
+    return usableValue, nil
+}
+func main() {
+    returnValue1, err := myFunc(anArgument)
+    if err != nil {
+        // Report the error
+    } else {
+        // Do something with returnValue1
+    }
 }
 ```
+EOD
 
-``` go
+@solution = <<-'EOD'.chomp
 package main
 
 import (
@@ -1882,7 +1993,12 @@ func main() {
 		fmt.Printf("%0.3f", root)
 	}
 }
-```
+EOD
+%>
+<%= exercise(title: @title, short_url: @short_url, start_code: @start_code, cheat_sheet: @cheat_sheet, solution: @solution, long_url: @long_url) %>
+
+
+
 
 ## Pass-by-value
 
@@ -2015,13 +2131,15 @@ func double(number *int) {
 }
 ```
 
-## Exercise: Passing pointers
+<!-- ******************EXERCISE****************** -->
+<%
+@title = <<-'EOD'.chomp
+Passing pointers
+EOD
+@short_url = "https://is.gd/goex_pointers"
+@long_url = "https://play.golang.org/p/wGKDcFH1Hr0"
 
-`https://is.gd/goex_pointers`
-
-## Exercise: Passing pointers
-
-``` go
+@start_code = <<-'EOD'.chomp
 // Update this program as described below.
 
 package main
@@ -2051,15 +2169,15 @@ func main() {
 	// Prints "false", but we want "true".
 	fmt.Println(lies)
 }
-```
+EOD
 
-<!-- https://play.golang.org/p/wGKDcFH1Hr0 -->
+@cheat_sheet = <<-'EOD'.chomp
+* `!true` is `false`, `!false` is `true`.
+* Pointer types are written as `*myType`.
+* Get a pointer to a variable's value with `&myVariable`.
+EOD
 
-<!-- ./solutions/pointers.go -->
-
-## Exercise: Passing pointers solution
-
-``` go
+@solution = <<-'EOD'.chomp
 package main
 
 import "fmt"
@@ -2076,7 +2194,10 @@ func main() {
 	negate(&lies)
 	fmt.Println(lies) // => true
 }
-```
+EOD
+%>
+<%= exercise(title: @title, short_url: @short_url, start_code: @start_code, cheat_sheet: @cheat_sheet, solution: @solution, long_url: @long_url) %>
+
 
 
 
@@ -2437,6 +2558,8 @@ func main() {
 
 ## Exercise: "go get"
 
+TODO rewrite to emphasize Playground
+
 [https://github.com/jaymcgavren/car/blob/master/car.go](https://github.com/jaymcgavren/car/blob/master/car.go)
 
 * Use `go get` to install the `github.com/jaymcgavren/car` package. Create a program that calls the `car` package's `OpenDoor` function.
@@ -2564,15 +2687,15 @@ Then visit `http://localhost:6060/pkg/`...
 
 ![](images/fmt_docs.png)
 
-## Exercise: Using package documentation
+<!-- ******************EXERCISE****************** -->
+<%
+@title = <<-'EOD'.chomp
+Using package documentation
+EOD
+@short_url = "https://is.gd/goex_documentation"
+@long_url = "https://play.golang.org/p/0IoS8oGzrnw"
 
-`https://is.gd/goex_documentation`
-
-<!-- https://play.golang.org/p/0IoS8oGzrnw -->
-
-## Exercise: Using package documentation
-
-``` go
+@start_code = <<-'EOD'.chomp
 package main
 
 import (
@@ -2608,13 +2731,13 @@ func main() {
 	
 	fmt.Println(number1 - number2)
 }
-```
+EOD
 
-## Exercise: Using package documentation solution
+@cheat_sheet = <<-'EOD'.chomp
+TODO
+EOD
 
-<!-- ./solutions/documentation.go -->
-
-``` go
+@solution = <<-'EOD'.chomp
 package main
 
 import (
@@ -2636,7 +2759,9 @@ func main() {
 	}
 	fmt.Println(number1 - number2)
 }
-```
+EOD
+%>
+<%= exercise(title: @title, short_url: @short_url, start_code: @start_code, cheat_sheet: @cheat_sheet, solution: @solution, long_url: @long_url) %>
 
 
 
@@ -2982,9 +3107,15 @@ Output:
 2 Ben
 ```
 
-## Exercise: Slices
+<!-- ******************EXERCISE****************** -->
+<%
+@title = <<-'EOD'.chomp
+Slices
+EOD
+@short_url = "https://is.gd/goex_slices"
+@long_url = "https://play.golang.org/p/-XUjc9A-9vP"
 
-``` go
+@start_code = <<-'EOD'.chomp
 // Fill in the blanks so this program compiles and produces
 // the output shown.
 package main
@@ -3012,7 +3143,7 @@ func main() {
 
 	// Create a slice with the strings "cat", "bat", and "rat".
 	words := ____
-    // For each element of the slice, print its index and value.
+	// For each element of the slice, print its index and value.
 	for ____ := ____ words {
 		fmt.Println(i, word)
 	}
@@ -3020,9 +3151,13 @@ func main() {
 	// => 1 bat
 	// => 2 rat
 }
-```
+EOD
 
-``` go
+@cheat_sheet = <<-'EOD'.chomp
+TODO
+EOD
+
+@solution = <<-'EOD'.chomp
 // Fill in the blanks so this program compiles and produces
 // the output shown.
 package main
@@ -3050,7 +3185,7 @@ func main() {
 
 	// Create a slice with the strings "cat", "bat", and "rat".
 	words := []string{"cat", "bat", "rat"}
-    // For each element of the slice, print its index and value.
+	// For each element of the slice, print its index and value.
 	for i, word := range words {
 		fmt.Println(i, word)
 	}
@@ -3058,7 +3193,12 @@ func main() {
 	// => 1 bat
 	// => 2 rat
 }
-```
+EOD
+%>
+<%= exercise(title: @title, short_url: @short_url, start_code: @start_code, cheat_sheet: @cheat_sheet, solution: @solution, long_url: @long_url) %>
+
+
+
 
 ## Slice operator
 
@@ -3651,9 +3791,15 @@ Jose 96
 
 TODO
 
-## Exercise: Maps
+<!-- ******************EXERCISE****************** -->
+<%
+@title = <<-'EOD'.chomp
+Maps
+EOD
+@short_url = "https://is.gd/goex_maps"
+@long_url = "https://play.golang.org/p/QUJiCbmeuL0"
 
-``` go
+@start_code = <<-'EOD'.chomp
 // Fill in the blanks so this program compiles and produces
 // the output shown.
 package main
@@ -3686,34 +3832,22 @@ func main() {
 	// => 1 H
 	// => 2 He
 }
-```
+EOD
 
-``` go
-// Fill in the blanks so this program compiles and produces
-// the output shown.
-package main
+@cheat_sheet = <<-'EOD'.chomp
+TODO
+EOD
 
-import "fmt"
-
+@solution = <<-'EOD'.chomp
 func main() {
-	// Declare a variable that holds a map with strings for keys
-	// and booleans for values.
 	var isVowel map[string]bool
-	// Call make to create the map.
 	isVowel = make(map[string]bool)
-	// Assign true to the key "a", and false to the keys "b" and "c".
 	isVowel["a"] = true
 	isVowel["b"] = false
 	isVowel["c"] = false
 	fmt.Printf("%#v\n", isVowel) // => map[string]bool{"a":true, "b":false, "c":false}
 
-
-	// Make a map with ints as keys and strings as values. The 1 key
-	// should have the value "H", 2 should have the value "He", and
-	// 3 should have the value "Li".
 	elements := map[int]string{1: "H", 2: "He", 3: "Li"}
-	// Print all the keys and corresponding values in the slice.
-	// Order doesn't matter.
 	for atomicNumber, symbol := range elements {
 		fmt.Println(atomicNumber, symbol)
 	}
@@ -3721,7 +3855,9 @@ func main() {
 	// => 1 H
 	// => 2 He
 }
-```
+EOD
+%>
+<%= exercise(title: @title, short_url: @short_url, start_code: @start_code, cheat_sheet: @cheat_sheet, solution: @solution, long_url: @long_url) %>
 
 
 
@@ -4126,13 +4262,15 @@ func main() {
 }
 ```
 
-## Exercise: Struct types
+<!-- ******************EXERCISE****************** -->
+<%
+@title = <<-'EOD'.chomp
+Struct types
+EOD
+@short_url = "https://is.gd/goex_structs"
+@long_url = "https://play.golang.org/p/6TXfzxpTiCj"
 
-[https://is.gd/goex_structs](https://is.gd/goex_structs)
-
-## Exercise: Struct types
-
-``` go
+@start_code = <<-'EOD'.chomp
 package main
 
 import (
@@ -4182,15 +4320,13 @@ func main() {
 	fmt.Println("State:", employee.State)            // => State: OR
 	fmt.Println("Postal Code:", employee.PostalCode) // => Postal Code: 97222
 }
-```
+EOD
 
-<!-- https://play.golang.org/p/6TXfzxpTiCj -->
+@cheat_sheet = <<-'EOD'.chomp
+TODO
+EOD
 
-## Exercise: Struct types solution
-
-<!-- ./solutions/structs.go -->
-
-``` go
+@solution = <<-'EOD'.chomp
 type Subscriber struct {
 	Name   string
 	Rate   float64
@@ -4210,7 +4346,10 @@ type Address struct {
 	State      string
 	PostalCode string
 }
-```
+EOD
+%>
+<%= exercise(title: @title, short_url: @short_url, start_code: @start_code, cheat_sheet: @cheat_sheet, solution: @solution, long_url: @long_url) %>
+
 
 
 
@@ -4409,13 +4548,15 @@ type Landmark struct {
 }
 ```
 
-## Exercise: Defined types
+<!-- ******************EXERCISE****************** -->
+<%
+@title = <<-'EOD'.chomp
+Defined types
+EOD
+@short_url = "https://is.gd/goex_defined_types"
+@long_url = "https://play.golang.org/p/TeMJ9D6bBOz"
 
-`https://is.gd/goex_defined_types`
-
-## Exercise: Defined types
-
-``` go
+@start_code = <<-'EOD'.chomp
 package main
 
 import "fmt"
@@ -4445,13 +4586,13 @@ func main() {
 	fmt.Println("Area:", myRectangle.Area())           // => Area: 6
 	fmt.Println("Perimeter:", myRectangle.Perimeter()) // => Perimeter: 10
 }
-```
+EOD
 
-<!-- https://play.golang.org/p/TeMJ9D6bBOz -->
+@cheat_sheet = <<-'EOD'.chomp
+TODO
+EOD
 
-## Exercise: Defined types solution
-
-``` go
+@solution = <<-'EOD'.chomp
 package main
 
 import (
@@ -4478,9 +4619,9 @@ func main() {
 	fmt.Println("Area:", myRectangle.Area())
 	fmt.Println("Perimeter:", myRectangle.Perimeter())
 }
-```
-
-<!-- ./solutions/defined_types.go -->
+EOD
+%>
+<%= exercise(title: @title, short_url: @short_url, start_code: @start_code, cheat_sheet: @cheat_sheet, solution: @solution, long_url: @long_url) %>
 
 ## Pointer receiver parameters
 
@@ -4557,9 +4698,15 @@ func main() {
 }
 ```
 
-## Exercise
+<!-- ******************EXERCISE****************** -->
+<%
+@title = <<-'EOD'.chomp
+Pointer receivers
+EOD
+@short_url = "https://is.gd/goex_pointer_receivers"
+@long_url = "https://play.golang.org/p/W4W_EH73mJx"
 
-``` go
+@start_code = <<-'EOD'.chomp
 // Here's our version of the Rectangle type from a prior exercise. Add a
 // Scale method that accepts a float64 value representing the factor to
 // scale the rectangle by. It should multiply the Length field by the 
@@ -4595,9 +4742,13 @@ func main() {
 	myRectangle.Scale(0.75)
 	fmt.Printf("%#v\n", myRectangle) // => main.Rectangle{Length:3, Width:4.5}
 }
-```
+EOD
 
-``` go
+@cheat_sheet = <<-'EOD'.chomp
+TODO
+EOD
+
+@solution = <<-'EOD'.chomp
 package main
 
 import "fmt"
@@ -4637,7 +4788,10 @@ func main() {
 	myRectangle.Scale(0.75)
 	fmt.Printf("%#v\n", myRectangle) // => main.Rectangle{Length:3, Width:4.5}
 }
-```
+EOD
+%>
+<%= exercise(title: @title, short_url: @short_url, start_code: @start_code, cheat_sheet: @cheat_sheet, solution: @solution, long_url: @long_url) %>
+
 
 ## Encapsulation
 
@@ -4887,9 +5041,15 @@ func main() {
 }
 ```
 
-## Exercise
+<!-- ******************EXERCISE****************** -->
+<%
+@title = <<-'EOD'.chomp
+Encapsulation
+EOD
+@short_url = "https://is.gd/goex_encapsulation"
+@long_url = "https://play.golang.org/p/KWKMlugGRLx"
 
-``` go
+@start_code = <<-'EOD'.chomp
 // Right now it's possible to set the length and width fields
 // for a Rectangle to negative values, which we don't want.
 // We can't truly encapsulate the fields unless we move
@@ -4945,9 +5105,13 @@ func main() {
 		log.Fatal(err) // => 2009/11/10 23:00:00 invalid length
 	}
 }
-```
+EOD
 
-``` go
+@cheat_sheet = <<-'EOD'.chomp
+TODO
+EOD
+
+@solution = <<-'EOD'.chomp
 // Right now it's possible to set the length and width fields
 // for a Rectangle to negative values, which we don't want.
 // We can't truly encapsulate the fields unless we move
@@ -5022,7 +5186,9 @@ func main() {
 		log.Fatal(err) // => 2009/11/10 23:00:00 invalid length
 	}
 }
-```
+EOD
+%>
+<%= exercise(title: @title, short_url: @short_url, start_code: @start_code, cheat_sheet: @cheat_sheet, solution: @solution, long_url: @long_url) %>
 
 
 
@@ -5230,13 +5396,15 @@ Stopped!
 Recording
 ```
 
-## Exercise: Interfaces
+<!-- ******************EXERCISE****************** -->
+<%
+@title = <<-'EOD'.chomp
+Interfaces
+EOD
+@short_url = "https://is.gd/goex_interfaces"
+@long_url = "https://play.golang.org/p/6g4_wz89Jes"
 
-[https://is.gd/goex_interfaces](https://is.gd/goex_interfaces)
-
-## Exercise: Interfaces
-
-``` go
+@start_code = <<-'EOD'.chomp
 package main
 
 import "fmt"
@@ -5278,13 +5446,13 @@ func main() {
 	Play(Horn("Toyco Blaster"))   // => Honk!
 	Play(Robot("Botco Ambler"))   // => Beep Boop
 }
-```
+EOD
 
-<!-- https://play.golang.org/p/6g4_wz89Jes -->
+@cheat_sheet = <<-'EOD'.chomp
+TODO
+EOD
 
-## Exercise: Interfaces solution
-
-``` go
+@solution = <<-'EOD'.chomp
 package main
 
 import "fmt"
@@ -5323,9 +5491,16 @@ func main() {
 	play(Horn("Toyco Blaster"))   // => Honk!
 	play(Robot("Botco Ambler"))   // => Beep Boop
 }
-```
+EOD
+%>
+<%= exercise(title: @title, short_url: @short_url, start_code: @start_code, cheat_sheet: @cheat_sheet, solution: @solution, long_url: @long_url) %>
 
-<!-- ./solutions/interfaces.go -->
+
+
+
+## Type assertions and "comma ok"
+
+TODO
 
 ## "error" interface
 
@@ -5813,13 +5988,15 @@ func awardPrize() {
 * If you know an error could happen, use normal control flow statements to handle it.
 * Google "golang errors are values" (which should take you to `https://blog.golang.org/errors-are-values`) for some tips on making error handling more pleasant.
 
-## Exercise: Handling errors
+<!-- ******************EXERCISE****************** -->
+<%
+@title = <<-'EOD'.chomp
+Handling errors
+EOD
+@short_url = "https://is.gd/goex_recovery"
+@long_url = "https://play.golang.org/p/I16x3MSub57"
 
-[https://is.gd/goex_recovery](https://is.gd/goex_recovery)
-
-## Exercise: Handling errors
-
-``` go
+@start_code = <<-'EOD'.chomp
 package main
 
 import "fmt"
@@ -5874,13 +6051,13 @@ func main() {
 		fmt.Println(err)
 	}
 }
-```
+EOD
 
-<!-- https://play.golang.org/p/I16x3MSub57 -->
+@cheat_sheet = <<-'EOD'.chomp
+TODO
+EOD
 
-## Exercise: Handling errors solution
-
-``` go
+@solution = <<-'EOD'.chomp
 package main
 
 import "fmt"
@@ -5920,9 +6097,10 @@ func main() {
 		fmt.Println(err)
 	}
 }
-```
+EOD
+%>
+<%= exercise(title: @title, short_url: @short_url, start_code: @start_code, cheat_sheet: @cheat_sheet, solution: @solution, long_url: @long_url) %>
 
-<!-- ./solutions/defer.go -->
 
 
 
@@ -6058,13 +6236,15 @@ Getting https://example.com/
 
 TODO page sizes printed in whatever order the servers responded. Implement struct that pairs URL with response size and have channel carry that.
 
-## Exercise: Goroutines and channels
+<!-- ******************EXERCISE****************** -->
+<%
+@title = <<-'EOD'.chomp
+Goroutines and channels
+EOD
+@short_url = "https://is.gd/goex_goroutines"
+@long_url = "https://play.golang.org/p/mtfvNLts6Vm"
 
-[https://is.gd/goex_goroutines](https://is.gd/goex_goroutines)
-
-## Exercise: Goroutines and channels
-
-``` go
+@start_code = <<-'EOD'.chomp
 // This program should call the "repeat" function twice, using two
 // separate goroutines. The first goroutine should print the string
 // "x" repeatedly, and the second goroutine should print "y"
@@ -6099,13 +6279,13 @@ func main() {
 	<-channel
 	<-channel
 }
-```
+EOD
 
-<!-- https://play.golang.org/p/mtfvNLts6Vm -->
+@cheat_sheet = <<-'EOD'.chomp
+TODO
+EOD
 
-## Exercise: Goroutines and channels
-
-``` go
+@solution = <<-'EOD'.chomp
 package main
 
 import "fmt"
@@ -6124,9 +6304,10 @@ func main() {
 	<-channel
 	<-channel
 }
-```
+EOD
+%>
+<%= exercise(title: @title, short_url: @short_url, start_code: @start_code, cheat_sheet: @cheat_sheet, solution: @solution, long_url: @long_url) %>
 
-<!-- solutions/goroutines.go -->
 
 
 # Local development
