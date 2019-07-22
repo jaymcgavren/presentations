@@ -2556,34 +2556,63 @@ func main() {
 }
 ```
 
-## Exercise: "go get"
+<!-- ******************EXERCISE****************** -->
+<%
+@title = <<-'EOD'.chomp
+"go get"
+EOD
+@short_url = "https://is.gd/goex_goget"
+@long_url = "https://play.golang.org/p/daeTvzmDOvZ"
 
-TODO rewrite to emphasize Playground
-
-[https://github.com/jaymcgavren/car/blob/master/car.go](https://github.com/jaymcgavren/car/blob/master/car.go)
-
-* Use `go get` to install the `github.com/jaymcgavren/car` package. Create a program that calls the `car` package's `OpenDoor` function.
-* The `github.com/jaymcgavren/car/headlights` package should have been installed along with the previous `go get` command. Add a call to the `headlights` package's `TurnOn` function.
-
-(The Go Playground now also supports third party packages. Try `go get` on your computer first, but if it won't work for some reason, just write your solution at `https://play.golang.org`. The Playground should automatically install the packages and run your code. It may take a little longer than usual to run, since it has to download the packages first.)
-
-## Exercise: "go get" solution
-
-`$ go get github.com/jaymcgavren/car`
-
-``` go
+@start_code = <<-'EOD'.chomp
+// We've published some Go packages to simulate a car. You can view the files at:
+// https://github.com/jaymcgavren/car
+// The Go Playground now supports importing any package that can be retrieved via
+// "go get", so let's create a program that uses these packages.
+// Import the "github.com/jaymcgavren/car" package, and call its OpenDoor
+// function.
+// Then, import the "github.com/jaymcgavren/car/headlights" package, and call its
+// TurnOn function.
+// When your program is working correctly, you should see the following output:
+// Opening door
+// Shining headlights
 package main
 
 import (
-	"github.com/jaymcgavren/car"
-	"github.com/jaymcgavren/car/headlights"
 )
 
 func main() {
-	car.OpenDoor()
-	headlights.TurnOn()
 }
-```
+EOD
+
+@cheat_sheet = <<-'EOD'.chomp
+TODO
+EOD
+
+@solution = <<-'EOD'.chomp
+// We've published some Go packages to simulate a car. You can view the files at:
+// https://github.com/jaymcgavren/car
+// The Go Playground now supports importing any package that can be retrieved via
+// "go get", so let's create a program that uses these packages.
+// Import the "github.com/jaymcgavren/car" package, and call its OpenDoor
+// function.
+// Then, import the "github.com/jaymcgavren/car/headlights" package, and call its
+// TurnOn function.
+// When your program is working correctly, you should see the following output:
+// Opening door
+// Shining headlights
+package main
+
+import (
+)
+
+func main() {
+}
+EOD
+%>
+<%= exercise(title: @title, short_url: @short_url, start_code: @start_code, cheat_sheet: @cheat_sheet, solution: @solution, long_url: @long_url) %>
+
+
 
 ## Package Naming Conventions
 
@@ -6313,6 +6342,33 @@ EOD
 # Local development
 
 TODO Exercise: Create `$GOPATH/src/hi/main.go`, `go install hi`, `hi`
+
+## Exercise: "go get"
+
+TODO
+
+[https://github.com/jaymcgavren/car](https://github.com/jaymcgavren/car/blob/master/car.go)
+
+* Use `go get` to install the `github.com/jaymcgavren/car` package. Create a program that calls the `car` package's `OpenDoor` function.
+* The `github.com/jaymcgavren/car/headlights` package should have been installed along with the previous `go get` command. Add a call to the `headlights` package's `TurnOn` function.
+
+## Exercise: "go get" solution
+
+`$ go get github.com/jaymcgavren/car`
+
+``` go
+package main
+
+import (
+	"github.com/jaymcgavren/car"
+	"github.com/jaymcgavren/car/headlights"
+)
+
+func main() {
+	car.OpenDoor()
+	headlights.TurnOn()
+}
+```
 
 ## Exercise: "os.Args"
 
