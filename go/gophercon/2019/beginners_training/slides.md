@@ -6329,16 +6329,101 @@ EOD
 
 # Local development
 
-TODO Exercise: Create `$GOPATH/src/hi/main.go`, `go install hi`, `hi`
+## Success is not guaranteed!
+
+* We saved this part for the end for a reason.
+* Setup problems are common for a workshop like this.
+* We'll help as many of you as we can get as far as we can.
+* If we can't get you unstuck today:
+    * Come get my contact information after the workshop ends.
+    * Also ask for help on the Gophers Slack; we'll have a link to that at the end.
+
+## Exercise: "go run", "go build"
+
+* Save the below code to a file named `main.go`, in a directory _outside_ your Go workspace.
+* Use `go run` to run the program.
+* Use `go build` to compile the program to the current directory, and run the resulting executable.
+
+``` go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Hello, Gophers!")
+}
+```
+
+# Exercise: "go run", "go build" cheat sheet
+
+* To run `main.go` with `go run`, change to the directory where `main.go` is saved, and type `go run main.go`.
+* To compile `main.go` within the current directory, run `go build main.go`.
+* To run the executable:
+    * On Mac/Linux: `./main`
+    * On Windows: `main` or `main.exe`
+
+# Exercise: "go run", "go build" solution
+
+```
+$ mkdir ~/Projects/temp
+$ cd ~/Projects/temp
+$ ls -al
+-rw-r--r-- 1 jay staff      76 Jul 22 18:50 main.go
+$ go run main.go
+Hello, Gophers!
+$ go build main.go
+$ ls -l
+-rwxr-xr-x 1 jay staff 2108024 Jul 22 18:54 main
+-rw-r--r-- 1 jay staff      76 Jul 22 18:50 main.go
+$ ./main
+Hello, Gophers!
+```
+
+## Exercise: "go install"
+
+* Move the previous `main.go` file to a package directory named `higophers` in your Go workspace.
+* Compile and install an executable for our program using `go install`.
+* Run the installed executable.
+
+## Exercise: "go install" cheat sheet
+
+* If `$GOPATH` isn't set, then your workspace is the `go` directory within your user's home directory.
+* For an import path of `higophers`, store your code in `~/go/src/higophers`.
+* Because this is code for an executable, we need the code to use a package of `main`, even though it's being stored in the `higophers` directory.
+* To compile and install the executable, run `go install higophers`.
+* The executable will be installed to the `~/go/bin` directory, with a name of `higophers`.
+* If the workspace's `bin` directory is included in your `$PATH`, then you can run the executable from any directory on your system by typing `higophers`. (This is true for Mac, Linux, _and_ Windows.)
+
+# Exercise: "go install" solution
+
+```
+$ mkdir ~/go/src/higophers
+$ cd ~/Projects/temp
+$ cp main.go ~/go/src/higophers/
+$ go install higophers
+$ pwd
+/Users/jay/Projects/temp
+$ ls -l ~/go/bin/
+-rwxr-xr-x 1 jay staff 2108024 Jul 22 22:03 higophers
+$ higophers
+Hello, Gophers!
+```
 
 ## Exercise: "go get"
 
-TODO
+Remember the [https://github.com/jaymcgavren/car](https://github.com/jaymcgavren/car/blob/master/car.go)
 
-[https://github.com/jaymcgavren/car](https://github.com/jaymcgavren/car/blob/master/car.go)
+* Use `go get` to install the `github.com/jaymcgavren/car` package.
+* Just for fun, go to your workspace's `src` directory, and browse the directories and files that `go get` placed there.
+* Now create a program that calls the `car` package's `OpenDoor` function.
+* The `github.com/jaymcgavren/car/wheels` package should have been installed along with the previous `go get` command. Add a call to the `wheels` package's `Steer` function.
 
-* Use `go get` to install the `github.com/jaymcgavren/car` package. Create a program that calls the `car` package's `OpenDoor` function.
-* The `github.com/jaymcgavren/car/headlights` package should have been installed along with the previous `go get` command. Add a call to the `headlights` package's `TurnOn` function.
+## Exercise: "go get" cheat sheet
+
+* You can install the package with `go get github.com/jaymcgavren/car`.
+* If your system doesn't have Git installed, you'll be prompted to install it when you run `go get`. Just follow the instructions on your screen.
+* If you just want to run your program with `go run`, you can store it anywhere on your system you want.
+* If you want to install your program with `go install`, then make a subdirectory for your program within your workspace's `src` directory, and store the program in there.
 
 ## Exercise: "go get" solution
 
@@ -6349,18 +6434,63 @@ package main
 
 import (
 	"github.com/jaymcgavren/car"
-	"github.com/jaymcgavren/car/headlights"
+	"github.com/jaymcgavren/car/wheels"
 )
 
 func main() {
 	car.OpenDoor()
-	headlights.TurnOn()
+	wheels.Steer()
 }
 ```
 
 ## Exercise: "os.Args"
 
-TODO
+* Write a program that takes several numbers as command line arguments, and prints their average.
+* The `os.Args` slice will contain the command line arguments in string form.
+    * You can use the `strconv` package's `ParseFloat` function to convert each string to a number, like this: `number, err := strconv.ParseFloat(argument, 64)`
+    * As usual, if the `err` return value from `ParseFloat` isn't nil, it indicates an error, which you should log before exiting the program.
+
+## Exercise: "os.Args" cheat sheet
+
+* Baby steps! If you're stuck, first just try to print each of the command-line arguments.
+* Remember, the first element of `os.Args` is the program name. You can get a list of just the command line arguments with `arguments := os.Args[1:]`
+* You'll need to calculate the sum of all the arguments, and then divide the sum by the number of arguments to get the average.
+* You can process each command-line argument using `for _, argument := range arguments {...}`. We don't need the index, so we can use the blank identifier to discard it.
+* Declare your `sum` variable before the `for ... range` loop, so that it's still in scope after the loop exits.
+* Use `len(arguments)` to get the number of command-line arguments for use in calculating the average.
+
+## Exercise: "os.Args" solution
+
+``` go
+package main
+
+import (
+	"fmt"
+	"log"
+	"os"
+	"strconv"
+)
+
+func main() {
+	arguments := os.Args[1:]
+	// Set up a variable to hold the sum of the numbers.
+	var sum float64 = 0
+	// Process each command-line argument.
+	for _, argument := range arguments {
+		// Convert the string to a float64.
+		number, err := strconv.ParseFloat(argument, 64)
+		if err != nil {
+			log.Fatal(err)
+		}
+		//Add the number to the total.
+		sum += number
+	}
+	// How many numbers are we averaging?
+	sampleCount := float64(len(arguments))
+	// Print the average.
+	fmt.Printf("Average: %0.2f\n", sum/sampleCount)
+}
+```
 
 
 
