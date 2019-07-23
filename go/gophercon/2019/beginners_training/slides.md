@@ -2586,27 +2586,27 @@ func main() {
 EOD
 
 @cheat_sheet = <<-'EOD'.chomp
-TODO
+* For the `car` package:
+    * The package will be installed with an import path of `"github.com/jaymcgavren/car"`.
+    * The last segment of the package import path is usually used as the package name, so in this case the package name will be `car`.
+    * Call the function as `car.OpenDoor()`.
+* For the `headlights` package:
+    * The package will be installed with an import path of `"github.com/jaymcgavren/car/headlights"`.
+    * The last segment of the package import path is usually used as the package name, so in this case the package name will be `headlights`.
+    * Call the function as `headlights.TurnOn()`.
 EOD
 
 @solution = <<-'EOD'.chomp
-// We've published some Go packages to simulate a car. You can view the files at:
-// https://github.com/jaymcgavren/car
-// The Go Playground now supports importing any package that can be retrieved via
-// "go get", so let's create a program that uses these packages.
-// Import the "github.com/jaymcgavren/car" package, and call its OpenDoor
-// function.
-// Then, import the "github.com/jaymcgavren/car/headlights" package, and call its
-// TurnOn function.
-// When your program is working correctly, you should see the following output:
-// Opening door
-// Shining headlights
 package main
 
 import (
+	"github.com/jaymcgavren/car"
+	"github.com/jaymcgavren/car/headlights"
 )
 
 func main() {
+	car.OpenDoor()
+	headlights.TurnOn()
 }
 EOD
 %>
@@ -2763,7 +2763,17 @@ func main() {
 EOD
 
 @cheat_sheet = <<-'EOD'.chomp
-TODO
+``` go
+$ go doc strconv Parsefloat
+func ParseFloat(s string, bitSize int) (float64, error)
+    ParseFloat converts the string s to a floating-point number...
+```
+
+* Don't forget to import the `"strconv"` package.
+* Use the package name before the function name: `strconv.ParseFloat(...)`
+* The first argument to `ParseFloat` is the string you want to convert to a `float64`.
+* Use the integer `64` as the second argument.
+* Provide variables for both the `float64` return value and the `error` return value: `number1, err := strconv.ParseFloat(string1, 64)`
 EOD
 
 @solution = <<-'EOD'.chomp
@@ -3183,7 +3193,19 @@ func main() {
 EOD
 
 @cheat_sheet = <<-'EOD'.chomp
-TODO
+* To declare a variable that holds a slice of `myType` values, write `var myVar []myType`.
+* Slices can be created using the `make` function.
+    * The first argument to `make` should be the type of the slice.
+    * The second argument should be the number of elements the slice holds.
+* Slice element indexes start at `0`, so `mySlice[0]` refers to the first element, `mySlice[1]` to the second, and so on.
+* To append an element to `mySlice`, use `mySlice = append(mySlice, newElement)`.
+* A slice literal looks like this: `[]int{1, 2, 3}`
+
+``` go
+for index, element := range mySlice {
+    fmt.Println(index, element)
+}
+```
 EOD
 
 @solution = <<-'EOD'.chomp
@@ -3860,7 +3882,15 @@ func main() {
 EOD
 
 @cheat_sheet = <<-'EOD'.chomp
-TODO
+``` go
+var myMap map[keyType]valueType
+myMap = make(map[keyType]valueType)
+otherMap := map[int]string{1: "foo", 2: "bar"}
+otherMap[3] = "baz"
+for key, value := range otherMap {
+    fmt.Println(key, value)
+}
+```
 EOD
 
 @solution = <<-'EOD'.chomp
@@ -4348,7 +4378,17 @@ func main() {
 EOD
 
 @cheat_sheet = <<-'EOD'.chomp
-TODO
+``` go
+type Profile struct {
+    Bio string
+}
+type User struct {
+    Profile
+}
+
+var user User
+user.Bio = "I teach Go workshops."
+```
 EOD
 
 @solution = <<-'EOD'.chomp
@@ -4614,7 +4654,14 @@ func main() {
 EOD
 
 @cheat_sheet = <<-'EOD'.chomp
-TODO
+``` go
+type User struct {
+    Name string
+}
+func (u User) ShoutName() string {
+    return strings.ToUpper(u.Name)
+}
+```
 EOD
 
 @solution = <<-'EOD'.chomp
@@ -4770,7 +4817,15 @@ func main() {
 EOD
 
 @cheat_sheet = <<-'EOD'.chomp
-TODO
+``` go
+type User struct {
+	Name string
+}
+
+func (u *User) AlterName() {
+	u.Name = strings.ToUpper(u.Name)
+}
+```
 EOD
 
 @solution = <<-'EOD'.chomp
@@ -5133,7 +5188,21 @@ func main() {
 EOD
 
 @cheat_sheet = <<-'EOD'.chomp
-TODO
+``` go
+type User struct {
+	name string
+}
+func (u *User) SetName(name string) error {
+	if name == "" {
+		return errors.New("name can't be blank")
+	}
+	u.name = name
+	return nil
+}
+func (u *User) Name() string {
+	return u.name
+}
+```
 EOD
 
 @solution = <<-'EOD'.chomp
@@ -5474,7 +5543,20 @@ func main() {
 EOD
 
 @cheat_sheet = <<-'EOD'.chomp
-TODO
+``` go
+type Pen string
+func (p Pen) Write() {
+	fmt.Println("writing stuff")
+}
+
+type WritingInstrument interface {
+	Write()
+}
+
+func Test(w WritingInstrument) {
+	w.Write()
+}
+```
 EOD
 
 @solution = <<-'EOD'.chomp
@@ -6075,7 +6157,16 @@ func main() {
 EOD
 
 @cheat_sheet = <<-'EOD'.chomp
-TODO
+``` go
+func Camp() error {
+	var fire Fire
+	fire.Light()
+	defer fire.Extinguish()
+	return fmt.Errorf("spotted a bear")
+	fmt.Println("Toasting marshmallows")
+	return nil
+}
+```
 EOD
 
 @solution = <<-'EOD'.chomp
@@ -6299,7 +6390,19 @@ func main() {
 EOD
 
 @cheat_sheet = <<-'EOD'.chomp
-TODO
+``` go
+func myFunc(channel chan int) {
+	channel <- 42
+}
+
+func main() {
+	channel := make(chan int)
+	go myFunc(channel)
+	go myFunc(channel)
+	fmt.Println(<-channel)
+	fmt.Println(<-channel)
+}
+```
 EOD
 
 @solution = <<-'EOD'.chomp
@@ -6354,7 +6457,7 @@ func main() {
 }
 ```
 
-# Exercise: "go run", "go build" cheat sheet
+## Exercise: "go run", "go build" cheat sheet
 
 * To run `main.go` with `go run`, change to the directory where `main.go` is saved, and type `go run main.go`.
 * To compile `main.go` within the current directory, run `go build main.go`.
@@ -6362,7 +6465,7 @@ func main() {
     * On Mac/Linux: `./main`
     * On Windows: `main` or `main.exe`
 
-# Exercise: "go run", "go build" solution
+## Exercise: "go run", "go build" solution
 
 ```
 $ mkdir ~/Projects/temp
@@ -6394,7 +6497,7 @@ Hello, Gophers!
 * The executable will be installed to the `~/go/bin` directory, with a name of `higophers`.
 * If the workspace's `bin` directory is included in your `$PATH`, then you can run the executable from any directory on your system by typing `higophers`. (This is true for Mac, Linux, _and_ Windows.)
 
-# Exercise: "go install" solution
+## Exercise: "go install" solution
 
 ```
 $ mkdir ~/go/src/higophers
@@ -6411,7 +6514,7 @@ Hello, Gophers!
 
 ## Exercise: "go get"
 
-Remember the [https://github.com/jaymcgavren/car](https://github.com/jaymcgavren/car/blob/master/car.go)
+Remember the [https://github.com/jaymcgavren/car](https://github.com/jaymcgavren/car/blob/master/car.go) repo?
 
 * Use `go get` to install the `github.com/jaymcgavren/car` package.
 * Just for fun, go to your workspace's `src` directory, and browse the directories and files that `go get` placed there.
@@ -6495,8 +6598,6 @@ func main() {
 
 
 # Where to Go Next
-
-## Buffered channels
 
 ## "go test"
 
