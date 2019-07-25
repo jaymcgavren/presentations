@@ -50,7 +50,7 @@ A story format gives viewers context for what you're teaching.
 
 <!-- Efficiency in Learning p. 84 -->
 
-Don't make readers look all over the page to assimilate information. Put related information together!
+Don't make readers look all over the page/slide (or worse, flip between pages/slides) to assimilate information. Put related information together!
 
 ### Replace:
 
@@ -91,8 +91,6 @@ fmt.Printf("%t\n", true)       // => true
 ```
 
 ## Break Topics Down
-
-## Minimize Page Flipping
 
 ## _Do_ Repeat Yourself
 
