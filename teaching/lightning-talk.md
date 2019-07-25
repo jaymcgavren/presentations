@@ -10,7 +10,8 @@
 
 ## Why Listen To Me?
 
-I dunno, I don't _feel_ like my content should be that extraordinary...
+* I dunno!
+* I don't _feel_ like my content should be that extraordinary...
 
 ## Head First Ruby Amazon Reviews
 
@@ -28,29 +29,37 @@ I dunno, I don't _feel_ like my content should be that extraordinary...
 
 # The Science (and pseudoscience) I Use
 
+## The Science
+
+![](images/efficiency_in_learning.png)
+
+"The negative effects of split attention on learning have been demonstrated in controlled research experiments using paper and multimedia materials."
+
 ## Impress them Early
 
-## Tell a Story
+TODO Head First Go - simple game
+TODO Ruby course - run "Hello World" very first thing
+TODO find supporting quotes
 
-"If I stood up and read the entire ECMAScript spec to you, I'd be technically sophisticated but a terrible speaker."
+## Minimize Page Flipping
 
-"The truth is that humans are story-driven. Good talks focus on solving problems. Great talks tell stories that change perspectives."
+"Have you ever read a book in which the text describes a visual located on the _back of the page_? ... The annoyance you feel [is due to] extraneous cognitive load needed to search for and integrate related information that is _physically separated_." -Efficiency in Learning
 
-[https://dev.to/samjulien/speaker-stuff-no-one-tells-you-about-applying-to-conferences-l3n](https://dev.to/samjulien/speaker-stuff-no-one-tells-you-about-applying-to-conferences-l3n)
+## _Do_ Repeat Yourself
 
-## Tell a Story
+* In __Head First Go__, I didn't tell readers to refer back to page X.
+* I copied content from page X onto the current page.
+* I used a "torn page" effect to make it clear which parts were repetitions.
 
-A story format gives viewers context for what you're teaching.
-
-* What kind problem does this knowledge help solve?
-* Have we learned everything we need to yet? ("No, look, there's this bug over here!")
-* Gives a sense of closure at end of lesson.
+![](images/do_repeat_yourself.png)
 
 ## Avoid Split Attention
 
-<!-- Efficiency in Learning p. 84 -->
+"Split attention occurs when two mutually dependent visual sources of information are laid out in a format that requires the learner to mentally integrate them." -Efficiency in Learning
 
-Don't make readers look all over the page/slide (or worse, flip between pages/slides) to assimilate information. Put related information together!
+## Avoid Split Attention
+
+Don't make readers look all over the page/slide to assimilate information. Put related information together!
 
 ### Replace:
 
@@ -90,24 +99,31 @@ fmt.Printf("%s\n", "a string") // => a string
 fmt.Printf("%t\n", true)       // => true
 ```
 
+## Avoid Split Attention
+
+The Head First series annotates all code samples.
+
+![](images/head_first_go_annotations.png)
+
 ## Break Topics Down
 
-## _Do_ Repeat Yourself
+TODO example
+TODO supporting quote
 
 ## Limit "Trivia"
 
 * Bad: Who created the Go Language?
 * Good: Is Go compiled or interpreted?
 
-## Pick and Choose Topics
+### Did You Know?
 
-* Attention is a finite resource!
-* What is _your_ target audience ready to learn? (Not "able", "ready"!)
-* What does _your_ target audience need to know?
+"Adding motivational content—even content topically related to the lesson—depresses learning." -Efficiency in Learning
 
 ## Use Clear Motivating Examples
 
-TODO
+TODO description
+TODO bad example
+TODO supporting quotes
 
 ```go
 func Camp() error {
@@ -123,6 +139,34 @@ func Camp() error {
 	return nil
 }
 ```
+
+## Tell a Story
+
+TODO Incorporate Clark chapter 8.
+
+A story format gives viewers context for what you're teaching.
+
+* What kind problem does this knowledge help solve?
+* Have we learned everything we need to yet? ("No, look, there's this bug over here!")
+* Gives a sense of closure at end of lesson.
+
+## Tell a Story
+
+"If I stood up and read the entire ECMAScript spec to you, I'd be technically sophisticated but a terrible speaker."
+
+"The truth is that humans are story-driven. Good talks focus on solving problems. Great talks tell stories that change perspectives."
+
+[https://dev.to/samjulien/speaker-stuff-no-one-tells-you-about-applying-to-conferences-l3n](https://dev.to/samjulien/speaker-stuff-no-one-tells-you-about-applying-to-conferences-l3n)
+
+## Pick and Choose Topics
+
+"Good instructional design sorts out the need-to-know from the nice-to-know and tosses out the nice-to-know."
+
+-Efficiency in Learning
+
+* Attention is a finite resource!
+* What is _your_ target audience ready to learn? (Not "able", "ready"!)
+* What does _your_ target audience need to know?
 
 ## Manage Knowledge Dependencies
 
@@ -207,6 +251,13 @@ fmt.Printf("%0.3f\n", 2.0/3.0) // => 0.667
 ```
 
 ## Reduce Extraneous Cognitive Load
+
+* __Intrinsic cognitive load__: How inherently difficult your learning goal is.
+* __Extraneous cognitive load__: Unnecessary mental work imposed by your materials.
+
+## Reduce Extraneous Cognitive Load
+
+TODO supporting quote
 
 * Here's a demonstration of underlying arrays for slices.
 * Audience can figure out easily enough that `myArray[2]` changes the third element of `myArray`.
