@@ -378,7 +378,7 @@ TODO
 
 ## Further Reading
 
-* __Efficiency in Learning__, Clarke et al.
+* __Efficiency in Learning__: Clarke, Nguyen, and Sweller, Pfeiffer 2005
 * __Memory and the Human Lifespan__, Steve Joordens, Ph.D.: `https://www.thegreatcourses.com/courses/memory-and-the-human-lifespan.html`
 * "A Guide to Better Technical Writing", Wade Christensen: `https://astuteape.com/writing/a-guide-to-better-technical-writing/`
 * My book!
