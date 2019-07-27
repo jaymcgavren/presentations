@@ -137,7 +137,9 @@ H.G.K., Hummel, & R.J. Nadolski, (2002). Cueing for schema construction: Designi
 
 ## Avoid Split Attention
 
-"Split attention occurs when two mutually dependent visual sources of information are laid out in a format that requires the learner to mentally integrate them." -Efficiency in Learning
+"Split attention occurs when two mutually dependent visual sources of information are laid out in a format that requires the learner to mentally integrate them."
+
+-Efficiency in Learning
 
 ## Avoid Split Attention
 
@@ -199,7 +201,9 @@ TODO supporting quote
 
 ### Did You Know?
 
-"Adding motivational content—even content topically related to the lesson—depresses learning." -Efficiency in Learning
+"Adding motivational content—even content topically related to the lesson—depresses learning."
+
+-Efficiency in Learning
 
 ## Use Clear Motivating Examples
 
