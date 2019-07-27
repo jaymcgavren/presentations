@@ -409,14 +409,6 @@ fmt.Printf("%#v\n", slice1) // => []string{"a", "b", "X"}
 fmt.Printf("%#v\n", slice2) // => []string{"X", "d", "e"}
 ```
 
-## Write Concisely
-
-"In concise writing every word contributes to the sentence and every sentence contributes to the learning goal."
-
--Efficiency in Learning
-
-TODO find example
-
 ## Write Clearly
 
 Bad:
