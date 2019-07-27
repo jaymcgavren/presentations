@@ -353,46 +353,6 @@ fmt.Printf("%#v\n", slice1) // => []string{"a", "b", "X"}
 fmt.Printf("%#v\n", slice2) // => []string{"X", "d", "e"}
 ```
 
-## Write Clearly
-
-Bad:
-
-Does "it" refer to Extinguish or Camp? Even a beginner can probably figure it out, but why make them expend the mental effort?
-
-```go
-func Camp() error {
-	var fire Fire
-	fire.Light()
-	// All you have to do is defer a call to Extinguish
-	// right after you make a call to Light! Extinguish
-	// will be called when Camp exits, whether it does
-	// so normally or due to an error.
-	defer fire.Extinguish()
-	return fmt.Errorf("spotted a bear")
-	fmt.Println("Toasting marshmallows")
-	return nil
-}
-```
-
-## Write Clearly
-
-Good: substitute "Camp" for "it":
-
-```go
-func Camp() error {
-	var fire Fire
-	fire.Light()
-	// All you have to do is defer a call to Extinguish
-	// right after you make a call to Light! Extinguish
-	// will be called when Camp exits, whether Camp does
-	// so normally or due to an error.
-	defer fire.Extinguish()
-	return fmt.Errorf("spotted a bear")
-	fmt.Println("Toasting marshmallows")
-	return nil
-}
-```
-
 ## Leverage Existing Knowledge
 
 * Save viewers mental effort by basing new learning on concepts they already know about.
