@@ -158,22 +158,6 @@ Other stuff you have to understand to get that example:
 * Even _Head First Go_ went on to show a `defer` example that required `os.Open`, `os.File.Close` and more.
 * But when first introducing a topic, make sure that topic is the _only_ new thing you're introducing.
 
-## Tell a Story
-
-A story format gives viewers context for what you're teaching.
-
-* What kind problem does this knowledge help solve?
-* Have we learned everything we need to yet? ("No, look, there's this bug over here!")
-* Gives a sense of closure at end of lesson.
-
-## Tell a Story
-
-"If I stood up and read the entire ECMAScript spec to you, I'd be technically sophisticated but a terrible speaker."
-
-"The truth is that humans are story-driven. Good talks focus on solving problems. Great talks tell stories that change perspectives."
-
-[https://dev.to/samjulien/speaker-stuff-no-one-tells-you-about-applying-to-conferences-l3n](https://dev.to/samjulien/speaker-stuff-no-one-tells-you-about-applying-to-conferences-l3n)
-
 ## Pick and Choose Topics
 
 "Good instructional design sorts out the need-to-know from the nice-to-know and tosses out the nice-to-know."
