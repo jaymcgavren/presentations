@@ -295,8 +295,6 @@ TODO supporting quote
 
 ## Anticipate Viewer Questions
 
-TODO supporting quote
-
 ### Original slide:
 
 So, remember this excessively precise fractional number from before?
@@ -416,10 +414,15 @@ fmt.Printf("%#v\n", slice1) // => []string{"a", "b", "X"}
 fmt.Printf("%#v\n", slice2) // => []string{"X", "d", "e"}
 ```
 
-## Avoid Ambiguous Pronouns
+## Write Concisely
 
-TODO consider striking
-TODO supporting quote
+"In concise writing every word contributes to the sentence and every sentence contributes to the learning goal."
+
+-Efficiency in Learning
+
+TODO find example
+
+## Write Clearly
 
 Bad:
 
