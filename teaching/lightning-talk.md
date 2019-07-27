@@ -222,8 +222,6 @@ func Camp() error {
 
 ## Tell a Story
 
-TODO Incorporate Clark chapter 8 - "worked examples"
-
 A story format gives viewers context for what you're teaching.
 
 * What kind problem does this knowledge help solve?
@@ -247,6 +245,36 @@ A story format gives viewers context for what you're teaching.
 * Attention is a finite resource!
 * What is _your_ target audience ready to learn? (Not "able", "ready"!)
 * What does _your_ target audience need to know?
+
+## Break Down Topics
+
+_Head First Go_ included a number guessing game that required learners to use:
+
+* Reading strings from standard input
+* Converting strings to numbers
+* `if` statements
+* Random number generation
+* `for` loops
+
+## Break Down Topics
+
+If they got _any_ of these items wrong, they'd have a big program to debug. So I came up with a separate grading program that requires only part of these skills:
+
+* __Reading strings from standard input__
+* __Converting strings to numbers__
+* __`if` statements__
+* Random number generation
+* `for` loops
+
+## Break Down Topics
+
+This allowed readers to become confident in the first group of skills, before adding in random number generation and `for` loops.
+
+* __Reading strings from standard input__
+* __Converting strings to numbers__
+* __`if` statements__
+* Random number generation
+* `for` loops
 
 ## Manage Knowledge Dependencies
 
