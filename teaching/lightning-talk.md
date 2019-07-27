@@ -1,9 +1,8 @@
-# Crafting Effective Technical Tutorials
+# Teaching Tech
 
 ## About Me
 
-* Name: Jay McGavren
-* Author of Head First Ruby and Head First Go
+* Author of _Head First Ruby_ and _Head First Go_
 * Total 4 years creating training for Code School, then Treehouse
 
 ![](images/head_first_go_cover.png)
