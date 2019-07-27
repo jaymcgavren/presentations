@@ -305,10 +305,6 @@ This allowed readers to become confident in the first group of skills, before ad
 
 ## Manage Knowledge Dependencies
 
-TODO Clark supporting quote
-
-## Manage Knowledge Dependencies
-
 Simple example: I realized I needed `%%` when demonstrating `Printf` format widths:
 
 ``` go
@@ -391,8 +387,6 @@ fmt.Printf("%0.3f\n", 2.0/3.0) // => 0.667
 * __Extraneous cognitive load__: Unnecessary mental work imposed by your materials.
 
 ## Reduce Extraneous Cognitive Load
-
-TODO supporting quote
 
 * Here's a demonstration of underlying arrays for slices.
 * Audience can figure out easily enough that `myArray[2]` changes the third element of `myArray`.
