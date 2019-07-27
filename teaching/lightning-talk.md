@@ -204,7 +204,6 @@ The Head First series annotates all code samples.
 
 TODO description
 TODO bad example
-TODO supporting quotes
 
 ```go
 func Camp() error {
@@ -520,18 +519,13 @@ ranks["bronze"] = 3
 fmt.Println(ranks["gold"], ranks["bronze"]) // => 1 3
 ```
 
-
-
 ## Offer Practice
 
 "Practice exercises matched to the learning objectives are one hallmark of effective courseware."
 
 -Efficiency in Learning
 
-
 TODO incorporate Clark guidelines 18, 19, and 20(?)
-
-
 
 ## Further Reading
 
@@ -546,4 +540,6 @@ TODO incorporate Clark guidelines 18, 19, and 20(?)
 
 Visit `https://twitter.com/jaymcgavren`
 
-TODO blockquote or add "torn paper" to differentiate samples from other talks with content of THIS talk
+### Your Practice
+
+Incorporate some of these ideas into your next talk or training!
