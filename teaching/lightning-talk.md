@@ -544,6 +544,6 @@ TODO incorporate Clark guidelines 18, 19, and 20(?)
 
 ## Review These Slides
 
-TODO set up link from jay.mcgavren.com
+Link tweeted today. Visit: `https://twitter.com/jaymcgavren`
 
 TODO blockquote or add "torn paper" to differentiate samples from other talks with content of THIS talk
