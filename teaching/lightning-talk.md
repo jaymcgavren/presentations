@@ -98,6 +98,8 @@ The Head First series annotates all code samples.
 
 ## Use Understandable Motivating Examples
 
+How _The Go Programming Language_ (Donovan and Kernighan) introduces `defer`:
+
 ``` go
 func title(url string) error {
     resp, err := http.Get(url)
@@ -120,7 +122,7 @@ func title(url string) error {
 
 ## Use Understandable Motivating Examples
 
-Other stuff you have to understand to get that example:
+Other stuff the reader has to understand to get that example:
 
 * `http.Get`
 * HTTP headers
@@ -149,6 +151,12 @@ func Camp() error {
 Other stuff you have to understand to get that example:
 
 * Camping
+
+## Use Understandable Motivating Examples
+
+* OK, OK, Donovan and Kernighan's approach is much more practical.
+* Even _Head First Go_ went on to show a `defer` example that required `os.Open`, `os.File.Close` and more.
+* But when first introducing a topic, make sure that topic is the _only_ new thing you're introducing.
 
 ## Tell a Story
 
