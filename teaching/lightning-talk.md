@@ -189,11 +189,6 @@ The Head First series annotates all code samples.
 
 ![](images/head_first_go_annotations.png)
 
-## Break Topics Down
-
-TODO example
-TODO supporting quote
-
 ## Limit "Trivia"
 
 * Bad: Who created the Go Language?
@@ -290,7 +285,14 @@ Prerequisite knowledge _has_ to be taught, or readers will be confused.
 * Try to fit it in at the time you're teaching similar concepts.
 * But if you have to, introduce it as an aside/detour.
 
+## Break Topics Down
+
+TODO example
+TODO supporting quote
+
 ## Anticipate Viewer Questions
+
+TODO supporting quote
 
 ### Original slide:
 
