@@ -223,7 +223,7 @@ func Camp() error {
 
 ## Tell a Story
 
-TODO Incorporate Clark chapter 8.
+TODO Incorporate Clark chapter 8 - "worked examples"
 
 A story format gives viewers context for what you're teaching.
 
@@ -252,6 +252,10 @@ A story format gives viewers context for what you're teaching.
 ## Manage Knowledge Dependencies
 
 ![](images/endings_are_hard_tweet.png)
+
+## Manage Knowledge Dependencies
+
+TODO Clark supporting quote
 
 ## Manage Knowledge Dependencies
 
@@ -415,6 +419,9 @@ fmt.Printf("%#v\n", slice2) // => []string{"X", "d", "e"}
 
 ## Avoid Ambiguous Pronouns
 
+TODO consider striking
+TODO supporting quote
+
 Bad:
 
 Does "it" refer to Extinguish or Camp? Even a beginner can probably figure it out, but why make them expend the mental effort?
@@ -453,6 +460,8 @@ func Camp() error {
 
 ## Leverage Existing Knowledge
 
+TODO supporting quote
+
 * Save viewers mental effort by basing new learning on concepts they already know about.
 
     Heard of "dictionaries" or "hashes"? Maps are Go's equivalent.
@@ -480,6 +489,8 @@ For this week's training, I used similar formats for the slices and maps section
 TODO list of slices slide titles, map slide titles
 
 ## Keep it Concrete
+
+TODO Supporting quote
 
 Which is better, this wall of text:
 
@@ -513,7 +524,14 @@ fmt.Println(ranks["gold"], ranks["bronze"]) // => 1 3
 
 ## Offer Practice
 
-TODO
+"Practice exercises matched to the learning objectives are one hallmark of effective courseware."
+
+-Efficiency in Learning
+
+
+TODO incorporate Clark guidelines 18, 19, and 20(?)
+
+
 
 ## Further Reading
 
