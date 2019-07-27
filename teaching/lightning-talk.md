@@ -33,21 +33,106 @@
 
 ![](images/efficiency_in_learning.png)
 
-"The negative effects of split attention on learning have been demonstrated in controlled research experiments using paper and multimedia materials."
+## References
 
-## Impress them Early
+R.K. Atkinson, (2002). Optimizing learning from examples using animated pedagogical agents. Journal of Educational Psychology, 94(2), 416–427.
 
-TODO Head First Go - simple game
-TODO Ruby course - run "Hello World" very first thing
-TODO find supporting quotes
+R.K. Atkinson,, S.H., Derry, A., Renkl, & D. Wrotham, (2000). Learning from examples: Instructional principles from the worked examples research. Review of Educational Research, 70(2), 181–214.
+
+R.K., Atkinson, A., Renkl, & M.M. Merrill, (2003). Transition from studying examples to solving problems: Effects of self-explanation prompts and fading worked out steps. Journal of Educational Psychology, 95(4), 774–783.
+
+A. Baddeley, (1992). Working memory. Science, 255, 556–559.
+
+R., Brunken, J., Plass, & D. Leutner, (2003). Direct measurement of cognitive load in multimedia learning. Educational Psychologist, 38, 53–61.
+
+R., Carlson, P., Chandler, & J. Sweller, (2003). Journal of Educational Psychology, 95(3), 629–640.
+
+J.M. Carroll, (1992). Minimalist documentation. In H.D. Stolovitch & E.J. Keeps (Eds.), Handbook of human performance technology. San Francisco, CA: Jossey-Bass.
+
+N., Cerpa, P., Chandler, & J. Sweller, (1996). Some conditions under which integrated computer-based training software can facilitate learning. J. Educational Computing Research, 14(4), 344–367.
+
+P., Chandler, & J. Sweller, (1991). Cognitive load theory and the format of instruction. Cognition and Instruction, 8(4), 293–332.
+
+P., Chandler, & J. Sweller, (1992). The split attention effect as a factor in the design of instruction. British Journal of Educational Psychology, 62, 233–246.
+
+P., Chandler, & J. Sweller, (1996). Cognitive load while learning to use a computer program. Applied Cognitive Psychology, 10, 141–170.
+
+W.G., Chase, & H.A. Simon, (1973). The mind's eye in chess. In W.G. Chase (Ed.), Visual information processing. London: Academic Press.
+
+M.T.H. Chi, (2000). Self-explaining expository texts: The dual processes of generating inferences and repairing mental models. In R. Glaser (Ed.), Advances in instructional psychology educational design and cognitive science (Vol. 5). Mahwah, NJ: Lawrence Erlbaum.
+
+## References
+
+M.T.H., Chi, M., Bassok, M.W., Lewis, P., Reimann, & R. Glaser, (1989). Self-explanations: How students study and use examples in learning to solve problems. Cognitive Science, 13, 145–182.
+
+R.C. Clark, (1999). Developing technical training (2nd ed.). Silver Spring: MD: International Society for Performance Improvement.
+
+R.C. Clark, (2003). Building expertise (2nd ed.). Silver Spring, MD: International Society for Performance Improvement.
+
+R.C. Clark, (in press). Evidence-based practice and professionalization of HPT. In J. Pershing (Ed.), Handbook of performance technology (3rd ed.). Silver Spring: MD: International Society of Performance Improvement.
+
+R.C., Clark, & C. Lyons, (2004). Graphics for learning. San Francisco, CA: Pfeiffer.
+
+R.C., Clark, & R.E. Mayer, (2003). e-Learning and the science of instruction. San Francisco, CA: Pfeiffer.
+
+A., Collins, J.S., Brown, & S.E. Newman, (1989). Cognitive apprenticeship: Teaching the craft of reading, writing, and mathematics. In L.B. Resnick (Ed.), Knowing, learning, and instruction: Essays in honor of Robert Glaser (pp. 453–493). Mahwah, NJ: Lawrence Erlbaum.
+
+G., Cooper, & J. Sweller, (1987). The effects of schema acquisition and rule automation on mathematical problem-solving transfer. Journal of Educational Psychology, 79, 347–362.
+
+G., Cooper, S., Tindall-Ford, P., Chandler, & J. Sweller, (2001). Learning by imagining. Journal of Experimental Psychology: Applied, 7(1), 68–82.
+
+S.D., Craig, B., Gholson, & D.M. Driscoll, (2002). Animated pedagogical agents in multimedia educational environments: Effects of agent properties, picture features, and redundancy. Journal of Educational Psychology, 94(2), 428–434.
+
+H. Dolezalek, (2004). Industry report. Training, 41(9), 20–36.
+
+J.E., Driskell, C., Copper, & A. Moran, (1994). Does mental practice enhance performance? Journal of Applied Psychology, 7, 481–492.
+
+J.L., Etneir, & D.M. Landers, (1996). The influence of procedural variables on the efficacy of mental practice. The Sport Psychologist, 9, 48–57.
+
+A., Fuat, A.P.S., Hungin, & J.J. Murphy, (2003). Barriers to accurate diagnosis and effective management of heart failure in primary care: Qualitative study. British Medical Journal, 326, p. 196.
+
+## References
+
+P., Gerjets, K., Scheiter, & R. Catrambone, (2004). Designing instructional examples to reduce intrinsic cognitive load: Molar versus modular presentation of solution procedures. Instructional Science, 32, 33–58.
+
+M.L., Gick, & K.J. Holyoak, (1980). Analogical problem solving. Cognitive Psychology, 12, 306–355.
+
+M.L., Gick, & K.J. Holyaok, (1983). Schema induction and analogical transfer. Cognitive Psychology, 15, 1–38.
+
+P., Ginns, P., Chandler, & J. Sweller, (2003). When imagining information is effective. Contemporary Educational Psychology, 28, 229–251
+
+V., Gyselinck, & H. Tardieu, (1999). The role of illustrations in text comprehension: What, when, for whom, and why? In H.V. Van Oostendrop & S.R. Goldman (Eds.), The construction of mental representations during reading. Mahwah, NJ: Lawrence Erlbaum.
+
+S.F., Harp, & R.E. Mayer, (1997). The role of interest in learning from scientific text and illustrations: On the distinction between emotional interest and cognitive interest. Journal of Educational Psychology, 89(1), 92–102.
+
+R.E. Haskell, (2001). Transfer of learning. New York: Academic Press.
+
+J., Hartley, & M. Benjamin, (1998). An evaluation of structured abstracts in journals published by the British Psychological Society. British Journal of Educational Psychology, 68, 443–446.
+
+M., Hegarty, N.H., Narayanan, & P. Freitas, (2002). Understanding machines from multimedia and hypermedia presentations. In J. Otero, J.A. Leson, & A.C. Graesser (Eds.), The psychology of science text comprehension. Mahwah, NJ: Lawrence Erlbaum.
+
+C.E. Hmelo-Silver, (2004). Problem-based learning: What and how do students learn? Educational Psychology Review, 16(3), 235–266.
+
+B., Hoffman, & D. Ritchie, (1997). Using multimedia to overcome the problems with problem based learning. Instructional Science, 25, 97–115.
+
+M., Hojat, & G. Xu, (2004). A visitor's guide to effect sizes. Advances in Health Sciences Education, 9, 241–249.
+
+H.G.K., Hummel, & R.J. Nadolski, (2002). Cueing for schema construction: Designing problem-solving multimedia practicals. Contemporary Educational Psychology, 27, 229–249.
+
+## References
+
+(This would go on for about 13 more slides...)
+
 
 ## Minimize Page Flipping
 
-"Have you ever read a book in which the text describes a visual located on the _back of the page_? ... The annoyance you feel [is due to] extraneous cognitive load needed to search for and integrate related information that is _physically separated_." -Efficiency in Learning
+"Have you ever read a book in which the text describes a visual located on the _back of the page_? ... The annoyance you feel [is due to] extraneous cognitive load needed to search for and integrate related information that is _physically separated_."
+
+-Efficiency in Learning
 
 ## _Do_ Repeat Yourself
 
-* In __Head First Go__, I didn't tell readers to refer back to page X.
+* In _Head First Go_, I didn't tell readers to refer back to page X.
 * I copied content from page X onto the current page.
 * I used a "torn page" effect to make it clear which parts were repetitions.
 
