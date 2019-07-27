@@ -459,8 +459,6 @@ func Camp() error {
 
 ## Leverage Existing Knowledge
 
-TODO supporting quote
-
 * Save viewers mental effort by basing new learning on concepts they already know about.
 
     Heard of "dictionaries" or "hashes"? Maps are Go's equivalent.
@@ -488,8 +486,6 @@ For this week's training, I used similar formats for the slices and maps section
 TODO list of slices slide titles, map slide titles
 
 ## Keep it Concrete
-
-TODO Supporting quote
 
 Which is better, this wall of text:
 
