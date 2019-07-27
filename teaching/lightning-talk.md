@@ -432,6 +432,34 @@ ranks["bronze"] = 3
 fmt.Println(ranks["gold"], ranks["bronze"]) // => 1 3
 ```
 
+## Keep it Concrete
+
+The code sample immediately conveys:
+
+* What a map looks like in code
+* A potential use for a map (convert medal names to rankings)
+* A map's similarities to slices (`make` to create, `[]` for access)
+
+``` go
+ranks := make(map[string]int)
+ranks["gold"] = 1
+ranks["silver"] = 2
+ranks["bronze"] = 3
+fmt.Println(ranks["gold"], ranks["bronze"]) // => 1 3
+```
+
+## Keep it Concrete
+
+Code samples make it clear what you're talking about much sooner!
+
+``` go
+ranks := make(map[string]int)
+ranks["gold"] = 1
+ranks["silver"] = 2
+ranks["bronze"] = 3
+fmt.Println(ranks["gold"], ranks["bronze"]) // => 1 3
+```
+
 ## Offer Practice
 
 "Practice exercises matched to the learning objectives are one hallmark of effective courseware."
