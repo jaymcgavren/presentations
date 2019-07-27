@@ -189,21 +189,38 @@ The Head First series annotates all code samples.
 
 ![](images/head_first_go_annotations.png)
 
-## Limit "Trivia"
+## Use Understandable Motivating Examples
 
-* Bad: Who created the Go Language?
-* Good: Is Go compiled or interpreted?
+``` go
+func title(url string) error {
+    resp, err := http.Get(url)
+    if err != nil {
+        return err
+    }
+    defer resp.Body.Close()
+    ct := resp.Header.Get("Content-Type")
+    if ct != "text/html" && !strings.HasPrefix(ct, "text/html;") {
+        return fmt.Errorf("%s has type %s, not text/html", url, ct)
+    }
+    doc, err := html.Parse(resp.Body)
+    if err != nil {
+        return fmt.Errorf("parsing %s as HTML: %v", url, err)
+    }
+    // ...print doc's title element...
+    return nil
+}
+```
 
-### Did You Know?
+## Use Understandable Motivating Examples
 
-"Adding motivational content—even content topically related to the lesson—depresses learning."
+Other stuff you have to understand to get that example:
 
--Efficiency in Learning
+* `http.Get`
+* HTTP headers
+* `strings` package
+* `html.Parse`
 
-## Use Clear Motivating Examples
-
-TODO description
-TODO bad example
+## Use Understandable Motivating Examples
 
 ```go
 func Camp() error {
@@ -219,6 +236,12 @@ func Camp() error {
 	return nil
 }
 ```
+
+## Use Understandable Motivating Examples
+
+Other stuff you have to understand to get that example:
+
+* Camping
 
 ## Tell a Story
 
