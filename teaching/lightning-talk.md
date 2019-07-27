@@ -288,11 +288,6 @@ Prerequisite knowledge _has_ to be taught, or readers will be confused.
 * Try to fit it in at the time you're teaching similar concepts.
 * But if you have to, introduce it as an aside/detour.
 
-## Break Topics Down
-
-TODO example
-TODO supporting quote
-
 ## Anticipate Viewer Questions
 
 ### Original slide:
