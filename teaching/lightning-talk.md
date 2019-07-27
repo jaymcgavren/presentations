@@ -379,7 +379,28 @@ For this week's training, I used similar formats for the slices and maps section
 * Though maps work differently than slices, the syntax is similar.
 * You're going to get some deja vu from the slices section.
 
-TODO list of slices slide titles, map slide titles
+## Leverage Existing Knowledge
+
+Here are the slice sections and the map sections, with repeated concepts __highlighted__. Note the intentionally similar ordering and phrasing.
+
+* __Slice types__
+* __Zero value for slices__
+* __Slices and "make()"__
+* __Zero values of slice elements__
+* Slices and "append"
+* __Slice literals__
+* __Slices and "for ... range"__
+* Slice operator
+
+* __Map types__
+* __Zero value for maps__
+* __Maps and "make()"__
+* Accessing map values
+* __Zero values of map values__
+* The "comma ok" idiom
+* __Map literals__
+* The "delete" function
+* __Maps and "for ... range"__
 
 ## Keep it Concrete
 
