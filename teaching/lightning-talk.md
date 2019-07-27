@@ -438,7 +438,9 @@ func Camp() error {
 }
 ```
 
-Good: s/it/Camp/
+## Write Clearly
+
+Good: substitute "Camp" for "it":
 
 ```go
 func Camp() error {
