@@ -16,15 +16,13 @@
 
 ![](images/head_first_ruby_amazon_reviews.png)
 
-(The 2-star guy is mad the book isn't on Kindle Cloud Reader.)
+(The 2-star guy is mad the book isn't on Kindle Cloud Reader.) `¯\_(ツ)_/¯`
 
 ## Head First Go Amazon Reviews
 
 ![](images/head_first_go_amazon_reviews.png)
 
-## A Tweet About Head First Go
-
-![](images/head_first_go_tweet.png)
+(The 3-star guy is mad at the setup process for the Go toolchain.) `¯\_(ツ)_/¯`
 
 # The Science (and pseudoscience) I Use
 
