@@ -525,7 +525,70 @@ fmt.Println(ranks["gold"], ranks["bronze"]) // => 1 3
 
 -Efficiency in Learning
 
-TODO incorporate Clark guidelines 18, 19, and 20(?)
+## Fill in the Blank
+
+Your goal is to define an interface that will allow a function to accept either of two different types.
+
+* Define two types, `Whistle` and `Horn`, each with an underlying type of `string`.
+* Define a `MakeSound` method for `Whistle` that prints "Tweet!". It should accept no parameters and return no values.
+* Define a `MakeSound` method for `Horn` that's just like the method for `Whistle`, except it prints "Honk!".
+* Define a `NoiseMaker` interface type that requires a `MakeSound` method. The `Whistle` and `Horn` types should both satisfy this interface.
+* Define a `Play` function that accepts a parameter with the `NoiseMaker` interface. `Play` should call `MakeSound` on the parameter it receives.
+
+## Fill in the Blank
+
+Your goal is to define an interface that will allow a function to accept either of two different types.
+
+* Define two types, `Whistle` and `Horn`, each with an underlying type of `string`.
+* Define a `MakeSound` method for `Whistle` that prints "Tweet!". It should accept no parameters and return no values.
+* Define a `MakeSound` method for `Horn` that's just like the method for `Whistle`, except it prints "Honk!".
+* _Define a `NoiseMaker` interface type that requires a `MakeSound` method. The `Whistle` and `Horn` types should both satisfy this interface._
+* _Define a `Play` function that accepts a parameter with the `NoiseMaker` interface. `Play` should call `MakeSound` on the parameter it receives._
+
+## Fill in the Blank
+
+``` go
+type Whistle string
+func (w Whistle) MakeSound() {
+	fmt.Println("Tweet!")
+}
+type Horn string
+func (h Horn) MakeSound() {
+	fmt.Println("Honk!")
+}
+
+// YOUR CODE HERE:
+// Define a NoiseMaker interface type, which the above
+// Whistle, Horn, and Robot types will all satisfy.
+// It should require one method, MakeSound, which has
+// no parameters and no return values.
+
+// YOUR CODE HERE:
+// Define a Play function that accepts a parameter with
+// the NoiseMaker interface. Play should call MakeSound
+// on the parameter it receives.
+
+func main() {
+	Play(Whistle("Toyco Canary")) // => Tweet!
+	Play(Horn("Toyco Blaster"))   // => Honk!
+}
+```
+
+## Fill in the Blank
+
+``` go
+// Replace the blanks ("____") in the below code so that it
+// compiles, runs, and prints the message "Hello, Gophers!".
+____ main
+
+____ "fmt"
+
+____ main() {
+	fmt.Println____"Hello, Gophers!"____
+}
+```
+
+# Wrapping Up
 
 ## Further Reading
 
