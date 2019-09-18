@@ -1533,6 +1533,952 @@ func main() {
 ```
 
 
+# Data Structures
+
+
+
+
+# Arrays
+
+## Arrays
+
+``` go
+// Array type written as [size]ContainedType
+var primes [3]int
+// Array indices start at 0
+primes[0] = 2
+primes[1] = 3
+fmt.Println(primes[0]) // => 2
+fmt.Println(primes[1]) // => 3
+```
+
+## Arrays
+
+Arrays can hold any type
+
+``` go
+var flags [2]bool
+flags[0] = true
+flags[1] = false
+fmt.Println(flags) // => [true false]
+var names [5]string
+names[0] = "Tracy"
+names[2] = "Gerard"
+fmt.Println(names) // => [Tracy  Gerard  ]
+```
+
+## Arrays and "fmt.Printf"
+
+Hmm, spacing on that last one is weird...
+
+``` go
+var names [5]string
+names[0] = "Tracy"
+names[2] = "Gerard"
+fmt.Println(names) // => [Tracy  Gerard  ]
+```
+
+Let's look at it with `fmt.Printf("%#v")`:
+
+``` go
+fmt.Printf("%#v\n", names) // => [5]string{"Tracy", "", "Gerard", "", ""}
+```
+
+## Arrays and zero values
+
+Unless otherwise assigned, array elements hold the zero values for their type.
+
+``` go
+var primes [3]int
+fmt.Printf("%#v\n", primes) // => [3]int{0, 0, 0}
+var flags [2]bool
+fmt.Printf("%#v\n", flags)  // => [2]bool{false, false}
+var names [5]string
+fmt.Printf("%#v\n", names)  // => [5]string{"", "", "", "", ""}
+```
+
+## Array literals
+
+* Remember `fmt.Printf("%#v")` prints values as they would appear in Go code.
+
+``` go
+var names [5]string
+names[0] = "Tracy"
+names[2] = "Gerard"
+fmt.Printf("%#v\n", names) // => [5]string{"Tracy", "", "Gerard", "", ""}
+```
+
+* That syntax is an array __literal__.
+
+## Array literals
+
+Use array literals to create an array and initialize its elements all at once.
+
+``` go
+names := [5]string{"Tracy", "", "Gerard", "", ""}
+fmt.Println(names[0]) // => Tracy
+fmt.Println(names[1]) // => 
+fmt.Println(names[2]) // => Gerard
+fmt.Println(names[3]) // => 
+fmt.Println(names[4]) // => 
+```
+
+## Array literals
+
+Slices and maps have a similar literal syntax; we'll get to those in a bit.
+
+``` go
+myArray := [3]string{"Amy", "Jose", "Ben"}
+mySlice := []string{"Amy", "Jose", "Ben"}
+myMap := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
+```
+
+## Arrays and loops
+
+Array elements can be accessed using a loop.
+
+``` go
+names := [3]string{"Amy", "Jose", "Ben"}
+for i := 0; i < len(names); i++ {
+	fmt.Println(names[i])
+}
+```
+
+Output:
+
+``` go
+Amy
+Jose
+Ben
+```
+
+## Arrays and loops
+
+Don't access/assign outside array bounds; program will panic (a runtime error that crashes the program).
+
+``` go
+names := [3]string{"Amy", "Jose", "Ben"}
+for i := 0; i <= len(names); i++ {
+	fmt.Println("index", i, names[i])
+}
+```
+
+```
+index 0 Amy
+index 1 Jose
+index 2 Ben
+panic: runtime error: index out of range
+
+goroutine 1 [running]:
+main.main()
+	/tmp/sandbox741567581/prog.go:10 +0x180
+```
+
+## "for ... range" loops
+
+It's safer to use a `for ... range` loop:
+
+``` go
+names := [3]string{"Amy", "Jose", "Ben"}
+for index, name := range names {
+	fmt.Println(index, name)
+}
+```
+
+## "for ... range" loops and blank identifier
+
+Don't want the index, or don't want the element? Assign it to the blank identifier.
+
+``` go
+names := [3]string{"Amy", "Jose", "Ben"}
+for _, name := range names {
+	fmt.Println(name)
+}
+for index, _ := range names {
+	fmt.Println(index)
+}
+```
+
+Output:
+
+```
+Amy
+Jose
+Ben
+0
+1
+2
+```
+
+## "for ... range" loops and other types
+
+`for ... range` also available with slices...
+
+``` go
+mySlice := []string{"Amy", "Jose", "Ben"}
+for index, name := range mySlice {
+	fmt.Println(index, name)
+}
+```
+
+Output:
+
+``` go
+0 Amy
+1 Jose
+2 Ben
+```
+
+## "for ... range" loops and other types
+
+`for ... range` also available with maps.
+
+``` go
+myMap := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
+for name, score := range myMap {
+	fmt.Println(name, score)
+}
+```
+
+Output:
+
+``` go
+Amy 84
+Jose 96
+Ben 78
+```
+
+More on these later.
+
+## Limitations of arrays
+
+* Arrays are fixed size - can't grow when needed.
+* To me, they're only useful as a basis for slices.
+
+
+
+# Slices
+
+## Slices
+
+Slice type is written just like array type, but with nothing between the `[]`.
+
+``` go
+var myArray [3]int
+var mySlice []int
+```
+
+## Zero value for slices
+
+Unlike with arrays, the zero value for a slice is `nil`.
+
+``` go
+var mySlice []int
+if mySlice == nil {
+	fmt.Println("mySlice is nil") // => mySlice is nil
+}
+```
+
+## Slices and "make()"
+
+Make a new slice with the built-in `make` function.
+
+``` go
+var mySlice []int
+mySlice = make([]int, 3)
+if mySlice == nil {
+	fmt.Println("mySlice is nil") // doesn't run
+}
+fmt.Println(len(mySlice))  // => 3
+fmt.Printf("%#v\n", mySlice) // => []int{0, 0, 0}
+```
+
+## Slices and "make()"
+
+Could rewrite that using a short variable declaration:
+
+``` go
+mySlice := make([]int, 3)
+if mySlice == nil {
+	fmt.Println("mySlice is nil") // doesn't run
+}
+fmt.Println(len(mySlice))  // => 3
+fmt.Printf("%#v\n", mySlice) // => []int{0, 0, 0}
+```
+
+## Zero values of slice elements
+
+Just like with arrays, the zero value of each slice element is the zero value for the type the slice holds.
+
+``` go
+myFloats := make([]float64, 2)
+fmt.Printf("%#v\n", myFloats) // => []float64{0, 0}
+myStrings := make([]string, 4)
+fmt.Printf("%#v\n", myStrings) // => []string{"", "", "", ""}
+```
+
+## Slices
+
+Use slices just like an array!
+
+``` go
+primes := make([]int, 2)
+primes[0] = 2
+primes[1] = 3
+fmt.Println(primes[0])      // => 2
+fmt.Println(primes[1])      // => 3
+fmt.Printf("%#v\n", primes) // => []int{2, 3}
+```
+
+## Slices and "append"
+
+Need to add more items? Use the built-in `append` function!
+
+``` go
+primes := make([]int, 2)
+primes[0] = 2
+primes[1] = 3
+fmt.Println(len(primes))    // => 2
+fmt.Printf("%#v\n", primes) // => []int{2, 3}
+primes = append(primes, 5)
+fmt.Println(len(primes))    // => 3
+fmt.Printf("%#v\n", primes) // => []int{2, 3, 5}
+```
+
+## Slice literals
+
+A slice literal looks just like an array literal, except the `[]` is empty:
+
+``` go
+primes := []int{2, 3, 5}
+fmt.Println(primes[0]) // => 2
+fmt.Println(primes[1]) // => 3
+fmt.Println(primes[2]) // => 5
+```
+
+## Slices and "for ... range"
+
+Use `for ... range` with a slice just like you do with an array.
+
+``` go
+names := []string{"Amy", "Jose", "Ben"}
+for index, name := range names {
+	fmt.Println(index, name)
+}
+```
+
+Output:
+
+``` go
+0 Amy
+1 Jose
+2 Ben
+```
+
+<!-- ******************EXERCISE****************** -->
+
+## Exercise: Slices
+
+`https://is.gd/goex_slices`
+
+<!-- https://play.golang.org/p/-XUjc9A-9vP -->
+
+## Exercise: Slices
+
+``` go
+// Fill in the blanks so this program compiles and produces
+// the output shown.
+package main
+
+import "fmt"
+
+func main() {
+	// Declare a variable that holds a slice of ints.
+	var wholeNumbers ____
+	// Create a new slice of 5 elements and assign it to the variable.
+	wholeNumbers = ____
+	// Assign 42 to the second element.
+	wholeNumbers[____] = 42
+	fmt.Printf("%#v\n", wholeNumbers) // => []int{0, 42, 0, 0, 0}
+
+	// Make a 1-element slice of booleans.
+	flags := ____
+	// Set the first and only element to true.
+	flags[0] = true
+	// Append the value false to the slice.
+	flags = ____
+	// Append the value true to the slice.
+	flags = ____
+	fmt.Printf("%#v\n", flags) // => []bool{true, false, true}
+
+	// Create a slice with the strings "cat", "bat", and "rat".
+	words := ____
+	// For each element of the slice, print its index and value.
+	for ____ := ____ words {
+		fmt.Println(i, word)
+	}
+	// => 0 cat
+	// => 1 bat
+	// => 2 rat
+}
+```
+
+## Exercise: Slices solution
+
+``` go
+// Fill in the blanks so this program compiles and produces
+// the output shown.
+package main
+
+import "fmt"
+
+func main() {
+	// Declare a variable that holds a slice of ints.
+	var wholeNumbers []int
+	// Create a new slice of 5 elements and assign it to the variable.
+	wholeNumbers = make([]int, 5)
+	// Assign 42 to the second element.
+	wholeNumbers[1] = 42
+	fmt.Printf("%#v\n", wholeNumbers) // => []int{0, 42, 0, 0, 0}
+
+	// Make a 1-element slice of booleans.
+	flags := make([]bool, 1)
+	// Set the first and only element to true.
+	flags[0] = true
+	// Append the value false to the slice.
+	flags = append(flags, false)
+	// Append the value true to the slice.
+	flags = append(flags, true)
+	fmt.Printf("%#v\n", flags) // => []bool{true, false, true}
+
+	// Create a slice with the strings "cat", "bat", and "rat".
+	words := []string{"cat", "bat", "rat"}
+	// For each element of the slice, print its index and value.
+	for i, word := range words {
+		fmt.Println(i, word)
+	}
+	// => 0 cat
+	// => 1 bat
+	// => 2 rat
+}
+```
+
+
+
+
+## Slice operator
+
+Slice operator looks a lot like accessing a single element, but you provide a _range_ of indexes to get.
+
+``` go
+myArray := [5]string{"a", "b", "c", "d", "e"}
+// Access one element.
+fmt.Printf("%#v\n", myArray[1]) // => "b"
+// Use slice operator to get a slice.
+fmt.Printf("%#v\n", myArray[1:4]) // => []string{"b", "c", "d"}
+```
+
+## Slice operator
+
+Second element is the index you want the result to stop _before_. (I know, it doesn't make sense to me either, but Python is the same way.)
+
+``` go
+myArray := [5]string{"a", "b", "c", "d", "e"}
+// Get some 2-element slices.
+fmt.Printf("%#v\n", myArray[0:2]) // => []string{"a", "b"}
+fmt.Printf("%#v\n", myArray[1:3]) // => []string{"b", "c"}
+fmt.Printf("%#v\n", myArray[2:4]) // => []string{"c", "d"}
+fmt.Printf("%#v\n", myArray[3:5]) // => []string{"d", "e"}
+// Get some 3-element slices.
+fmt.Printf("%#v\n", myArray[0:3]) // => []string{"a", "b", "c"}
+fmt.Printf("%#v\n", myArray[1:4]) // => []string{"b", "c", "d"}
+fmt.Printf("%#v\n", myArray[2:5]) // => []string{"c", "d", "e"}
+```
+
+## Slice operator
+
+Can use slice operator on other slices in the same way.
+
+``` go
+mySlice := []string{"a", "b", "c", "d", "e"}
+// Get some 2-element slices.
+fmt.Printf("%#v\n", mySlice[0:2]) // => []string{"a", "b"}
+fmt.Printf("%#v\n", mySlice[1:3]) // => []string{"b", "c"}
+fmt.Printf("%#v\n", mySlice[2:4]) // => []string{"c", "d"}
+fmt.Printf("%#v\n", mySlice[3:5]) // => []string{"d", "e"}
+// Get some 3-element slices.
+fmt.Printf("%#v\n", mySlice[0:3]) // => []string{"a", "b", "c"}
+fmt.Printf("%#v\n", mySlice[1:4]) // => []string{"b", "c", "d"}
+fmt.Printf("%#v\n", mySlice[2:5]) // => []string{"c", "d", "e"}
+```
+
+## Slice operator defaults
+
+Start index defaults to `0` (the start of the array/slice)
+
+``` go
+myArray := []string{"a", "b", "c", "d", "e"}
+fmt.Printf("%#v\n", myArray[:3]) // => []string{"a", "b", "c"}
+```
+
+Omit the end index to get all elements up to the end of the array/slice
+
+``` go
+myArray := []string{"a", "b", "c", "d", "e"}
+fmt.Printf("%#v\n", myArray[2:]) // => []string{"c", "d", "e"}
+```
+
+## "os.Args"
+
+A slice that holds the command-line arguments passed to your program
+
+`myprog.go`
+
+``` go
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	fmt.Printf("%#v\n", os.Args)
+}
+```
+
+## "os.Args"
+
+```
+$ go build myprog.go
+$ ./myprog hello
+[]string{"./myprog", "hello"}
+$ ./myprog first second third
+[]string{"./myprog", "first", "second", "third"}
+```
+
+## "os.Args"
+
+Notice that first element is program name:
+
+``` go
+$ ./myprog first second third
+[]string{"./myprog", "first", "second", "third"}
+```
+
+Let's update the program to omit the first element:
+
+``` go
+func main() {
+    fmt.Printf("%#v\n", os.Args[1:])
+}
+```
+
+## "os.Args"
+
+```
+$ go build myprog.go
+$ ./myprog hello
+[]string{"hello"}
+$ ./myprog first second third
+[]string{"first", "second", "third"}
+```
+
+
+
+
+
+# Maps
+
+## Maps
+
+* Heard of "dictionaries" or "hashes"? Maps are Go's equivalent.
+* Like arrays and slices, maps store a collection of values.
+* But arrays and slices use indexes to access their elements. Indexes can only be sequential integers.
+* Maps use keys to store values under. A map's keys can be _any_ type you want!
+
+``` go
+ranks := make(map[string]int)
+ranks["gold"] = 1
+ranks["silver"] = 2
+ranks["bronze"] = 3
+fmt.Println(ranks["gold"], ranks["bronze"]) // => 1 3
+```
+
+## Maps
+
+* Though maps work differently than slices, the syntax is similar.
+* You're going to get some deja vu from the slices section.
+
+## Map types
+
+Map type is written `map[keyType]valueType`.
+
+``` go
+var myArray [3]bool
+var mySlice []bool
+var myMap   map[string]bool
+```
+
+## Zero value for maps
+
+* The zero value for a map is `nil`.
+* Unlike arrays.
+* Just like slices.
+
+``` go
+var myMap map[int]string
+if myMap == nil {
+	fmt.Println("myMap is nil") // => myMap is nil
+}
+```
+
+## Maps and "make()"
+
+Make a new map with the built-in `make` function.
+
+``` go
+var atomicNumbers map[int]string
+atomicNumbers = make(map[int]string)
+if atomicNumbers == nil {
+	fmt.Println("atomicNumbers is nil") // doesn't run
+}
+fmt.Printf("%#v\n", atomicNumbers) // => map[int]string{}
+```
+
+## Maps and "make()"
+
+Could rewrite that using a short variable declaration:
+
+``` go
+atomicNumbers := make(map[int]string)
+if atomicNumbers == nil {
+	fmt.Println("atomicNumbers is nil") // doesn't run
+}
+fmt.Printf("%#v\n", atomicNumbers) // => map[int]string{}
+```
+
+## Accessing map values
+
+* Syntax to assign to set/get a map value is similar to that for arrays/slices.
+* Just use a value of your specified key type instead of an integer index.
+
+``` go
+ranks := make(map[string]int)
+ranks["gold"] = 1
+ranks["silver"] = 2
+ranks["bronze"] = 3
+fmt.Println(ranks["gold"], ranks["bronze"]) // => 1 3
+```
+
+## Zero values of map values
+
+If you access a map value that hasn't been assigned to, you'll get a zero value back.
+
+``` go
+myFloats := make(map[string]float64)
+fmt.Printf("%#v\n", myFloats["nonexistent"]) // => 0
+myStrings := make(map[int]string)
+fmt.Printf("%#v\n", myStrings[12345])        // => ""
+```
+
+## Zero values of map values
+
+* This is _not_ the same as saying the map contains those values, though; it doesn't!
+* It's just giving you a default that will (sometimes) be useful.
+
+## The "comma ok" idiom
+
+Sometimes you need to know the difference between a zero value and an assigned value that happens to match the zero value:
+
+``` go
+func status(name string) {
+	grades := make(map[string]float64)
+	grades["Alma"] = 0
+	grades["Rohit"] = 86.5
+	grade := grades[name]
+	if grade < 60 {
+		fmt.Println(name, "is failing!")
+	}
+}
+
+func main() {
+	status("Alma") // => Alma is failing!
+	// Carl isn't actually failing; no grade is recorded!
+	status("Carl") // => Carl is failing!
+}
+```
+
+## The "comma ok" idiom
+
+Accessing a map optionally returns a second, boolean value indicating whether that key has been assigned to.
+
+``` go
+counters := make(map[string]int)
+counters["a"] = 3
+counters["b"] = 0
+var value int
+var ok bool
+value, ok = counters["a"]
+fmt.Println(value, ok) // => 3 true
+value, ok = counters["b"]
+fmt.Println(value, ok) // => 0 true
+value, ok = counters["c"]
+fmt.Println(value, ok) // => 0 false
+```
+
+## The "comma ok" idiom
+
+* By convention that second value is usually assigned to a variable named `ok`, so this is usually called the "comma ok idiom".
+* A similar idiom is used with type assertions.
+
+``` go
+value, ok = counters["a"]
+fmt.Println(value, ok) // => 3 true
+value, ok = counters["b"]
+fmt.Println(value, ok) // => 0 true
+value, ok = counters["c"]
+fmt.Println(value, ok) // => 0 false
+```
+
+## The "comma ok" idiom
+
+``` go
+func status(name string) {
+	grades := make(map[string]float64)
+	grades["Alma"] = 0
+	grades["Rohit"] = 86.5
+	grade, ok := grades[name]
+	if !ok {
+		fmt.Println("No grade recorded for", name)
+	} else if grade < 60 {
+		fmt.Println(name, "is failing!")
+	}
+}
+
+func main() {
+	status("Alma") // => Alma is failing!
+	status("Carl") // => No grade recorded for Carl
+}
+```
+
+## Map literals
+
+* `fmt.Printf("%#v")` can be used to quickly view an entire map's contents.
+* `Printf` outputs the values in __map literal__ syntax.
+
+``` go
+ranks := make(map[string]int)
+ranks["gold"] = 1
+ranks["silver"] = 2
+ranks["bronze"] = 3
+fmt.Printf("%#v\n", ranks)
+// => map[string]int{"bronze":3, "gold":1, "silver":2}
+```
+
+## Map literals
+
+* Map literals can be used to quickly initialize a map with several keys/values.
+* No need for `make` when using a literal.
+
+``` go
+ranks := map[string]int{"gold": 1, "silver": 2, "bronze": 3}
+fmt.Println(ranks["gold"])   // => 1
+fmt.Println(ranks["silver"]) // => 2
+fmt.Println(ranks["bronze"]) // => 3
+```
+
+## The "delete" function
+
+Pass a map and a key to the built-in `delete` function to delete the given key (and its value) from the map.
+
+``` go
+ranks := map[string]int{"gold": 1, "silver": 2, "bronze": 3}
+fmt.Printf("%#v\n", ranks) // => map[string]int{"bronze":3, "gold":1, "silver":2}
+delete(ranks, "bronze")
+fmt.Printf("%#v\n", ranks) // => map[string]int{"gold":1, "silver":2}
+rank, ok := ranks["bronze"]
+fmt.Println(rank, ok)      // 0 false
+```
+
+## Maps and "for ... range"
+
+* `for ... range` works with a map in much the same way as an array or slice.
+* Provide two variables:
+    * First will be assigned a key (instead of an integer index).
+    * Second will be assigned the corresponding value.
+
+``` go
+scores := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
+for name, score := range scores {
+	fmt.Println(name, score)
+}
+```
+
+Output:
+
+``` go
+Amy 84
+Jose 96
+Ben 78
+```
+
+## Maps and "for ... range"
+
+Want to process only the keys? Provide only one variable.
+
+``` go
+scores := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
+for name := range scores {
+	fmt.Println(name)
+}
+```
+
+Output:
+
+``` go
+Jose
+Ben
+Amy
+```
+
+## Maps and "for ... range"
+
+Want to process only the values? Use the blank identifier for the first variable.
+
+``` go
+scores := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
+for _, score := range scores {
+	fmt.Println(score)
+}
+```
+
+Output:
+
+``` go
+78
+84
+96
+```
+
+## Iteration order with maps is random!
+
+* `for ... range` will process the key/value pairs in a different order every time you run the program!
+* (Well, the Go Playground caches its output so you'll always see the same result there, but on your computer it will be random.)
+
+``` go
+$ go run maptest.go
+Jose 96
+Ben 78
+Amy 84
+$ go run maptest.go
+Ben 78
+Amy 84
+Jose 96
+```
+
+## Iteration order with maps is random!
+
+If you want consistent order, you'll need to order the keys yourself.
+
+``` go
+scores := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
+// Build a sorted list of the keys.
+var names []string
+for name := range scores {
+	names = append(names, name)
+}
+sort.Strings(names) // Be sure to import "sort".
+// Iterate over the sorted list.
+for _, name := range names {
+	fmt.Println(name, scores[name])
+}
+```
+
+## Iteration order with maps is random!
+
+Do that, and it will be in sorted order every run:
+
+```
+$ go run maptest.go
+Amy 84
+Ben 78
+Jose 96
+$ go run maptest.go
+Amy 84
+Ben 78
+Jose 96
+```
+
+<!-- ******************EXERCISE****************** -->
+
+## Exercise: Maps
+
+`https://is.gd/goex_maps`
+
+<!-- https://play.golang.org/p/QUJiCbmeuL0 -->
+
+## Exercise: Maps
+
+``` go
+// Fill in the blanks so this program compiles and produces
+// the output shown.
+package main
+
+import "fmt"
+
+func main() {
+	// Declare a variable that holds a map with strings for keys
+	// and booleans for values.
+	var isVowel ____
+	// Call make to create the map.
+	isVowel = ____
+	// Assign true to the key "a", and false to the keys "b" and "c".
+	____ = true
+	____ = false
+	____ = false
+	fmt.Printf("%#v\n", isVowel) // => map[string]bool{"a":true, "b":false, "c":false}
+
+
+	// Make a map with ints as keys and strings as values. The 1 key
+	// should have the value "H", 2 should have the value "He", and
+	// 3 should have the value "Li".
+	elements := ____
+	// Print all the keys and corresponding values in the slice.
+	// Order doesn't matter.
+	for ____ := range elements {
+		fmt.Println(atomicNumber, symbol)
+	}
+	// => 3 Li
+	// => 1 H
+	// => 2 He
+}
+```
+
+## Exercise: Maps solution
+
+``` go
+func main() {
+	var isVowel map[string]bool
+	isVowel = make(map[string]bool)
+	isVowel["a"] = true
+	isVowel["b"] = false
+	isVowel["c"] = false
+	fmt.Printf("%#v\n", isVowel) // => map[string]bool{"a":true, "b":false, "c":false}
+
+	elements := map[int]string{1: "H", 2: "He", 3: "Li"}
+	for atomicNumber, symbol := range elements {
+		fmt.Println(atomicNumber, symbol)
+	}
+	// => 3 Li
+	// => 1 H
+	// => 2 He
+}
+```
+
+
+
+
 # Structs
 
 ## Structs
@@ -2788,7 +3734,7 @@ func main() {
 
 <!-- https://play.golang.org/p/mtfvNLts6Vm -->
 
-## Exercise: Goroutines and channels
+## Exercise: Goroutines and channels solution
 
 ``` go
 package main
@@ -2817,56 +3763,6 @@ func main() {
 
 
 # Where to Go Next
-
-## Arrays
-
-``` go
-var primes [3]int
-primes[0] = 2
-primes[1] = 3
-fmt.Println(primes[0]) // => 2
-fmt.Println(primes[1]) // => 3
-```
-
-* Can't grow when needed
-* To me, they're just a foundation for slices
-
-## Slices
-
-``` go
-var primes []int
-primes = make([]int, 2)
-primes[0] = 2
-primes[1] = 3
-fmt.Println(primes[0])  // => 2
-fmt.Println(primes[1])  // => 3
-```
-
-## Slices and "append"
-
-``` go
-var primes []int
-primes = append(primes, 2)
-primes = append(primes, 3)
-fmt.Println(primes[0]) // => 2
-fmt.Println(primes[1]) // => 3
-fmt.Println(primes)    // => [2 3]
-primes = append(primes, 5)
-fmt.Println(primes)    // => [2 3 5]
-```
-
-## Maps
-
-``` go
-func main() {
-	ranks := make(map[string]int)
-	ranks["gold"] = 1
-	ranks["silver"] = 2
-	ranks["bronze"] = 3
-	fmt.Println(ranks["bronze"]) // => 3
-	fmt.Println(ranks["gold"])   // => 1
-}
-```
 
 ## "go test"
 
@@ -2995,5 +3891,3 @@ By Renee French, used under a CC-Attribution-3.0 license.
 * Go Tour: `https://tour.golang.org`
 * Go Playground: `https://play.golang.org`
 * Head First Go: `https://headfirstgo.com`
-
-<!-- TODO link to https://golang.org/doc/code.html, https://blog.golang.org/ for Gophercon -->
