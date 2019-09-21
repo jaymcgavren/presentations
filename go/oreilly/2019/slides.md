@@ -71,43 +71,6 @@ https://www.slideshare.net/jpetazzo/docker-and-go-why-did-we-decide-to-write-doc
 1. Something else entirely
 1. I don't know yet
 
-## Playground
-
-* You don't even have to install Go to try it!
-* Edit and run Go code in your browser
-
-![](images/playground.png)
-
-## Exercises for this training
-
-* The Go Playground lets you save your code and share it at a URL
-* Others can edit that code
-* We'll use that ability for most of our exercises
-* We'll post a link
-* You visit it and follow the instructions there (add code, fill in blanks, etc.)
-
-
-
-
-
-# Syntax
-
-## Go file layout
-
-* Package clause
-* Imports
-* Code
-
-``` go
-package main
-
-import "fmt"
-
-func main() {
-	fmt.Println("Hello, Go!")
-}
-```
-
 ## "go fmt"
 
 * Automatically fixes code style
@@ -186,6 +149,43 @@ $ ./repeat
 hello
 hello
 hello
+```
+
+## Playground
+
+* You don't even have to install Go to try it!
+* Edit and run Go code in your browser
+
+![](images/playground.png)
+
+## Exercises for this training
+
+* The Go Playground lets you save your code and share it at a URL
+* Others can edit that code
+* We'll use that ability for most of our exercises
+* We'll post a link
+* You visit it and follow the instructions there (add code, fill in blanks, etc.)
+
+
+
+
+
+# Syntax
+
+## Go file layout
+
+* Package clause
+* Imports
+* Code
+
+``` go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Hello, Go!")
+}
 ```
 
 ## Calling Functions
