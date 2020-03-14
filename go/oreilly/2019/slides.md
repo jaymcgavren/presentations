@@ -1,3 +1,5 @@
+
+
 # Introduction to the Go Programming Language
 
 ## About me
@@ -468,9 +470,12 @@ x is now 5
 x is now 6
 ```
 
+
 ## Exercise: Go syntax
 
-[https://is.gd/goex_syntax](https://is.gd/goex_syntax)
+`https://is.gd/goex_syntax`
+
+<!--  -->
 
 ## Exercise: Go syntax
 
@@ -487,7 +492,15 @@ ____ main() {
 }
 ```
 
-<!-- https://play.golang.org/p/x9BXw0z5LXT -->
+## Exercise: Go syntax cheat sheet
+
+* Every Go source file is part of a __package__.
+* To use code from other packages, you have to __import__ them.
+* The `main` function is called when a program first starts.
+* Functions are declared using the `func` keyword.
+* A function call needs parentheses following the function name: `mypackage.MyFunction("my argument")`
+
+`https://is.gd/goex_syntax`
 
 ## Exercise: Go syntax solution
 
@@ -702,47 +715,55 @@ true
 ## Writing functions with multiple return values
 
 ``` go
-func parseBools(values []string) ([]bool, error) {
-	var bools []bool
-	for i, value := range values {
-		parsed, err := strconv.ParseBool(value)
-		if err != nil {
-			return nil, fmt.Errorf(
-                "invalid value %s at index %d", value, i)
-		}
-		bools = append(bools, parsed)
+func myParseBool(myString string) (bool, error) {
+	if myString == "true" {
+		return true, nil
+	} else if myString == "false" {
+		return false, nil
+	} else {
+		return false, fmt.Errorf("bad string %s", myString)
 	}
-	return bools, nil
+}
+
+func main() {
+	bool, err := myParseBool("false")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(bool) // => false
 }
 ```
 
 ## Writing functions with multiple return values
 
 ``` go
-func main() {
-	bools, err := parseBools(
-		[]string{"true", "false", "foobar"})
-	if err != nil {
-		log.Fatal(err)
+func myParseBool(myString string) (bool, error) {
+	if myString == "true" {
+		return true, nil
+	} else if myString == "false" {
+		return false, nil
+	} else {
+		return false, fmt.Errorf("bad string %s", myString)
 	}
-	fmt.Println(bools)
+}
+
+func main() {
+	bool, err := myParseBool("foobar")
+	if err != nil {
+		log.Fatal(err) // => 2020-03-13 19:34:00 bad string foobar
+	}
+	fmt.Println(bool)
 }
 ```
 
-Output:
+<!-- https://play.golang.org/p/Jih76DwKh4_s -->
 
-```
-2009/11/10 23:00:00 invalid value foobar at index 2
-```
 
 ## Exercise: Declaring functions
 
-[https://is.gd/goex_define_functions](https://is.gd/goex_define_functions)
+`https://is.gd/goex_define_functions`
 
-<!-- https://play.golang.org/p/Jih76DwKh4_s -->
-
-<!-- solutions/declaring_functions_extra_credit.go -->
-<!-- solutions/declaring_functions.go -->
+<!--  -->
 
 ## Exercise: Declaring functions
 
@@ -772,6 +793,23 @@ func main() {
 	fmt.Printf("%0.2f\n", quotient) // => 2.80
 }
 ```
+
+## Exercise: Declaring functions cheat sheet
+
+```
+func oneReturnValue(param1 param1Type, param2 param2Type) returnType {
+	return valueToReturn
+}
+
+func twoReturnValues(param1 param1Type, param2 param2Type) (returnType1, returnType2) {
+	if thereIsAProblem {
+		return aMeaninglessValue, fmt.Errorf("an error message")
+	}
+	return valueToReturn, nil
+}
+```
+
+`https://is.gd/goex_define_functions`
 
 ## Exercise: Declaring functions solution
 
@@ -944,9 +982,13 @@ func double(number *int) {
 }
 ```
 
+<!-- ******************EXERCISE****************** -->
+
 ## Exercise: Passing pointers
 
-[https://is.gd/goex_pointers](https://is.gd/goex_pointers)
+`https://is.gd/goex_pointers`
+
+<!-- https://play.golang.org/p/wGKDcFH1Hr0 -->
 
 ## Exercise: Passing pointers
 
@@ -982,9 +1024,13 @@ func main() {
 }
 ```
 
-<!-- https://play.golang.org/p/wGKDcFH1Hr0 -->
+## Exercise: Passing pointers cheat sheet
 
-<!-- ./solutions/pointers.go -->
+* `!true` is `false`, `!false` is `true`.
+* Pointer types are written as `*myType`.
+* Get a pointer to a variable's value with `&myVariable`.
+
+`https://is.gd/goex_pointers`
 
 ## Exercise: Passing pointers solution
 
@@ -1458,9 +1504,11 @@ Then visit `http://localhost:6060/pkg/`...
 
 ![](images/fmt_docs.png)
 
+<!-- ******************EXERCISE****************** -->
+
 ## Exercise: Using package documentation
 
-[https://is.gd/goex_documentation](https://is.gd/goex_documentation)
+`https://is.gd/goex_documentation`
 
 <!-- https://play.golang.org/p/0IoS8oGzrnw -->
 
@@ -1504,9 +1552,23 @@ func main() {
 }
 ```
 
-## Exercise: Using package documentation solution
+## Exercise: Using package documentation cheat sheet
 
-<!-- ./solutions/documentation.go -->
+``` go
+$ go doc strconv Parsefloat
+func ParseFloat(s string, bitSize int) (float64, error)
+    ParseFloat converts the string s to a floating-point number...
+```
+
+* Don't forget to import the `"strconv"` package.
+* Use the package name before the function name: `strconv.ParseFloat(...)`
+* The first argument to `ParseFloat` is the string you want to convert to a `float64`.
+* Use the integer `64` as the second argument.
+* Provide variables for both the `float64` return value and the `error` return value: `number1, err := strconv.ParseFloat(string1, 64)`
+
+`https://is.gd/goex_documentation`
+
+## Exercise: Using package documentation solution
 
 ``` go
 package main
@@ -1923,6 +1985,24 @@ func main() {
 }
 ```
 
+## Exercise: Slices cheat sheet
+
+* To declare a variable that holds a slice of `myType` values, write `var myVar []myType`.
+* Slices can be created using the `make` function.
+    * The first argument to `make` should be the type of the slice.
+    * The second argument should be the number of elements the slice holds.
+* Slice element indexes start at `0`, so `mySlice[0]` refers to the first element, `mySlice[1]` to the second, and so on.
+* To append an element to `mySlice`, use `mySlice = append(mySlice, newElement)`.
+* A slice literal looks like this: `[]int{1, 2, 3}`
+
+``` go
+for index, element := range mySlice {
+    fmt.Println(index, element)
+}
+```
+
+`https://is.gd/goex_slices`
+
 ## Exercise: Slices solution
 
 ``` go
@@ -1961,127 +2041,6 @@ func main() {
 	// => 1 bat
 	// => 2 rat
 }
-```
-
-
-
-
-## Slice operator
-
-Slice operator looks a lot like accessing a single element, but you provide a _range_ of indexes to get.
-
-``` go
-myArray := [5]string{"a", "b", "c", "d", "e"}
-// Access one element.
-fmt.Printf("%#v\n", myArray[1]) // => "b"
-// Use slice operator to get a slice.
-fmt.Printf("%#v\n", myArray[1:4]) // => []string{"b", "c", "d"}
-```
-
-## Slice operator
-
-Second element is the index you want the result to stop _before_. (I know, it doesn't make sense to me either, but Python is the same way.)
-
-``` go
-myArray := [5]string{"a", "b", "c", "d", "e"}
-// Get some 2-element slices.
-fmt.Printf("%#v\n", myArray[0:2]) // => []string{"a", "b"}
-fmt.Printf("%#v\n", myArray[1:3]) // => []string{"b", "c"}
-fmt.Printf("%#v\n", myArray[2:4]) // => []string{"c", "d"}
-fmt.Printf("%#v\n", myArray[3:5]) // => []string{"d", "e"}
-// Get some 3-element slices.
-fmt.Printf("%#v\n", myArray[0:3]) // => []string{"a", "b", "c"}
-fmt.Printf("%#v\n", myArray[1:4]) // => []string{"b", "c", "d"}
-fmt.Printf("%#v\n", myArray[2:5]) // => []string{"c", "d", "e"}
-```
-
-## Slice operator
-
-Can use slice operator on other slices in the same way.
-
-``` go
-mySlice := []string{"a", "b", "c", "d", "e"}
-// Get some 2-element slices.
-fmt.Printf("%#v\n", mySlice[0:2]) // => []string{"a", "b"}
-fmt.Printf("%#v\n", mySlice[1:3]) // => []string{"b", "c"}
-fmt.Printf("%#v\n", mySlice[2:4]) // => []string{"c", "d"}
-fmt.Printf("%#v\n", mySlice[3:5]) // => []string{"d", "e"}
-// Get some 3-element slices.
-fmt.Printf("%#v\n", mySlice[0:3]) // => []string{"a", "b", "c"}
-fmt.Printf("%#v\n", mySlice[1:4]) // => []string{"b", "c", "d"}
-fmt.Printf("%#v\n", mySlice[2:5]) // => []string{"c", "d", "e"}
-```
-
-## Slice operator defaults
-
-Start index defaults to `0` (the start of the array/slice)
-
-``` go
-myArray := []string{"a", "b", "c", "d", "e"}
-fmt.Printf("%#v\n", myArray[:3]) // => []string{"a", "b", "c"}
-```
-
-Omit the end index to get all elements up to the end of the array/slice
-
-``` go
-myArray := []string{"a", "b", "c", "d", "e"}
-fmt.Printf("%#v\n", myArray[2:]) // => []string{"c", "d", "e"}
-```
-
-## "os.Args"
-
-A slice that holds the command-line arguments passed to your program
-
-`myprog.go`
-
-``` go
-package main
-
-import (
-	"fmt"
-	"os"
-)
-
-func main() {
-	fmt.Printf("%#v\n", os.Args)
-}
-```
-
-## "os.Args"
-
-```
-$ go build myprog.go
-$ ./myprog hello
-[]string{"./myprog", "hello"}
-$ ./myprog first second third
-[]string{"./myprog", "first", "second", "third"}
-```
-
-## "os.Args"
-
-Notice that first element is program name:
-
-``` go
-$ ./myprog first second third
-[]string{"./myprog", "first", "second", "third"}
-```
-
-Let's update the program to omit the first element:
-
-``` go
-func main() {
-    fmt.Printf("%#v\n", os.Args[1:])
-}
-```
-
-## "os.Args"
-
-```
-$ go build myprog.go
-$ ./myprog hello
-[]string{"hello"}
-$ ./myprog first second third
-[]string{"first", "second", "third"}
 ```
 
 
@@ -2171,97 +2130,6 @@ ranks["bronze"] = 3
 fmt.Println(ranks["gold"], ranks["bronze"]) // => 1 3
 ```
 
-## Zero values of map values
-
-If you access a map value that hasn't been assigned to, you'll get a zero value back.
-
-``` go
-myFloats := make(map[string]float64)
-fmt.Printf("%#v\n", myFloats["nonexistent"]) // => 0
-myStrings := make(map[int]string)
-fmt.Printf("%#v\n", myStrings[12345])        // => ""
-```
-
-## Zero values of map values
-
-* This is _not_ the same as saying the map contains those values, though; it doesn't!
-* It's just giving you a default that will (sometimes) be useful.
-
-## The "comma ok" idiom
-
-Sometimes you need to know the difference between a zero value and an assigned value that happens to match the zero value:
-
-``` go
-func status(name string) {
-	grades := make(map[string]float64)
-	grades["Alma"] = 0
-	grades["Rohit"] = 86.5
-	grade := grades[name]
-	if grade < 60 {
-		fmt.Println(name, "is failing!")
-	}
-}
-
-func main() {
-	status("Alma") // => Alma is failing!
-	// Carl isn't actually failing; no grade is recorded!
-	status("Carl") // => Carl is failing!
-}
-```
-
-## The "comma ok" idiom
-
-Accessing a map optionally returns a second, boolean value indicating whether that key has been assigned to.
-
-``` go
-counters := make(map[string]int)
-counters["a"] = 3
-counters["b"] = 0
-var value int
-var ok bool
-value, ok = counters["a"]
-fmt.Println(value, ok) // => 3 true
-value, ok = counters["b"]
-fmt.Println(value, ok) // => 0 true
-value, ok = counters["c"]
-fmt.Println(value, ok) // => 0 false
-```
-
-## The "comma ok" idiom
-
-* By convention that second value is usually assigned to a variable named `ok`, so this is usually called the "comma ok idiom".
-* A similar idiom is used with type assertions.
-
-``` go
-value, ok = counters["a"]
-fmt.Println(value, ok) // => 3 true
-value, ok = counters["b"]
-fmt.Println(value, ok) // => 0 true
-value, ok = counters["c"]
-fmt.Println(value, ok) // => 0 false
-```
-
-## The "comma ok" idiom
-
-``` go
-func status(name string) {
-	grades := make(map[string]float64)
-	grades["Alma"] = 0
-	grades["Rohit"] = 86.5
-	grade, ok := grades[name]
-	if !ok {
-		fmt.Println("No grade recorded for", name)
-	} else if grade < 60 {
-		fmt.Println(name, "is failing!")
-	}
-}
-
-func main() {
-	status("Alma") // => Alma is failing!
-	status("Carl") // => No grade recorded for Carl
-}
-```
-
 ## Map literals
 
 * `fmt.Printf("%#v")` can be used to quickly view an entire map's contents.
@@ -2286,19 +2154,6 @@ ranks := map[string]int{"gold": 1, "silver": 2, "bronze": 3}
 fmt.Println(ranks["gold"])   // => 1
 fmt.Println(ranks["silver"]) // => 2
 fmt.Println(ranks["bronze"]) // => 3
-```
-
-## The "delete" function
-
-Pass a map and a key to the built-in `delete` function to delete the given key (and its value) from the map.
-
-``` go
-ranks := map[string]int{"gold": 1, "silver": 2, "bronze": 3}
-fmt.Printf("%#v\n", ranks) // => map[string]int{"bronze":3, "gold":1, "silver":2}
-delete(ranks, "bronze")
-fmt.Printf("%#v\n", ranks) // => map[string]int{"gold":1, "silver":2}
-rank, ok := ranks["bronze"]
-fmt.Println(rank, ok)      // 0 false
 ```
 
 ## Maps and "for ... range"
@@ -2361,55 +2216,6 @@ Output:
 96
 ```
 
-## Iteration order with maps is random!
-
-* `for ... range` will process the key/value pairs in a different order every time you run the program!
-* (Well, the Go Playground caches its output so you'll always see the same result there, but on your computer it will be random.)
-
-``` go
-$ go run maptest.go
-Jose 96
-Ben 78
-Amy 84
-$ go run maptest.go
-Ben 78
-Amy 84
-Jose 96
-```
-
-## Iteration order with maps is random!
-
-If you want consistent order, you'll need to order the keys yourself.
-
-``` go
-scores := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
-// Build a sorted list of the keys.
-var names []string
-for name := range scores {
-	names = append(names, name)
-}
-sort.Strings(names) // Be sure to import "sort".
-// Iterate over the sorted list.
-for _, name := range names {
-	fmt.Println(name, scores[name])
-}
-```
-
-## Iteration order with maps is random!
-
-Do that, and it will be in sorted order every run:
-
-```
-$ go run maptest.go
-Amy 84
-Ben 78
-Jose 96
-$ go run maptest.go
-Amy 84
-Ben 78
-Jose 96
-```
-
 <!-- ******************EXERCISE****************** -->
 
 ## Exercise: Maps
@@ -2454,6 +2260,20 @@ func main() {
 	// => 2 He
 }
 ```
+
+## Exercise: Maps cheat sheet
+
+``` go
+var myMap map[keyType]valueType
+myMap = make(map[keyType]valueType)
+otherMap := map[int]string{1: "foo", 2: "bar"}
+otherMap[3] = "baz"
+for key, value := range otherMap {
+    fmt.Println(key, value)
+}
+```
+
+`https://is.gd/goex_maps`
 
 ## Exercise: Maps solution
 
@@ -2553,9 +2373,13 @@ func main() {
 }
 ```
 
+<!-- ******************EXERCISE****************** -->
+
 ## Exercise: Struct types
 
-[https://is.gd/goex_structs](https://is.gd/goex_structs)
+`https://is.gd/goex_structs`
+
+<!-- https://play.golang.org/p/6TXfzxpTiCj -->
 
 ## Exercise: Struct types
 
@@ -2611,11 +2435,23 @@ func main() {
 }
 ```
 
-<!-- https://play.golang.org/p/6TXfzxpTiCj -->
+## Exercise: Struct types cheat sheet
+
+``` go
+type Profile struct {
+    Bio string
+}
+type User struct {
+    Profile
+}
+
+var user User
+user.Bio = "I teach Go workshops."
+```
+
+`https://is.gd/goex_structs`
 
 ## Exercise: Struct types solution
-
-<!-- ./solutions/structs.go -->
 
 ``` go
 type Subscriber struct {
@@ -2638,6 +2474,7 @@ type Address struct {
 	PostalCode string
 }
 ```
+
 
 
 
@@ -2838,9 +2675,13 @@ type Landmark struct {
 }
 ```
 
+<!-- ******************EXERCISE****************** -->
+
 ## Exercise: Defined types
 
-[https://is.gd/goex_defined_types](https://is.gd/goex_defined_types)
+`https://is.gd/goex_defined_types`
+
+<!-- https://play.golang.org/p/TeMJ9D6bBOz -->
 
 ## Exercise: Defined types
 
@@ -2876,7 +2717,18 @@ func main() {
 }
 ```
 
-<!-- https://play.golang.org/p/TeMJ9D6bBOz -->
+## Exercise: Defined types cheat sheet
+
+``` go
+type User struct {
+    Name string
+}
+func (u User) ShoutName() string {
+    return strings.ToUpper(u.Name)
+}
+```
+
+`https://is.gd/goex_defined_types`
 
 ## Exercise: Defined types solution
 
@@ -2908,8 +2760,6 @@ func main() {
 	fmt.Println("Perimeter:", myRectangle.Perimeter())
 }
 ```
-
-<!-- ./solutions/defined_types.go -->
 
 
 
@@ -3116,9 +2966,13 @@ Stopped!
 Recording
 ```
 
+<!-- ******************EXERCISE****************** -->
+
 ## Exercise: Interfaces
 
-[https://is.gd/goex_interfaces](https://is.gd/goex_interfaces)
+`https://is.gd/goex_interfaces`
+
+<!-- https://play.golang.org/p/6g4_wz89Jes -->
 
 ## Exercise: Interfaces
 
@@ -3166,7 +3020,24 @@ func main() {
 }
 ```
 
-<!-- https://play.golang.org/p/6g4_wz89Jes -->
+## Exercise: Interfaces cheat sheet
+
+``` go
+type Pen string
+func (p Pen) Write() {
+	fmt.Println("writing stuff")
+}
+
+type WritingInstrument interface {
+	Write()
+}
+
+func Test(w WritingInstrument) {
+	w.Write()
+}
+```
+
+`https://is.gd/goex_interfaces`
 
 ## Exercise: Interfaces solution
 
@@ -3211,7 +3082,7 @@ func main() {
 }
 ```
 
-<!-- ./solutions/interfaces.go -->
+
 
 
 
@@ -3448,9 +3319,13 @@ func awardPrize() {
 * If you know an error could happen, use normal control flow statements to handle it.
 * Google "golang errors are values" (which should take you to `https://blog.golang.org/errors-are-values`) for some tips on making error handling more pleasant.
 
+<!-- ******************EXERCISE****************** -->
+
 ## Exercise: Handling errors
 
-[https://is.gd/goex_recovery](https://is.gd/goex_recovery)
+`https://is.gd/goex_recovery`
+
+<!-- https://play.golang.org/p/I16x3MSub57 -->
 
 ## Exercise: Handling errors
 
@@ -3511,7 +3386,20 @@ func main() {
 }
 ```
 
-<!-- https://play.golang.org/p/I16x3MSub57 -->
+## Exercise: Handling errors cheat sheet
+
+``` go
+func Camp() error {
+	var fire Fire
+	fire.Light()
+	defer fire.Extinguish()
+	return fmt.Errorf("spotted a bear")
+	fmt.Println("Toasting marshmallows")
+	return nil
+}
+```
+
+`https://is.gd/goex_recovery`
 
 ## Exercise: Handling errors solution
 
@@ -3557,7 +3445,6 @@ func main() {
 }
 ```
 
-<!-- ./solutions/defer.go -->
 
 
 
@@ -3689,9 +3576,13 @@ Getting https://example.com/
     * Channel reads cause `main` goroutine to block until `responseSize` goroutines send, so they have time to finish before program ends.
     * The channel transmits data from the `responseSize` goroutines back to the `main` goroutine.
 
+<!-- ******************EXERCISE****************** -->
+
 ## Exercise: Goroutines and channels
 
-[https://is.gd/goex_goroutines](https://is.gd/goex_goroutines)
+`https://is.gd/goex_goroutines`
+
+<!-- https://play.golang.org/p/mtfvNLts6Vm -->
 
 ## Exercise: Goroutines and channels
 
@@ -3732,7 +3623,23 @@ func main() {
 }
 ```
 
-<!-- https://play.golang.org/p/mtfvNLts6Vm -->
+## Exercise: Goroutines and channels cheat sheet
+
+``` go
+func myFunc(channel chan int) {
+	channel <- 42
+}
+
+func main() {
+	channel := make(chan int)
+	go myFunc(channel)
+	go myFunc(channel)
+	fmt.Println(<-channel)
+	fmt.Println(<-channel)
+}
+```
+
+`https://is.gd/goex_goroutines`
 
 ## Exercise: Goroutines and channels solution
 
@@ -3756,8 +3663,6 @@ func main() {
 	<-channel
 }
 ```
-
-<!-- solutions/goroutines.go -->
 
 
 
