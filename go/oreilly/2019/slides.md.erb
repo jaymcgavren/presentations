@@ -739,37 +739,45 @@ true
 ## Writing functions with multiple return values
 
 ``` go
-func parseBools(values []string) ([]bool, error) {
-	var bools []bool
-	for i, value := range values {
-		parsed, err := strconv.ParseBool(value)
-		if err != nil {
-			return nil, fmt.Errorf(
-                "invalid value %s at index %d", value, i)
-		}
-		bools = append(bools, parsed)
+func myParseBool(myString string) (bool, error) {
+	if myString == "true" {
+		return true, nil
+	} else if myString == "false" {
+		return false, nil
+	} else {
+		return false, fmt.Errorf("bad string %s", myString)
 	}
-	return bools, nil
+}
+
+func main() {
+	bool, err := myParseBool("false")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(bool) // => false
 }
 ```
 
 ## Writing functions with multiple return values
 
 ``` go
-func main() {
-	bools, err := parseBools(
-		[]string{"true", "false", "foobar"})
-	if err != nil {
-		log.Fatal(err)
+func myParseBool(myString string) (bool, error) {
+	if myString == "true" {
+		return true, nil
+	} else if myString == "false" {
+		return false, nil
+	} else {
+		return false, fmt.Errorf("bad string %s", myString)
 	}
-	fmt.Println(bools)
 }
-```
 
-Output:
-
-```
-2009/11/10 23:00:00 invalid value foobar at index 2
+func main() {
+	bool, err := myParseBool("foobar")
+	if err != nil {
+		log.Fatal(err) // => 2020-03-13 19:34:00 bad string foobar
+	}
+	fmt.Println(bool)
+}
 ```
 
 <!-- https://play.golang.org/p/Jih76DwKh4_s -->
