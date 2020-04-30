@@ -3162,6 +3162,21 @@ exit status 1
 
 ## A (somewhat) more realistic example
 
+* We need a function that prints the contents of a file, then closes it.
+* If there's an error, it should be returned.
+* But the file should be closed even if there's an error!
+
+``` go
+func main() {
+	err := PrintLines("lorem_ipsum.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+## A (somewhat) more realistic example
+
 ``` go
 func PrintLines(fileName string) error {
 	file, err := os.Open(fileName)
@@ -3177,17 +3192,6 @@ func PrintLines(fileName string) error {
 		return scanner.Err()
 	}
 	return nil
-}
-```
-
-## A (somewhat) more realistic example
-
-``` go
-func main() {
-	err := PrintLines("lorem_ipsum.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
 }
 ```
 
