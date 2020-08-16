@@ -718,20 +718,15 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(flag)
+	fmt.Println(flag) // => true
 	flag, err = strconv.ParseBool("foobar")
 	if err != nil {
 		log.Fatal(err)
+                // => 2009/11/10 23:00:00 strconv.ParseBool:
+                // => parsing "foobar": invalid syntax
 	}
 	fmt.Println(flag)
 }
-```
-
-Output:
-
-```
-true
-2009/11/10 23:00:00 strconv.ParseBool: parsing "foobar": invalid syntax
 ```
 
 ## Error handling
