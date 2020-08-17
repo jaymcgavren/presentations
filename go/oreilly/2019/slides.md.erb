@@ -1609,105 +1609,109 @@ EOD
 
 
 
+# Arrays, Slices, and Maps
 
-# Arrays
+## What they are
 
-## Arrays
+* Arrays: a fixed-size collection of values, all of the same type.
+* Slices: a collection of values just like arrays, except it's easy to add more values.
+* Maps: a collection of keys, all of the same type. Each key has a corresponding value. All values are of the same type (though possibly different than keys).
+
+## Array/Slice/Map type syntax
 
 ``` go
 // Array type written as [size]ContainedType
-var primes [3]int
-// Array indices start at 0
+var myArray [3]string
+// Slice type written as []ContainedType
+var mySlice []string
+// Map type written as map[KeyType]ValueType
+var myMap map[string]int
+```
+
+## Accessing arrays/slices/maps
+
+``` go
+var myArray [3]string
+var mySlice []string
+mySlice = make([]string, 2)
+var myMap map[string]int
+myMap = make(map[string]int)
+myArray[0] = "Amy"
+fmt.Println(myArray[0]) // => Amy
+mySlice[1] = "Jose"
+fmt.Println(mySlice[1]) // => Jose
+myMap["Ben"] = 78
+fmt.Println(myMap["Ben"]) // => 78
+```
+
+## Short declarations with slices/maps
+
+``` go
+var myArray [3]string
+mySlice := make([]string, 2)
+myMap := make(map[string]int)
+myArray[0] = "Amy"
+fmt.Println(myArray[0]) // => Amy
+mySlice[1] = "Jose"
+fmt.Println(mySlice[1]) // => Jose
+myMap["Ben"] = 78
+fmt.Println(myMap["Ben"]) // => 78
+```
+
+## Expanding slices is easy
+
+``` go
+primes := make([]int, 2)
 primes[0] = 2
 primes[1] = 3
-fmt.Println(primes[0]) // => 2
-fmt.Println(primes[1]) // => 3
+primes = append(primes, 5)
+primes = append(primes, 7)
+fmt.Println(primes) // => [2 3 5 7]
 ```
 
-## Arrays
+* Want to do the same with an array? Have to throw it out and restart with a bigger one.
+* In most cases you should use slices instead of arrays.
 
-Arrays can hold any type
+## Values can be of any type
 
-``` go
-var flags [2]bool
-flags[0] = true
-flags[1] = false
-fmt.Println(flags) // => [true false]
-var names [5]string
-names[0] = "Tracy"
-names[2] = "Gerard"
-fmt.Println(names) // => [Tracy  Gerard  ]
+```go
+var flags [2]bool                // Boolean array
+flags[1] = true
+fractions := make([]float64, 3)  // Float slice
+fractions[0] = 0.25
+elements := make(map[string]int) // Integer map
+elements["He"] = 2
+fmt.Println(flags[1])       // => true
+fmt.Println(fractions[0])   // => 0.25
+fmt.Println(elements["He"]) // => 2
 ```
 
-## Arrays and "fmt.Printf"
+## Map keys can be of any type
 
-Hmm, spacing on that last one is weird...
-
-``` go
-var names [5]string
-names[0] = "Tracy"
-names[2] = "Gerard"
-fmt.Println(names) // => [Tracy  Gerard  ]
+```
+binaryBooleans := make(map[bool]int)
+binaryBooleans[true] = 1
+binaryBooleans[false] = 0
+fmt.Println(binaryBooleans[false]) // => 0
+fmt.Println(binaryBooleans[true])  // => 1
 ```
 
-Let's look at it with `fmt.Printf("%#v")`:
+## Array/slice/map literals
 
-``` go
-fmt.Printf("%#v\n", names) // => [5]string{"Tracy", "", "Gerard", "", ""}
-```
-
-## Arrays and zero values
-
-Unless otherwise assigned, array elements hold the zero values for their type.
-
-``` go
-var primes [3]int
-fmt.Printf("%#v\n", primes) // => [3]int{0, 0, 0}
-var flags [2]bool
-fmt.Printf("%#v\n", flags)  // => [2]bool{false, false}
-var names [5]string
-fmt.Printf("%#v\n", names)  // => [5]string{"", "", "", "", ""}
-```
-
-## Array literals
-
-* Remember `fmt.Printf("%#v")` prints values as they would appear in Go code.
-
-``` go
-var names [5]string
-names[0] = "Tracy"
-names[2] = "Gerard"
-fmt.Printf("%#v\n", names) // => [5]string{"Tracy", "", "Gerard", "", ""}
-```
-
-* That syntax is an array __literal__.
-
-## Array literals
-
-Use array literals to create an array and initialize its elements all at once.
-
-``` go
-names := [5]string{"Tracy", "", "Gerard", "", ""}
-fmt.Println(names[0]) // => Tracy
-fmt.Println(names[1]) // => 
-fmt.Println(names[2]) // => Gerard
-fmt.Println(names[3]) // => 
-fmt.Println(names[4]) // => 
-```
-
-## Array literals
-
-Slices and maps have a similar literal syntax; we'll get to those in a bit.
+Create a collection and add data at the same time.
 
 ``` go
 myArray := [3]string{"Amy", "Jose", "Ben"}
 mySlice := []string{"Amy", "Jose", "Ben"}
-myMap := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
+myMap   := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
+fmt.Println(myArray[1])   // => Jose
+fmt.Println(mySlice[0])   // => Amy
+fmt.Println(myMap["Ben"]) // => 78
 ```
 
-## Arrays and loops
+## Collections and loops
 
-Array elements can be accessed using a loop.
+Collection elements _can_ be accessed using a loop...
 
 ``` go
 names := [3]string{"Amy", "Jose", "Ben"}
@@ -1724,9 +1728,9 @@ Jose
 Ben
 ```
 
-## Arrays and loops
+## Collections and loops
 
-Don't access/assign outside array bounds; program will panic (a runtime error that crashes the program).
+Don't access/assign outside collection bounds; program will panic (a runtime error that crashes the program).
 
 ``` go
 names := [3]string{"Amy", "Jose", "Ben"}
@@ -1746,15 +1750,57 @@ main.main()
 	/tmp/sandbox741567581/prog.go:10 +0x180
 ```
 
-## "for ... range" loops
+## Arrays and "for ... range" loops
 
-It's safer to use a `for ... range` loop:
+It's safer to use `for ... range` loops:
 
 ``` go
-names := [3]string{"Amy", "Jose", "Ben"}
-for index, name := range names {
+nameArray := [3]string{"Amy", "Jose", "Ben"}
+for index, name := range nameArray {
 	fmt.Println(index, name)
 }
+```
+
+Output:
+
+```
+0 Amy
+1 Jose
+2 Ben
+```
+
+## Slices and "for ... range" loops
+
+``` go
+nameSlice := []string{"Amy", "Jose", "Ben"}
+for index, name := range nameSlice {
+	fmt.Println(index, name)
+}
+```
+
+Output:
+
+```
+0 Amy
+1 Jose
+2 Ben
+```
+
+## Maps and "for ... range" loops
+
+``` go
+grades := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
+for name, grade := range grades {
+	fmt.Println(name, grade)
+}
+```
+
+Output:
+
+```
+Amy 84
+Jose 96
+Ben 78
 ```
 
 ## "for ... range" loops and blank identifier
@@ -1782,52 +1828,51 @@ Ben
 2
 ```
 
-## "for ... range" loops and other types
-
-`for ... range` also available with slices...
+## "for ... range" loops and blank identifier
 
 ``` go
-mySlice := []string{"Amy", "Jose", "Ben"}
-for index, name := range mySlice {
-	fmt.Println(index, name)
+names := []string{"Amy", "Jose", "Ben"}
+for _, name := range names {
+	fmt.Println(name)
+}
+for index, _ := range names {
+	fmt.Println(index)
 }
 ```
 
 Output:
 
-``` go
-0 Amy
-1 Jose
-2 Ben
+```
+Amy
+Jose
+Ben
+0
+1
+2
 ```
 
-## "for ... range" loops and other types
-
-`for ... range` also available with maps.
+## "for ... range" loops and blank identifier
 
 ``` go
-myMap := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
-for name, score := range myMap {
-	fmt.Println(name, score)
+grades := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
+for _, grade := range grades {
+	fmt.Println(grade)
+}
+for name, _ := range grades {
+	fmt.Println(name)
 }
 ```
 
 Output:
 
-``` go
-Amy 84
-Jose 96
-Ben 78
 ```
-
-More on these later.
-
-## Limitations of arrays
-
-* Arrays are fixed size - can't grow when needed.
-* To me, they're only useful as a basis for slices.
-
-
+84
+96
+78
+Amy
+Jose
+Ben
+```
 
 # Slices
 
