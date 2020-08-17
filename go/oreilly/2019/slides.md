@@ -73,6 +73,8 @@ https://www.slideshare.net/jpetazzo/docker-and-go-why-did-we-decide-to-write-doc
 1. Something else entirely
 1. I don't know yet
 
+# Go Tools
+
 ## "go fmt"
 
 * Automatically fixes code style
@@ -527,7 +529,7 @@ func sayHi() {
 }
 
 func main() {
-	sayHi()
+	sayHi() // => Hi!
 }
 ```
 
@@ -661,7 +663,7 @@ func myFunction() int {
 func main() {
 	// Assign returned value to variable
 	myVariable := myFunction()
-	fmt.Println(myVariable)
+	fmt.Println(myVariable) // => 10
 }
 ```
 
@@ -690,20 +692,15 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(flag)
+	fmt.Println(flag) // => true
 	flag, err = strconv.ParseBool("foobar")
 	if err != nil {
 		log.Fatal(err)
+                // => 2009/11/10 23:00:00 strconv.ParseBool:
+                // => parsing "foobar": invalid syntax
 	}
 	fmt.Println(flag)
 }
-```
-
-Output:
-
-```
-true
-2009/11/10 23:00:00 strconv.ParseBool: parsing "foobar": invalid syntax
 ```
 
 ## Error handling
@@ -756,14 +753,12 @@ func main() {
 }
 ```
 
-<!-- https://play.golang.org/p/Jih76DwKh4_s -->
-
 
 ## Exercise: Declaring functions
 
 `https://is.gd/goex_define_functions`
 
-<!--  -->
+<!-- https://play.golang.org/p/Jih76DwKh4_s -->
 
 ## Exercise: Declaring functions
 
@@ -1595,109 +1590,116 @@ func main() {
 ```
 
 
+
+
 # Data Structures
 
 
 
 
-# Arrays
+# Arrays, Slices, and Maps
 
-## Arrays
+## What they are
+
+* Arrays: a fixed-size collection of values, all of the same type.
+* Slices: a collection of values just like arrays, except it's easy to add more values.
+* Maps: a collection of keys, all of the same type. Each key has a corresponding value. All values are of the same type (though possibly different than keys).
+
+## Array/Slice/Map type syntax
 
 ``` go
 // Array type written as [size]ContainedType
-var primes [3]int
-// Array indices start at 0
+var myArray [3]string
+// Slice type written as []ContainedType
+var mySlice []string
+// Map type written as map[KeyType]ValueType
+var myMap map[string]int
+```
+
+## Accessing arrays/slices/maps
+
+``` go
+var myArray [3]string
+var mySlice []string
+mySlice = make([]string, 2)
+var myMap map[string]int
+myMap = make(map[string]int)
+myArray[0] = "Amy"
+fmt.Println(myArray[0]) // => Amy
+mySlice[1] = "Jose"
+fmt.Println(mySlice[1]) // => Jose
+myMap["Ben"] = 78
+fmt.Println(myMap["Ben"]) // => 78
+```
+
+## Short declarations with slices/maps
+
+``` go
+var myArray [3]string
+mySlice := make([]string, 2)
+myMap := make(map[string]int)
+myArray[0] = "Amy"
+fmt.Println(myArray[0]) // => Amy
+mySlice[1] = "Jose"
+fmt.Println(mySlice[1]) // => Jose
+myMap["Ben"] = 78
+fmt.Println(myMap["Ben"]) // => 78
+```
+
+## Expanding slices is easy
+
+``` go
+primes := make([]int, 2)
 primes[0] = 2
 primes[1] = 3
-fmt.Println(primes[0]) // => 2
-fmt.Println(primes[1]) // => 3
+primes = append(primes, 5)
+primes = append(primes, 7)
+fmt.Println(primes) // => [2 3 5 7]
 ```
 
-## Arrays
+* Want to do the same with an array? Have to throw it out and restart with a bigger one.
+* In most cases you should use slices instead of arrays.
 
-Arrays can hold any type
+## Values can be of any type
 
-``` go
-var flags [2]bool
-flags[0] = true
-flags[1] = false
-fmt.Println(flags) // => [true false]
-var names [5]string
-names[0] = "Tracy"
-names[2] = "Gerard"
-fmt.Println(names) // => [Tracy  Gerard  ]
+```go
+var flags [2]bool                // Boolean array
+flags[1] = true
+fractions := make([]float64, 3)  // Float slice
+fractions[0] = 0.25
+elements := make(map[string]int) // Integer map
+elements["He"] = 2
+fmt.Println(flags[1])       // => true
+fmt.Println(fractions[0])   // => 0.25
+fmt.Println(elements["He"]) // => 2
 ```
 
-## Arrays and "fmt.Printf"
+## Map keys can be of any type
 
-Hmm, spacing on that last one is weird...
-
-``` go
-var names [5]string
-names[0] = "Tracy"
-names[2] = "Gerard"
-fmt.Println(names) // => [Tracy  Gerard  ]
+```
+binaryBooleans := make(map[bool]int)
+binaryBooleans[true] = 1
+binaryBooleans[false] = 0
+fmt.Println(binaryBooleans[false]) // => 0
+fmt.Println(binaryBooleans[true])  // => 1
 ```
 
-Let's look at it with `fmt.Printf("%#v")`:
+## Array/slice/map literals
 
-``` go
-fmt.Printf("%#v\n", names) // => [5]string{"Tracy", "", "Gerard", "", ""}
-```
-
-## Arrays and zero values
-
-Unless otherwise assigned, array elements hold the zero values for their type.
-
-``` go
-var primes [3]int
-fmt.Printf("%#v\n", primes) // => [3]int{0, 0, 0}
-var flags [2]bool
-fmt.Printf("%#v\n", flags)  // => [2]bool{false, false}
-var names [5]string
-fmt.Printf("%#v\n", names)  // => [5]string{"", "", "", "", ""}
-```
-
-## Array literals
-
-* Remember `fmt.Printf("%#v")` prints values as they would appear in Go code.
-
-``` go
-var names [5]string
-names[0] = "Tracy"
-names[2] = "Gerard"
-fmt.Printf("%#v\n", names) // => [5]string{"Tracy", "", "Gerard", "", ""}
-```
-
-* That syntax is an array __literal__.
-
-## Array literals
-
-Use array literals to create an array and initialize its elements all at once.
-
-``` go
-names := [5]string{"Tracy", "", "Gerard", "", ""}
-fmt.Println(names[0]) // => Tracy
-fmt.Println(names[1]) // => 
-fmt.Println(names[2]) // => Gerard
-fmt.Println(names[3]) // => 
-fmt.Println(names[4]) // => 
-```
-
-## Array literals
-
-Slices and maps have a similar literal syntax; we'll get to those in a bit.
+Create a collection and add data at the same time.
 
 ``` go
 myArray := [3]string{"Amy", "Jose", "Ben"}
 mySlice := []string{"Amy", "Jose", "Ben"}
-myMap := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
+myMap   := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
+fmt.Println(myArray[1])   // => Jose
+fmt.Println(mySlice[0])   // => Amy
+fmt.Println(myMap["Ben"]) // => 78
 ```
 
-## Arrays and loops
+## Collections and loops
 
-Array elements can be accessed using a loop.
+Collection elements _can_ be accessed using a loop...
 
 ``` go
 names := [3]string{"Amy", "Jose", "Ben"}
@@ -1714,9 +1716,9 @@ Jose
 Ben
 ```
 
-## Arrays and loops
+## Collections and loops
 
-Don't access/assign outside array bounds; program will panic (a runtime error that crashes the program).
+Don't access/assign outside collection bounds; program will panic (a runtime error that crashes the program).
 
 ``` go
 names := [3]string{"Amy", "Jose", "Ben"}
@@ -1736,15 +1738,57 @@ main.main()
 	/tmp/sandbox741567581/prog.go:10 +0x180
 ```
 
-## "for ... range" loops
+## Arrays and "for ... range" loops
 
-It's safer to use a `for ... range` loop:
+It's safer to use `for ... range` loops:
 
 ``` go
-names := [3]string{"Amy", "Jose", "Ben"}
-for index, name := range names {
+nameArray := [3]string{"Amy", "Jose", "Ben"}
+for index, name := range nameArray {
 	fmt.Println(index, name)
 }
+```
+
+Output:
+
+```
+0 Amy
+1 Jose
+2 Ben
+```
+
+## Slices and "for ... range" loops
+
+``` go
+nameSlice := []string{"Amy", "Jose", "Ben"}
+for index, name := range nameSlice {
+	fmt.Println(index, name)
+}
+```
+
+Output:
+
+```
+0 Amy
+1 Jose
+2 Ben
+```
+
+## Maps and "for ... range" loops
+
+``` go
+grades := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
+for name, grade := range grades {
+	fmt.Println(name, grade)
+}
+```
+
+Output:
+
+```
+Amy 84
+Jose 96
+Ben 78
 ```
 
 ## "for ... range" loops and blank identifier
@@ -1772,459 +1816,61 @@ Ben
 2
 ```
 
-## "for ... range" loops and other types
-
-`for ... range` also available with slices...
-
-``` go
-mySlice := []string{"Amy", "Jose", "Ben"}
-for index, name := range mySlice {
-	fmt.Println(index, name)
-}
-```
-
-Output:
-
-``` go
-0 Amy
-1 Jose
-2 Ben
-```
-
-## "for ... range" loops and other types
-
-`for ... range` also available with maps.
-
-``` go
-myMap := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
-for name, score := range myMap {
-	fmt.Println(name, score)
-}
-```
-
-Output:
-
-``` go
-Amy 84
-Jose 96
-Ben 78
-```
-
-More on these later.
-
-## Limitations of arrays
-
-* Arrays are fixed size - can't grow when needed.
-* To me, they're only useful as a basis for slices.
-
-
-
-# Slices
-
-## Slices
-
-Slice type is written just like array type, but with nothing between the `[]`.
-
-``` go
-var myArray [3]int
-var mySlice []int
-```
-
-## Zero value for slices
-
-Unlike with arrays, the zero value for a slice is `nil`.
-
-``` go
-var mySlice []int
-if mySlice == nil {
-	fmt.Println("mySlice is nil") // => mySlice is nil
-}
-```
-
-## Slices and "make()"
-
-Make a new slice with the built-in `make` function.
-
-``` go
-var mySlice []int
-mySlice = make([]int, 3)
-if mySlice == nil {
-	fmt.Println("mySlice is nil") // doesn't run
-}
-fmt.Println(len(mySlice))  // => 3
-fmt.Printf("%#v\n", mySlice) // => []int{0, 0, 0}
-```
-
-## Slices and "make()"
-
-Could rewrite that using a short variable declaration:
-
-``` go
-mySlice := make([]int, 3)
-if mySlice == nil {
-	fmt.Println("mySlice is nil") // doesn't run
-}
-fmt.Println(len(mySlice))  // => 3
-fmt.Printf("%#v\n", mySlice) // => []int{0, 0, 0}
-```
-
-## Zero values of slice elements
-
-Just like with arrays, the zero value of each slice element is the zero value for the type the slice holds.
-
-``` go
-myFloats := make([]float64, 2)
-fmt.Printf("%#v\n", myFloats) // => []float64{0, 0}
-myStrings := make([]string, 4)
-fmt.Printf("%#v\n", myStrings) // => []string{"", "", "", ""}
-```
-
-## Slices
-
-Use slices just like an array!
-
-``` go
-primes := make([]int, 2)
-primes[0] = 2
-primes[1] = 3
-fmt.Println(primes[0])      // => 2
-fmt.Println(primes[1])      // => 3
-fmt.Printf("%#v\n", primes) // => []int{2, 3}
-```
-
-## Slices and "append"
-
-Need to add more items? Use the built-in `append` function!
-
-``` go
-primes := make([]int, 2)
-primes[0] = 2
-primes[1] = 3
-fmt.Println(len(primes))    // => 2
-fmt.Printf("%#v\n", primes) // => []int{2, 3}
-primes = append(primes, 5)
-fmt.Println(len(primes))    // => 3
-fmt.Printf("%#v\n", primes) // => []int{2, 3, 5}
-```
-
-## Slice literals
-
-A slice literal looks just like an array literal, except the `[]` is empty:
-
-``` go
-primes := []int{2, 3, 5}
-fmt.Println(primes[0]) // => 2
-fmt.Println(primes[1]) // => 3
-fmt.Println(primes[2]) // => 5
-```
-
-## Slices and "for ... range"
-
-Use `for ... range` with a slice just like you do with an array.
+## "for ... range" loops and blank identifier
 
 ``` go
 names := []string{"Amy", "Jose", "Ben"}
-for index, name := range names {
-	fmt.Println(index, name)
+for _, name := range names {
+	fmt.Println(name)
+}
+for index, _ := range names {
+	fmt.Println(index)
 }
 ```
 
 Output:
 
-``` go
-0 Amy
-1 Jose
-2 Ben
+```
+Amy
+Jose
+Ben
+0
+1
+2
 ```
 
-<!-- ******************EXERCISE****************** -->
-
-## Exercise: Slices
-
-`https://is.gd/goex_slices`
-
-<!-- https://play.golang.org/p/-XUjc9A-9vP -->
-
-## Exercise: Slices
+## "for ... range" loops and blank identifier
 
 ``` go
-// Fill in the blanks so this program compiles and produces
-// the output shown.
-package main
-
-import "fmt"
-
-func main() {
-	// Declare a variable that holds a slice of ints.
-	var wholeNumbers ____
-	// Create a new slice of 5 elements and assign it to the variable.
-	wholeNumbers = ____
-	// Assign 42 to the second element.
-	wholeNumbers[____] = 42
-	fmt.Printf("%#v\n", wholeNumbers) // => []int{0, 42, 0, 0, 0}
-
-	// Make a 1-element slice of booleans.
-	flags := ____
-	// Set the first and only element to true.
-	flags[0] = true
-	// Append the value false to the slice.
-	flags = ____
-	// Append the value true to the slice.
-	flags = ____
-	fmt.Printf("%#v\n", flags) // => []bool{true, false, true}
-
-	// Create a slice with the strings "cat", "bat", and "rat".
-	words := ____
-	// For each element of the slice, print its index and value.
-	for ____ := ____ words {
-		fmt.Println(i, word)
-	}
-	// => 0 cat
-	// => 1 bat
-	// => 2 rat
+grades := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
+for _, grade := range grades {
+	fmt.Println(grade)
 }
-```
-
-## Exercise: Slices cheat sheet
-
-* To declare a variable that holds a slice of `myType` values, write `var myVar []myType`.
-* Slices can be created using the `make` function.
-    * The first argument to `make` should be the type of the slice.
-    * The second argument should be the number of elements the slice holds.
-* Slice element indexes start at `0`, so `mySlice[0]` refers to the first element, `mySlice[1]` to the second, and so on.
-* To append an element to `mySlice`, use `mySlice = append(mySlice, newElement)`.
-* A slice literal looks like this: `[]int{1, 2, 3}`
-
-``` go
-for index, element := range mySlice {
-    fmt.Println(index, element)
-}
-```
-
-`https://is.gd/goex_slices`
-
-## Exercise: Slices solution
-
-``` go
-// Fill in the blanks so this program compiles and produces
-// the output shown.
-package main
-
-import "fmt"
-
-func main() {
-	// Declare a variable that holds a slice of ints.
-	var wholeNumbers []int
-	// Create a new slice of 5 elements and assign it to the variable.
-	wholeNumbers = make([]int, 5)
-	// Assign 42 to the second element.
-	wholeNumbers[1] = 42
-	fmt.Printf("%#v\n", wholeNumbers) // => []int{0, 42, 0, 0, 0}
-
-	// Make a 1-element slice of booleans.
-	flags := make([]bool, 1)
-	// Set the first and only element to true.
-	flags[0] = true
-	// Append the value false to the slice.
-	flags = append(flags, false)
-	// Append the value true to the slice.
-	flags = append(flags, true)
-	fmt.Printf("%#v\n", flags) // => []bool{true, false, true}
-
-	// Create a slice with the strings "cat", "bat", and "rat".
-	words := []string{"cat", "bat", "rat"}
-	// For each element of the slice, print its index and value.
-	for i, word := range words {
-		fmt.Println(i, word)
-	}
-	// => 0 cat
-	// => 1 bat
-	// => 2 rat
-}
-```
-
-
-
-
-
-# Maps
-
-## Maps
-
-* Heard of "dictionaries" or "hashes"? Maps are Go's equivalent.
-* Like arrays and slices, maps store a collection of values.
-* But arrays and slices use indexes to access their elements. Indexes can only be sequential integers.
-* Maps use keys to store values under. A map's keys can be _any_ type you want!
-
-``` go
-ranks := make(map[string]int)
-ranks["gold"] = 1
-ranks["silver"] = 2
-ranks["bronze"] = 3
-fmt.Println(ranks["gold"], ranks["bronze"]) // => 1 3
-```
-
-## Maps
-
-* Though maps work differently than slices, the syntax is similar.
-* You're going to get some deja vu from the slices section.
-
-## Map types
-
-Map type is written `map[keyType]valueType`.
-
-``` go
-var myArray [3]bool
-var mySlice []bool
-var myMap   map[string]bool
-```
-
-## Zero value for maps
-
-* The zero value for a map is `nil`.
-* Unlike arrays.
-* Just like slices.
-
-``` go
-var myMap map[int]string
-if myMap == nil {
-	fmt.Println("myMap is nil") // => myMap is nil
-}
-```
-
-## Maps and "make()"
-
-Make a new map with the built-in `make` function.
-
-``` go
-var atomicNumbers map[int]string
-atomicNumbers = make(map[int]string)
-if atomicNumbers == nil {
-	fmt.Println("atomicNumbers is nil") // doesn't run
-}
-fmt.Printf("%#v\n", atomicNumbers) // => map[int]string{}
-```
-
-## Maps and "make()"
-
-Could rewrite that using a short variable declaration:
-
-``` go
-atomicNumbers := make(map[int]string)
-if atomicNumbers == nil {
-	fmt.Println("atomicNumbers is nil") // doesn't run
-}
-fmt.Printf("%#v\n", atomicNumbers) // => map[int]string{}
-```
-
-## Accessing map values
-
-* Syntax to assign to set/get a map value is similar to that for arrays/slices.
-* Just use a value of your specified key type instead of an integer index.
-
-``` go
-ranks := make(map[string]int)
-ranks["gold"] = 1
-ranks["silver"] = 2
-ranks["bronze"] = 3
-fmt.Println(ranks["gold"], ranks["bronze"]) // => 1 3
-```
-
-## Map literals
-
-* `fmt.Printf("%#v")` can be used to quickly view an entire map's contents.
-* `Printf` outputs the values in __map literal__ syntax.
-
-``` go
-ranks := make(map[string]int)
-ranks["gold"] = 1
-ranks["silver"] = 2
-ranks["bronze"] = 3
-fmt.Printf("%#v\n", ranks)
-// => map[string]int{"bronze":3, "gold":1, "silver":2}
-```
-
-## Map literals
-
-* Map literals can be used to quickly initialize a map with several keys/values.
-* No need for `make` when using a literal.
-
-``` go
-ranks := map[string]int{"gold": 1, "silver": 2, "bronze": 3}
-fmt.Println(ranks["gold"])   // => 1
-fmt.Println(ranks["silver"]) // => 2
-fmt.Println(ranks["bronze"]) // => 3
-```
-
-## Maps and "for ... range"
-
-* `for ... range` works with a map in much the same way as an array or slice.
-* Provide two variables:
-    * First will be assigned a key (instead of an integer index).
-    * Second will be assigned the corresponding value.
-
-``` go
-scores := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
-for name, score := range scores {
-	fmt.Println(name, score)
-}
-```
-
-Output:
-
-``` go
-Amy 84
-Jose 96
-Ben 78
-```
-
-## Maps and "for ... range"
-
-Want to process only the keys? Provide only one variable.
-
-``` go
-scores := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
-for name := range scores {
+for name, _ := range grades {
 	fmt.Println(name)
 }
 ```
 
 Output:
 
-``` go
-Jose
-Ben
-Amy
 ```
-
-## Maps and "for ... range"
-
-Want to process only the values? Use the blank identifier for the first variable.
-
-``` go
-scores := map[string]int{"Amy": 84, "Jose": 96, "Ben": 78}
-for _, score := range scores {
-	fmt.Println(score)
-}
-```
-
-Output:
-
-``` go
-78
 84
 96
+78
+Amy
+Jose
+Ben
 ```
 
 <!-- ******************EXERCISE****************** -->
 
-## Exercise: Maps
+## Exercise: Slices and Maps
 
-`https://is.gd/goex_maps`
+`https://is.gd/goex_collections`
 
-<!-- https://play.golang.org/p/QUJiCbmeuL0 -->
+<!-- https://play.golang.org/p/LBwN8e1jMgb -->
 
-## Exercise: Maps
+## Exercise: Slices and Maps
 
 ``` go
 // Fill in the blanks so this program compiles and produces
@@ -2234,65 +1880,77 @@ package main
 import "fmt"
 
 func main() {
-	// Declare a variable that holds a map with strings for keys
-	// and booleans for values.
-	var isVowel ____
-	// Call make to create the map.
-	isVowel = ____
-	// Assign true to the key "a", and false to the keys "b" and "c".
-	____ = true
-	____ = false
-	____ = false
-	fmt.Printf("%#v\n", isVowel) // => map[string]bool{"a":true, "b":false, "c":false}
+	// Create a variable to hold a slice of ints.
+	var primes ____int
+	// Create a slice with 2 elements.
+	primes = ____([]int, 2)
+	// Assign values to the first 2 elements.
+	primes[____] = 2
+	primes[____] = 3
+	// Add a third element to the end of the slice.
+        primes = ____(primes, 5)
+	fmt.Println(primes) // => [2 3 5]
 
-
-	// Make a map with ints as keys and strings as values. The 1 key
-	// should have the value "H", 2 should have the value "He", and
-	// 3 should have the value "Li".
-	elements := ____
-	// Print all the keys and corresponding values in the slice.
-	// Order doesn't matter.
-	for ____ := range elements {
+	// Write a map literal with int keys and string values.
+	elements := ____[int]string{1: "H", 2: "He", 3: "Li"}
+	// Loop over each key/value pair in the map.
+	for atomicNumber, symbol := ____ elements {
 		fmt.Println(atomicNumber, symbol)
 	}
-	// => 3 Li
-	// => 1 H
-	// => 2 He
+        // => 1 H
+        // => 2 He
+        // => 3 Li
 }
 ```
 
-## Exercise: Maps cheat sheet
+## Exercise: Slices and Maps cheat sheet
+
+* Slices:
+    * To declare a variable that holds a slice of `myType` values, write `var myVar []myType`.
+    * Slices can be created by calling the `make` function with 2 arguments: the type of the slice and the number of elements.
+    * Slice element indexes start at `0`, so `mySlice[0]` refers to the first element, `mySlice[1]` to the second, and so on.
+    * To append an element to `mySlice`, use `mySlice = append(mySlice, newElement)`.
+* Maps:
 
 ``` go
-var myMap map[keyType]valueType
-myMap = make(map[keyType]valueType)
-otherMap := map[int]string{1: "foo", 2: "bar"}
-otherMap[3] = "baz"
-for key, value := range otherMap {
+myMap := map[string]int{"foo": 2, "bar": 1}
+for key, value := range myMap {
     fmt.Println(key, value)
 }
 ```
 
-`https://is.gd/goex_maps`
+`https://is.gd/goex_collections`
 
-## Exercise: Maps solution
+## Exercise: Slices and Maps solution
 
 ``` go
-func main() {
-	var isVowel map[string]bool
-	isVowel = make(map[string]bool)
-	isVowel["a"] = true
-	isVowel["b"] = false
-	isVowel["c"] = false
-	fmt.Printf("%#v\n", isVowel) // => map[string]bool{"a":true, "b":false, "c":false}
+// Fill in the blanks so this program compiles and produces
+// the output shown.
+package main
 
+import "fmt"
+
+func main() {
+	// Create a variable to hold a slice of ints.
+	var primes []int
+	// Create a slice with 2 elements.
+	primes = make([]int, 2)
+	// Assign values to the first 2 elements.
+	primes[0] = 2
+	primes[1] = 3
+	// Add a third element to the end of the slice.
+        primes = append(primes, 5)
+	fmt.Println(primes) // => [2 3 5]
+
+	// Write a map literal with int keys and string values.
 	elements := map[int]string{1: "H", 2: "He", 3: "Li"}
+	// Loop over each key/value pair in the map.
 	for atomicNumber, symbol := range elements {
 		fmt.Println(atomicNumber, symbol)
 	}
-	// => 3 Li
-	// => 1 H
-	// => 2 He
+        // => 1 H
+        // => 2 He
+        // => 3 Li
 }
 ```
 
@@ -2883,7 +2541,7 @@ func playList(device Player, songs []string) {
 }
 ```
 
-## Interface
+## Interfaces
 
 Now, you can pass in a `TapePlayer` _or_ a `TapeRecorder` (or any other type with `Play` and `Stop` methods)!
 
@@ -3107,9 +2765,9 @@ func main() {
 Output:
 
 ```
-Goodbye!
 Hello!
 Nice weather, eh?
+Goodbye!
 ```
 
 ## "defer"
@@ -3168,6 +2826,21 @@ exit status 1
 
 ## A (somewhat) more realistic example
 
+* We need a function that prints the contents of a file, then closes it.
+* If there's an error, it should be returned.
+* But the file should be closed even if there's an error!
+
+``` go
+func main() {
+	err := PrintLines("lorem_ipsum.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+## A (somewhat) more realistic example
+
 ``` go
 func PrintLines(fileName string) error {
 	file, err := os.Open(fileName)
@@ -3183,17 +2856,6 @@ func PrintLines(fileName string) error {
 		return scanner.Err()
 	}
 	return nil
-}
-```
-
-## A (somewhat) more realistic example
-
-``` go
-func main() {
-	err := PrintLines("lorem_ipsum.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
 }
 ```
 
