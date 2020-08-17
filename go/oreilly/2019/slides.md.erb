@@ -1877,10 +1877,10 @@ Ben
 <!-- ******************EXERCISE****************** -->
 <%
 @title = <<-'EOD'.chomp
-Slices
+Slices and Maps
 EOD
-@short_url = "https://is.gd/goex_slices"
-@long_url = "https://play.golang.org/p/-XUjc9A-9vP"
+@short_url = "https://is.gd/goex_collections"
+@long_url = "https://play.golang.org/p/LBwN8e1jMgb"
 
 @start_code = <<-'EOD'.chomp
 // Fill in the blanks so this program compiles and produces
@@ -1890,48 +1890,41 @@ package main
 import "fmt"
 
 func main() {
-	// Declare a variable that holds a slice of ints.
-	var wholeNumbers ____
-	// Create a new slice of 5 elements and assign it to the variable.
-	wholeNumbers = ____
-	// Assign 42 to the second element.
-	wholeNumbers[____] = 42
-	fmt.Printf("%#v\n", wholeNumbers) // => []int{0, 42, 0, 0, 0}
+	// Create a variable to hold a slice of ints.
+	var primes ____int
+	// Create a slice with 2 elements.
+	primes = ____([]int, 2)
+	// Assign values to the first 2 elements.
+	primes[____] = 2
+	primes[____] = 3
+	// Add a third element to the end of the slice.
+        primes = ____(primes, 5)
+	fmt.Println(primes) // => [2 3 5]
 
-	// Make a 1-element slice of booleans.
-	flags := ____
-	// Set the first and only element to true.
-	flags[0] = true
-	// Append the value false to the slice.
-	flags = ____
-	// Append the value true to the slice.
-	flags = ____
-	fmt.Printf("%#v\n", flags) // => []bool{true, false, true}
-
-	// Create a slice with the strings "cat", "bat", and "rat".
-	words := ____
-	// For each element of the slice, print its index and value.
-	for ____ := ____ words {
-		fmt.Println(i, word)
+	// Write a map literal with int keys and string values.
+	elements := ____[int]string{1: "H", 2: "He", 3: "Li"}
+	// Loop over each key/value pair in the map.
+	for atomicNumber, symbol := ____ elements {
+		fmt.Println(atomicNumber, symbol)
 	}
-	// => 0 cat
-	// => 1 bat
-	// => 2 rat
+        // => 1 H
+        // => 2 He
+        // => 3 Li
 }
 EOD
 
 @cheat_sheet = <<-'EOD'.chomp
-* To declare a variable that holds a slice of `myType` values, write `var myVar []myType`.
-* Slices can be created using the `make` function.
-    * The first argument to `make` should be the type of the slice.
-    * The second argument should be the number of elements the slice holds.
-* Slice element indexes start at `0`, so `mySlice[0]` refers to the first element, `mySlice[1]` to the second, and so on.
-* To append an element to `mySlice`, use `mySlice = append(mySlice, newElement)`.
-* A slice literal looks like this: `[]int{1, 2, 3}`
+* Slices:
+    * To declare a variable that holds a slice of `myType` values, write `var myVar []myType`.
+    * Slices can be created by calling the `make` function with 2 arguments: the type of the slice and the number of elements.
+    * Slice element indexes start at `0`, so `mySlice[0]` refers to the first element, `mySlice[1]` to the second, and so on.
+    * To append an element to `mySlice`, use `mySlice = append(mySlice, newElement)`.
+* Maps:
 
 ``` go
-for index, element := range mySlice {
-    fmt.Println(index, element)
+myMap := map[string]int{"foo": 2, "bar": 1}
+for key, value := range myMap {
+    fmt.Println(key, value)
 }
 ```
 EOD
@@ -1944,33 +1937,26 @@ package main
 import "fmt"
 
 func main() {
-	// Declare a variable that holds a slice of ints.
-	var wholeNumbers []int
-	// Create a new slice of 5 elements and assign it to the variable.
-	wholeNumbers = make([]int, 5)
-	// Assign 42 to the second element.
-	wholeNumbers[1] = 42
-	fmt.Printf("%#v\n", wholeNumbers) // => []int{0, 42, 0, 0, 0}
+	// Create a variable to hold a slice of ints.
+	var primes []int
+	// Create a slice with 2 elements.
+	primes = make([]int, 2)
+	// Assign values to the first 2 elements.
+	primes[0] = 2
+	primes[1] = 3
+	// Add a third element to the end of the slice.
+        primes = append(primes, 5)
+	fmt.Println(primes) // => [2 3 5]
 
-	// Make a 1-element slice of booleans.
-	flags := make([]bool, 1)
-	// Set the first and only element to true.
-	flags[0] = true
-	// Append the value false to the slice.
-	flags = append(flags, false)
-	// Append the value true to the slice.
-	flags = append(flags, true)
-	fmt.Printf("%#v\n", flags) // => []bool{true, false, true}
-
-	// Create a slice with the strings "cat", "bat", and "rat".
-	words := []string{"cat", "bat", "rat"}
-	// For each element of the slice, print its index and value.
-	for i, word := range words {
-		fmt.Println(i, word)
+	// Write a map literal with int keys and string values.
+	elements := map[int]string{1: "H", 2: "He", 3: "Li"}
+	// Loop over each key/value pair in the map.
+	for atomicNumber, symbol := range elements {
+		fmt.Println(atomicNumber, symbol)
 	}
-	// => 0 cat
-	// => 1 bat
-	// => 2 rat
+        // => 1 H
+        // => 2 He
+        // => 3 Li
 }
 EOD
 %>
