@@ -749,11 +749,11 @@ func myParseBool(myString string) (bool, error) {
 }
 
 func main() {
-	bool, err := myParseBool("false")
+	trueFalse, err := myParseBool("false")
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(bool) // => false
+	fmt.Println(trueFalse) // => false
 }
 ```
 
@@ -771,11 +771,11 @@ func myParseBool(myString string) (bool, error) {
 }
 
 func main() {
-	bool, err := myParseBool("foobar")
+	trueFalse, err := myParseBool("foobar")
 	if err != nil {
 		log.Fatal(err) // => 2020-03-13 19:34:00 bad string foobar
 	}
-	fmt.Println(bool)
+	fmt.Println(trueFalse)
 }
 ```
 
