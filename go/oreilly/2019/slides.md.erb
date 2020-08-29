@@ -265,7 +265,7 @@ func main() {
 
 Compile errors:
 
-```
+``` go
 prog.go:4:2: undefined: fmt
 prog.go:4:14: undefined: math
 prog.go:5:2: undefined: fmt
@@ -391,7 +391,7 @@ fmt.Println(subtotal)
 
 Compile error:
 
-```
+``` go
 prog.go:9:2: tax declared and not used
 ```
 
@@ -408,7 +408,7 @@ fmt.Println(length)
 
 Compile error:
 
-```
+``` go
 cannot use width (type int) as type float64 in assignment
 ```
 
@@ -446,7 +446,7 @@ fmt.Println("length > width?", length > float64(width))
 
 Output:
 
-```
+``` go
 Area is 2.4
 length > width? false
 ```
@@ -461,7 +461,7 @@ if 1 < 2 {
 
 Output:
 
-```
+``` go
 It's true!
 ```
 
@@ -494,7 +494,7 @@ for x := 4; x <= 6; x++ {
 
 Output:
 
-```
+``` go
 x is now 4
 x is now 5
 x is now 6
@@ -705,7 +705,7 @@ func main() {
 
 Compile error:
 
-```
+``` go
 prog.go:9:7: assignment mismatch: 1 variable but strconv.ParseBool returns 2 values
 prog.go:10:7: assignment mismatch: 1 variable but strconv.ParseBool returns 2 values
 ```
@@ -1149,7 +1149,7 @@ func main() {
 
 ## "go run"
 
-```
+``` go
 $ go run hi.go
 Hello!
 Hi!
@@ -1172,7 +1172,7 @@ func main() {
 
 ## "go install"
 
-```
+``` go
 $ go install hi
 $ tree ~/go
 go
@@ -1187,7 +1187,7 @@ go
 
 ## "go install"
 
-```
+``` go
 $ export PATH=$PATH:$HOME/go/bin
 ```
 
@@ -1195,7 +1195,7 @@ $ export PATH=$PATH:$HOME/go/bin
 
 ## "go install"
 
-```
+``` go
 $ hi
 Hello!
 Hi!
@@ -1388,7 +1388,7 @@ I set up a repo at `https://github.com/headfirstgo/greeting`, and pushed the pac
 
 Now anyone can retrieve the package with `go get github.com/headfirstgo/greeting`:
 
-```
+``` go
 $ go get github.com/headfirstgo/greeting
 $ tree ~/go
 go
@@ -1468,7 +1468,7 @@ func Hi() {
 
 Get documentation on a package:
 
-```
+``` go
 $ go doc github.com/headfirstgo/greeting
 package greeting // import "github.com/headfirstgo/greeting"
 
@@ -1482,7 +1482,7 @@ func Hi()
 
 Get documentation on a function:
 
-```
+``` go
 $ go doc github.com/headfirstgo/greeting Hello
 func Hello()
     Hello prints the string "Hello!".
@@ -1490,7 +1490,7 @@ func Hello()
 
 ## Web documentation
 
-```
+``` go
 $ godoc -http=:6060
 ```
 
@@ -1691,7 +1691,7 @@ fmt.Println(elements["He"]) // => 2
 
 ## Map keys can be of any type
 
-```
+``` go
 binaryBooleans := make(map[bool]int)
 binaryBooleans[true] = 1
 binaryBooleans[false] = 0
@@ -1742,7 +1742,7 @@ for i := 0; i <= len(names); i++ {
 }
 ```
 
-```
+``` go
 index 0 Amy
 index 1 Jose
 index 2 Ben
@@ -1766,7 +1766,7 @@ for index, name := range nameArray {
 
 Output:
 
-```
+``` go
 0 Amy
 1 Jose
 2 Ben
@@ -1783,7 +1783,7 @@ for index, name := range nameSlice {
 
 Output:
 
-```
+``` go
 0 Amy
 1 Jose
 2 Ben
@@ -1800,7 +1800,7 @@ for name, grade := range grades {
 
 Output:
 
-```
+``` go
 Amy 84
 Jose 96
 Ben 78
@@ -1822,7 +1822,7 @@ for index, _ := range names {
 
 Output:
 
-```
+``` go
 Amy
 Jose
 Ben
@@ -1845,7 +1845,7 @@ for index, _ := range names {
 
 Output:
 
-```
+``` go
 Amy
 Jose
 Ben
@@ -1868,7 +1868,7 @@ for name, _ := range grades {
 
 Output:
 
-```
+``` go
 84
 96
 78
@@ -2562,7 +2562,7 @@ func main() {
 
 Output:
 
-```
+``` go
 Playing Jessie's Girl
 Playing Whip It
 Playing 9 to 5
@@ -2596,7 +2596,7 @@ func TryOut(player Player) {
 
 Compile error:
 
-```
+``` go
 player.Record undefined (type Player has no field or method Record)
 ```
 
@@ -2621,7 +2621,7 @@ func TryOut(player Player) {
 
 Output:
 
-```
+``` go
 Playing Test Track
 Stopped!
 Recording
@@ -2763,7 +2763,7 @@ func main() {
 
 Output:
 
-```
+``` go
 Hello!
 Nice weather, eh?
 Goodbye!
@@ -2784,7 +2784,7 @@ func Socialize() {
 
 Output:
 
-```
+``` go
 Hello!
 Nice weather, eh?
 Goodbye!
@@ -2816,7 +2816,7 @@ func main() {
 
 Output:
 
-```
+``` go
 Hello!
 Goodbye!
 2019/04/22 11:22:29 I don't want to talk.
@@ -2905,7 +2905,7 @@ func Socialize() {
 
 Output:
 
-```
+``` go
 Hello!
 Goodbye!
 panic: I need to get out of here!
@@ -2942,7 +2942,7 @@ func Socialize() {
 
 Output:
 
-```
+``` go
 Hello!
 I need to get out of here!
 Goodbye!
@@ -3142,7 +3142,7 @@ func main() {
 
 Output:
 
-```
+``` go
 Getting https://example.com/
 1270
 Getting https://golang.org/
@@ -3218,7 +3218,7 @@ func main() {
 
 ## Channels
 
-```
+``` go
 Getting https://golang.org/doc
 Getting https://golang.org/
 Getting https://example.com/
