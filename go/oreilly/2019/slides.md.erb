@@ -624,58 +624,6 @@ Compile error:
 prog.go:11:14: undefined: myVariable
 ```
 
-## Variable scope
-
-By the way, variable scope also limited by "if" blocks:
-
-``` go
-if grade >= 60 {
-	status := "passing"
-} else {
-	status := "failing"
-}
-fmt.Println(status) // out of scope!
-```
-
-## Variable scope
-
-And by "for" blocks:
-
-``` go
-for x := 1; x <= 3; x++ {
-	y := x + 1
-	fmt.Println(y)
-}
-fmt.Println(y) // out of scope!
-```
-
-## Variable scope
-
-Solution is to declare variable _before_ block:
-
-``` go
-var status string // declare up here
-if grade >= 60 {
-	status = "passing" // still in scope
-} else {
-	status = "failing" // still in scope
-}
-fmt.Println(status) // still in scope
-```
-
-## Variable scope
-
-Same with loops:
-
-``` go
-var y int // declare up here
-for x := 1; x <= 3; x++ {
-	y = x + 1 // still in scope
-	fmt.Println(y)
-}
-fmt.Println(y) // still in scope
-```
-
 ## Function return values
 
 So how do we get a value from a function to its caller?
