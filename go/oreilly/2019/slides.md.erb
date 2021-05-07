@@ -626,22 +626,7 @@ prog.go:11:14: undefined: myVariable
 
 ## Function return values
 
-So how do we get a value from a function to its caller?
-
-``` go
-func myFunction() {
-	myVariable := 10
-}
-
-func main() {
-	myFunction()
-	fmt.Println(myVariable) // out of scope!
-}
-```
-
-## Function return values
-
-Add a return value!
+So how do we get a value from a function to its caller? Add a return value!
 
 ``` go
 // Add return value type after parentheses
