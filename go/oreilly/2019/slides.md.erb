@@ -219,7 +219,7 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("Hello, Go!")
+	fmt.Println("Hello, Go!") // => Hello, Go!
 }
 ```
 
@@ -231,9 +231,12 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println() // No arguments
-	fmt.Println("argument 1")
-	fmt.Println("argument 1", "argument 2")	
+	// No arguments
+	fmt.Println() // Prints a blank line
+	// 1 argument
+	fmt.Println("argument 1") // => argument 1
+	// 2 arguments
+	fmt.Println("argument 1", "argument 2")	// => argument 1 argument 2
 }
 ```
 
@@ -435,6 +438,13 @@ var width int = 2
 fmt.Println("Area is", length*width)
 // Or a comparison:
 fmt.Println("length > width?", length > width)
+```
+
+Compile errors:
+
+``` go
+invalid operation: length * width (mismatched types float64 and int)
+invalid operation: length > width (mismatched types float64 and int)
 ```
 
 ## Type conversions
